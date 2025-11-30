@@ -60,9 +60,11 @@ function global:profile-menu {
             "6" { Git-Sync }
             "7" { Show-CleanupMenu }
             "8" { Show-FunMenu }
+			"9" { Show-NeonFXMenu }
+
 
             # FIXED EXIT
-            "9" { 
+            "10" { 
                 $ExitMenu = $true
             }
 
@@ -202,6 +204,7 @@ function global:Show-FunMenu {
         Write-Host " 6) Cyberpunk Prompt"
         Write-Host " 7) Reset Prompt"
         Write-Host " 8) Neon Border (Gradient)"
+		Write-Host "$NeonCyan 9$NeonReset • Neon FX"
         Write-Host " 9) Task App"
         Write-Host "10) Git App"
         Write-Host "11) File App"
@@ -339,6 +342,7 @@ function global:Show-FunMenu {
                 Write-Host ""
                 Read-Host "Press Enter to return..."
             }
+			
 
             # 9) TASK APP
             "9" {
