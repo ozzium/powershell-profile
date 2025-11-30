@@ -102,6 +102,11 @@ function gcom {
     git commit -m $Message
 }
 
+function reload-profile {
+    Write-Host "Reloading profile..." -ForegroundColor Cyan
+    & $PROFILE
+}
+
 function lazyg {
     param([Parameter(Mandatory)][string]$Message)
     git add .

@@ -1,8 +1,11 @@
-Write-Host "Loading PowerShell Profile..." -ForegroundColor Yellow -BackgroundColor DarkMagenta
+# Write-Host "Loading PowerShell Profile..."
+# Show-RavenBanner
+# Show-SystemHeader
 
 # Admin check
-$global:IsAdmin = ([Security.Principal.WindowsPrincipal] `
-    [Security.Principal.WindowsIdentity]::GetCurrent()
+$global:IsAdmin = (
+    [Security.Principal.WindowsPrincipal] `
+        [Security.Principal.WindowsIdentity]::GetCurrent()
 ).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 # Window title
@@ -30,7 +33,6 @@ function Edit-Profile {
 }
 Set-Alias -Name ep -Value Edit-Profile -ErrorAction SilentlyContinue
 
-# Lazy one-time init for heavier stuff (themes, icons, zoxide)
 $script:ProfilePostInitRegistered = $false
 
 function Invoke-Profile-PostInit {
@@ -39,13 +41,17 @@ function Invoke-Profile-PostInit {
 
     Start-Sleep -Milliseconds 50
 
-    # Terminal-Icons (optional)
-    if (Get-Module -ListAvailable -Name Terminal-Icons) {
-        Import-Module Terminal-Icons -ErrorAction SilentlyContinue
+    # Determine prompt mode (Normal/Fast) if configured
+    $mode = $null
+    if ($global:PSProfileConfig -and `
+        ($global:PSProfileConfig.PSObject.Properties.Name -contains 'PromptMode')) {
+        $mode = $global:PSProfileConfig.PromptMode
     }
+    if (-not $mode) { $mode = 'Normal' }
 
-    # oh-my-posh (optional)
-    if (Get-Command -Name 'oh-my-posh' -ErrorAction SilentlyContinue) {
+    # oh-my-posh (optional, skipped in Fast mode)
+    if ($mode -ne 'Fast' -and `
+        (Get-Command -Name 'oh-my-posh' -ErrorAction SilentlyContinue)) {
         try {
             $ompConfig = 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/cobalt2.omp.json'
             oh-my-posh init pwsh --config $ompConfig | Invoke-Expression
@@ -54,34 +60,12 @@ function Invoke-Profile-PostInit {
         }
     }
 
-    # zoxide (optional)
-    if (Get-Command -Name 'zoxide' -ErrorAction SilentlyContinue) {
-        try {
-            Invoke-Expression (& { (zoxide init --cmd z powershell | Out-String) })
-        } catch {
-            Write-Warning "zoxide init failed: $_"
-        }
-    }
-
-    # Optional: auto-load external user functions from modules/Functions
-    $funcFolder = Join-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) '..\modules\Functions'
-    $funcFolder = (Resolve-Path $funcFolder -ErrorAction SilentlyContinue)?.Path
-    if ($funcFolder -and (Test-Path $funcFolder)) {
-        $files = Get-ChildItem -Path $funcFolder -Filter *.ps1 -File -ErrorAction SilentlyContinue
-        $i = 1
-        foreach ($f in $files) {
-            try {
-                . $f.FullName
-                Write-Host "$i : $($f.Name) loaded" -ForegroundColor Yellow -BackgroundColor DarkMagenta
-                $i++
-            } catch {
-                Write-Warning "Failed to load function file $($f.Name): $_"
-            }
-        }
+   # Write-Host "Loading PowerShell Profile..."
+# Show-RavenBanner
+# Show-SystemHeader
     }
 }
 
-# Prompt uses lazy init
 function prompt {
     Invoke-Profile-PostInit
     $cwd = (Get-Location).Path
