@@ -9,3 +9,4 @@ if (-not $global:PSProfileConfig) {
         Debug          = $false     # set $true to skip update checks etc.
     }
 }
+
