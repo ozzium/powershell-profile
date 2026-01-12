@@ -1,13 +1,17 @@
-Write-Host "Loading PowerShell Profile..." -ForegroundColor Yellow -BackgroundColor DarkMagenta
-
-# Admin check
-$global:IsAdmin = ([Security.Principal.WindowsPrincipal] `
+# Admin check (fixed)
+$global:IsAdmin = (New-Object Security.Principal.WindowsPrincipal(
     [Security.Principal.WindowsIdentity]::GetCurrent()
-).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+)).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 # Window title
 $adminSuffix = if ($global:IsAdmin) { " [ADMIN]" } else { "" }
 $Host.UI.RawUI.WindowTitle = "PowerShell $($PSVersionTable.PSVersion)$adminSuffix"
+
+try {
+  if ((Get-Location).Path -like "C:\Windows\System32*") {
+    Set-Location $HOME
+  }
+} catch {}
 
 # Editor detection (only runs once)
 if (-not $global:PSProfileConfig.Editor) {

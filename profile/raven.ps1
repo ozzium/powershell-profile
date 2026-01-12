@@ -168,7 +168,8 @@ function Raven-Task {
 
             $tasks | ConvertTo-Json -Depth 5 | Set-Content -Path $path -Encoding UTF8
 
-            Write-Host "🦇 Raven adds task #$nextId: $Text" -ForegroundColor DarkMagenta
+            Write-Host ("🦇 Raven adds task #{0}: {1}" -f $nextId, $Text) -ForegroundColor DarkMagenta
+
         }
 
         "list" {
@@ -379,3 +380,13 @@ foreach ($fn in @(
 }
 
 Write-Host "✔ Raven Core Loaded" -ForegroundColor DarkMagenta
+
+# --- Ensure `raven` exists (failsafe) ---
+if (-not (Get-Command raven -ErrorAction SilentlyContinue)) {
+    if (Get-Command Invoke-RavenCore -ErrorAction SilentlyContinue) {
+        function global:raven {
+            param([Parameter(ValueFromRemainingArguments=$true)][string[]]$Message)
+            Invoke-RavenCore -Prompt ($Message -join " ") | Out-Null
+        }
+    }
+}
