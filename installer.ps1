@@ -1,40 +1,29 @@
-Write-Host "Installing Oz's PowerShell profile..." -ForegroundColor Cyan
+# Raven Installer (Windows + macOS)
+$ErrorActionPreference = "Stop"
 
-$repoUrl  = "https://github.com/ozzium/powershell-profile.git"
-$destPath = Join-Path $HOME "powershell-profile"
-
-if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-    Write-Warning "git is not installed or not in PATH. Please clone $repoUrl manually into $destPath."
-    return
+function Get-RepoRoot {
+    # If installer is in repo root, this is correct:
+    return $PSScriptRoot
 }
 
-if (Test-Path $destPath) {
-    Write-Host "Existing profile repo detected. Pulling latest..." -ForegroundColor Yellow
-    git -C $destPath pull
-} else {
-    Write-Host "Cloning profile repo..." -ForegroundColor Yellow
-    git clone $repoUrl $destPath
+$repoRoot = Get-RepoRoot
+$loader   = Join-Path $repoRoot "bootstrap/loader.ps1"
+
+if (-not (Test-Path $loader)) {
+    throw "Missing loader: $loader"
 }
 
-# Create bootstrap profile that calls the repo loader
-$loaderPath = Join-Path $destPath "profile\Microsoft.PowerShell_profile.ps1"
+# Ensure profile directory exists
+$profileDir = Split-Path -Parent $PROFILE
+New-Item -ItemType Directory -Force -Path $profileDir | Out-Null
 
-if (-not (Test-Path $loaderPath)) {
-    Write-Error "Loader profile not found at $loaderPath"
-    return
-}
-
-if (Test-Path $PROFILE) {
-    $backup = "$PROFILE.bak"
-    Copy-Item -Path $PROFILE -Destination $backup -Force
-    Write-Host "Existing profile backed up to: $backup" -ForegroundColor DarkYellow
-}
-
-$bootstrap = @"
-# Bootstrap to Oz's PowerShell profile
-& "$loaderPath"
+# Write minimal profile that loads the repo bootstrap
+$profileContent = @"
+# Raven Profile Bootstrap
+. `"$loader`"
 "@
 
-$bootstrap | Out-File -FilePath $PROFILE -Encoding UTF8 -Force
+Set-Content -Path $PROFILE -Value $profileContent -Encoding UTF8
 
-Write-Host "Profile installed. Restart PowerShell to use it." -ForegroundColor Green
+. $PROFILE
+Write-Host "✅ Installed Raven loader into: $PROFILE" -ForegroundColor Green

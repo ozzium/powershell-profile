@@ -1,7 +1,7 @@
 <#
   RAVEN SINGLE-FILE BUILD
-  Generated: 2026-01-07 14:39:07
-  Source: C:\Users\ozzium\Documents\GitHub\powershell-profile\profile
+  Generated: 2026-01-20 21:50:01
+  Source: C:\Users\Ozzium\Documents\GitHub\powershell-profile\profile
 #>
 
 
@@ -1706,7 +1706,8 @@ function Raven-Task {
 
             $tasks | ConvertTo-Json -Depth 5 | Set-Content -Path $path -Encoding UTF8
 
-            Write-Host "🦇 Raven adds task #$nextId: $Text" -ForegroundColor DarkMagenta
+            Write-Host ("🦇 Raven adds task #{0}: {1}" -f $nextId, $Text) -ForegroundColor DarkMagenta
+
         }
 
         "list" {
@@ -1918,6 +1919,16 @@ foreach ($fn in @(
 
 Write-Host "✔ Raven Core Loaded" -ForegroundColor DarkMagenta
 
+# --- Ensure `raven` exists (failsafe) ---
+if (-not (Get-Command raven -ErrorAction SilentlyContinue)) {
+    if (Get-Command Invoke-RavenCore -ErrorAction SilentlyContinue) {
+        function global:raven {
+            param([Parameter(ValueFromRemainingArguments=$true)][string[]]$Message)
+            Invoke-RavenCore -Prompt ($Message -join " ") | Out-Null
+        }
+    }
+}
+
 # ------------------------------
 # END:   raven.ps1
 # ------------------------------
@@ -2050,6 +2061,119 @@ function Show-NeonHeader {
     Write-Host "---------------------------------------------------"
     Write-Host ""
 }
+function Invoke-RavenSelfRepair {
+    [CmdletBinding()]
+    param(
+        [switch]$VerboseReport
+    )
+
+    # 1) Find profile root
+    $root = $env:RAVEN_PROFILE_ROOT
+    if (-not $root) {
+        # Try common locations (fallback)
+        $candidates = @(
+            "$HOME\Documents\GitHub\powershell-profile\profile",
+            "$HOME\Documents\Github\powershell-profile\profile",
+            "$HOME\GitHub\powershell-profile\profile",
+            "$HOME\Github\powershell-profile\profile",
+            "$HOME\powershell-profile\profile"
+        )
+        $root = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+        if ($root) { $env:RAVEN_PROFILE_ROOT = $root }
+    }
+
+    if (-not $root -or -not (Test-Path $root)) {
+        Write-Warning "Raven Self-Repair: profile root not found. Set `$env:RAVEN_PROFILE_ROOT to your /profile folder."
+        Read-Host "Press Enter to continue..."
+        return
+    }
+
+    $root = (Resolve-Path $root).Path
+
+    # 2) Load modules in known-good order (silent by default)
+    $files = @(
+        "config.ps1",
+        "utils.ps1",
+        "update.ps1",
+        "completions.ps1",
+        "appearance.ps1",
+        "features.ps1",
+        "fx.ps1",
+        "inline.ps1",
+        "shadows.ps1",
+        "raven.ps1",
+        "dashboard.ps1",
+        "menu.ps1",
+        "help.ps1",
+        "init.ps1"
+    )
+
+    $loaded   = New-Object System.Collections.Generic.List[string]
+    $missing  = New-Object System.Collections.Generic.List[string]
+    $failed   = New-Object System.Collections.Generic.List[string]
+
+    foreach ($f in $files) {
+        $p = Join-Path $root $f
+        if (-not (Test-Path $p)) {
+            $missing.Add($f) | Out-Null
+            continue
+        }
+
+        try {
+            . $p
+            $loaded.Add($f) | Out-Null
+        } catch {
+            $failed.Add("{0} -> {1}" -f $f, $_.Exception.Message) | Out-Null
+        }
+    }
+
+    # 3) Ensure key functions exist (and dot-source targeted files if needed)
+    $mustHave = @(
+        "profile-menu",
+        "Git-Sync",
+        "Show-NeonFXMenu",
+        "raven",
+        "Raven-Dashboard"
+    )
+
+    $stillMissing = @()
+    foreach ($name in $mustHave) {
+        if (-not (Get-Command $name -ErrorAction SilentlyContinue)) {
+            $stillMissing += $name
+        }
+    }
+
+    # 4) Post-init visuals if available (quiet)
+    if (Get-Command Invoke-Profile-PostInit -ErrorAction SilentlyContinue) {
+        try { Invoke-Profile-PostInit } catch {}
+    }
+
+    # 5) Report
+    Write-Host ""
+    Write-Host "🦇 Raven Self-Repair complete." -ForegroundColor DarkMagenta
+    Write-Host "Root: $root" -ForegroundColor DarkGray
+    Write-Host ("Loaded:  {0}" -f $loaded.Count) -ForegroundColor Green
+
+    if ($missing.Count -gt 0) {
+        Write-Host ("Missing files: {0}" -f $missing.Count) -ForegroundColor Yellow
+        if ($VerboseReport) { $missing | ForEach-Object { Write-Host "  - $_" -ForegroundColor DarkYellow } }
+    }
+
+    if ($failed.Count -gt 0) {
+        Write-Host ("Failed: {0}" -f $failed.Count) -ForegroundColor Red
+        $failed | ForEach-Object { Write-Host "  - $_" -ForegroundColor Red }
+    }
+
+    if ($stillMissing.Count -gt 0) {
+        Write-Host "Still missing commands:" -ForegroundColor Yellow
+        $stillMissing | ForEach-Object { Write-Host "  - $_" -ForegroundColor DarkYellow }
+        Write-Host "Tip: run:  Invoke-RavenSelfRepair -VerboseReport" -ForegroundColor DarkGray
+    } else {
+        Write-Host "All key commands are present. ✅" -ForegroundColor Cyan
+    }
+
+    Read-Host "Press Enter to continue..."
+}
 
 function global:profile-menu {
 
@@ -2067,11 +2191,11 @@ function global:profile-menu {
         Write-Host "$NeonCyan 6$NeonReset • GitHub Sync"
         Write-Host "$NeonCyan 7$NeonReset • Cleanup Tools"
         Write-Host "$NeonCyan 8$NeonReset • Fun FX"
-        Write-Host "$NeonCyan 9$NeonReset • Exit"
-        Write-Host ""
-		Write-Host "$NeonCyan 10$NeonReset • Neon FX"
-
-        $choice = Read-Host "Choose an option"
+        Write-Host "$NeonCyan 9$NeonReset • Neon FX"
+		Write-Host "$NeonCyan 10$NeonReset • Self-Repair (Reload Modules)"
+        Write-Host "$NeonCyan 11$NeonReset • Exit"
+		
+		$choice = Read-Host "Choose an option"
 
         switch ($choice) {
 
@@ -2083,11 +2207,12 @@ function global:profile-menu {
             "6" { Git-Sync }
             "7" { Show-CleanupMenu }
             "8" { Show-FunMenu }
-			"10" { Show-NeonFXMenu }
-			"9"  { $ExitMenu = $true; break }
+			"9"  { Show-NeonFXMenu }
+			"10" { Invoke-RavenSelfRepair }
+			"11" { $ExitMenu = $true; break }
 
             # FIXED EXIT
-            "10" { 
+            "11" { 
                 $ExitMenu = $true
             }
 
@@ -2563,16 +2688,20 @@ function Show-Help {
 # ------------------------------
 # BEGIN: init.ps1
 # ------------------------------
-Write-Host "Loading PowerShell Profile..." -ForegroundColor Yellow -BackgroundColor DarkMagenta
-
-# Admin check
-$global:IsAdmin = ([Security.Principal.WindowsPrincipal] `
+# Admin check (fixed)
+$global:IsAdmin = (New-Object Security.Principal.WindowsPrincipal(
     [Security.Principal.WindowsIdentity]::GetCurrent()
-).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+)).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 # Window title
 $adminSuffix = if ($global:IsAdmin) { " [ADMIN]" } else { "" }
 $Host.UI.RawUI.WindowTitle = "PowerShell $($PSVersionTable.PSVersion)$adminSuffix"
+
+try {
+  if ((Get-Location).Path -like "C:\Windows\System32*") {
+    Set-Location $HOME
+  }
+} catch {}
 
 # Editor detection (only runs once)
 if (-not $global:PSProfileConfig.Editor) {
