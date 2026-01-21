@@ -1,7 +1,9 @@
 <#
-  Raven Universal Loader (Windows + macOS)
+  Raven Universal Loader v2 (Windows + macOS)
   - Uses $env:RAVEN_PROFILE_ROOT if set
-  - Else auto-detects under common GitHub locations
+  - Else auto-detects common GitHub locations
+  - Option 2 boot (banner + info box) once per session
+  - Prints REAL error if raven.ps1 fails (instead of silent skipping)
 #>
 
 $ErrorActionPreference = "SilentlyContinue"
@@ -12,20 +14,16 @@ function Resolve-RavenProfileRoot {
     }
 
     $candidates = @(
-        (Join-Path $HOME "Documents/GitHub/powershell-profile/profile"),
-        (Join-Path $HOME "Documents/Github/powershell-profile/profile"),
         (Join-Path $HOME "Documents/GitHub/powershell-profile"),
         (Join-Path $HOME "Documents/Github/powershell-profile"),
-        (Join-Path $HOME "GitHub/powershell-profile/profile"),
-        (Join-Path $HOME "Github/powershell-profile/profile"),
         (Join-Path $HOME "GitHub/powershell-profile"),
         (Join-Path $HOME "Github/powershell-profile")
     )
 
-    foreach ($p in $candidates) {
-        if (-not (Test-Path $p)) { continue }
+    foreach ($repo in $candidates) {
+        if (-not (Test-Path $repo)) { continue }
 
-        $profileDir = if (Test-Path (Join-Path $p "config.ps1")) { $p } else { Join-Path $p "profile" }
+        $profileDir = Join-Path $repo "profile"
         if ((Test-Path (Join-Path $profileDir "config.ps1")) -and (Test-Path (Join-Path $profileDir "menu.ps1"))) {
             return (Resolve-Path $profileDir).Path
         }
@@ -34,13 +32,45 @@ function Resolve-RavenProfileRoot {
     return $null
 }
 
+function Show-RavenBootHeader {
+    $u = "$env:USERNAME@$env:COMPUTERNAME"
+    if (-not $env:USERNAME) { $u = "$env:USER@$env:HOSTNAME" }  # macOS friendliness
+    $v = $PSVersionTable.PSVersion.ToString()
+    $d = (Get-Date).ToString("yyyy-MM-dd HH:mm")
+    $c = (Get-Location).Path
+
+@"
+██████╗  █████╗ ██╗   ██╗███████╗███╗   ██╗
+██╔══██╗██╔══██╗██║   ██║██╔════╝████╗  ██║
+██████╔╝███████║██║   ██║█████╗  ██╔██╗ ██║
+██╔══██╗██╔══██║╚██╗ ██╔╝██╔══╝  ██║╚██╗██║
+██║  ██║██║  ██║ ╚████╔╝ ███████╗██║ ╚████║
+╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝
+      🦇  R A V E N   A W A K E N S  🦇
+
+╭───────────────────────────────────────────────╮
+│  💜 $u
+│  PS Version: $v
+│  Date: $d
+│  CWD: $c
+╰───────────────────────────────────────────────╯
+"@ | Write-Host -ForegroundColor DarkMagenta
+}
+
 $root = Resolve-RavenProfileRoot
 if (-not $root) {
-    Write-Warning "Raven root not found. Expected ~/Documents/GitHub/powershell-profile/profile or set RAVEN_PROFILE_ROOT."
+    Write-Warning "Raven root not found. Clone to ~/Documents/GitHub/powershell-profile or set RAVEN_PROFILE_ROOT."
     return
 }
 
+# Export for this session
 $env:RAVEN_PROFILE_ROOT = $root
+
+# Boot header once per session
+if (-not $script:RavenBootShown) {
+    $script:RavenBootShown = $true
+    Show-RavenBootHeader
+}
 
 # Load modules (order matters)
 $files = @(
@@ -52,7 +82,16 @@ $files = @(
 
 foreach ($f in $files) {
     $p = Join-Path $root $f
-    if (Test-Path $p) { try { . $p } catch {} }
+    if (-not (Test-Path $p)) { continue }
+
+    try {
+        . $p
+    } catch {
+        # Only scream when Raven breaks (so you don't get noise on harmless stuff)
+        if ($f -eq "raven.ps1") {
+            Write-Warning ("raven.ps1 failed to load: {0}" -f $_.Exception.Message)
+        }
+    }
 }
 
 # Avoid System32 start (Windows elevated)
