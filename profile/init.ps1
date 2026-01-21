@@ -90,4 +90,5 @@ function prompt {
     Invoke-Profile-PostInit
     $cwd = (Get-Location).Path
     if ($global:IsAdmin) { "[$cwd] # " } else { "[$cwd] $ " }
+	
 }

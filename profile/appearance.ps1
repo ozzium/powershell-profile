@@ -48,22 +48,17 @@ function Get-Theme {
         return
     }
 
-    $themeUrl = 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/cobalt2.omp.json'
-    Write-Host "Using theme: cobalt2 (oh-my-posh)" -ForegroundColor Cyan
+    $themeName = if ($global:RavenTheme) { $global:RavenTheme } else { "cobalt2" }
+    $themeUrl  = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/$themeName.omp.json"
+
     try {
         oh-my-posh init pwsh --config $themeUrl | Invoke-Expression
+        Write-Host ("Using theme: {0} (oh-my-posh)" -f $themeName) -ForegroundColor Cyan
     } catch {
-        Write-Warning "oh-my-posh init failed: $_"
+        Write-Warning ("oh-my-posh init failed: {0}" -f $_.Exception.Message)
     }
 }
 
-function Switch-Theme {
-    param([string]$Name = 'cobalt2')
-
-    if (-not (Get-Command 'oh-my-posh' -ErrorAction SilentlyContinue)) {
-        Write-Warning "oh-my-posh not installed."
-        return
-    }
 
     $themes = @{
         "cobalt2"   = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/cobalt2.omp.json"

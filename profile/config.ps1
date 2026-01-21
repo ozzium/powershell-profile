@@ -10,3 +10,5 @@ if (-not $global:PSProfileConfig) {
     }
 }
 
+# Theme preference (oh-my-posh theme name without .omp.json)
+if (-not $global:RavenTheme) { $global:RavenTheme = "cobalt2" }

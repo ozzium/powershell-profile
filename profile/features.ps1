@@ -78,6 +78,29 @@ function Set-ProfilePromptMode {
         Write-Host "Normal mode: full themed prompt." -ForegroundColor Yellow
     }
 }
+function Switch-Theme {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Name
+    )
+
+    if (-not (Get-Command -Name 'oh-my-posh' -ErrorAction SilentlyContinue)) {
+        Write-Warning "oh-my-posh is not installed. Install it first to use theme switching."
+        return
+    }
+
+    # "default" should mean: your preferred baseline
+    if ($Name -eq "default") { $Name = "cobalt2" }
+
+    $url = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/$Name.omp.json"
+
+    try {
+        oh-my-posh init pwsh --config $url | Invoke-Expression
+        Write-Host ("Switched theme to {0}." -f $Name) -ForegroundColor Green
+    } catch {
+        Write-Warning ("Failed to apply theme: {0}" -f $_.Exception.Message)
+    }
+}
 
 function Show-ThemeMenu {
     if (-not (Get-Command -Name 'oh-my-posh' -ErrorAction SilentlyContinue)) {
@@ -101,10 +124,11 @@ function Show-ThemeMenu {
     Clear-Host
     Write-Host "THEME ENGINE" -ForegroundColor Magenta
     Write-Host "----------------------------------------" -ForegroundColor DarkGray
-    Write-Host "Available themes:" -ForegroundColor Cyan
+
     for ($i = 0; $i -lt $themes.Count; $i++) {
-        Write-Host (" [{0}] {1}" -f ($i+1), $themes[$i].Name) -ForegroundColor Yellow
+        Write-Host (" [{0}] {1}" -f ($i + 1), $themes[$i].Name) -ForegroundColor Yellow
     }
+
     Write-Host ""
     $choice = Read-Host "Choose a theme number (Enter to cancel)"
     if (-not $choice) { return }
@@ -126,6 +150,9 @@ function Show-ThemeMenu {
     $themeId = $themes[$idx].Id
     $url = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/$themeId.omp.json"
 
+    # Save preference in-session (so other scripts can reuse it)
+    $global:RavenTheme = $themeId
+
     try {
         oh-my-posh init pwsh --config $url | Invoke-Expression
         Write-Host ("Switched theme to {0}." -f $themes[$idx].Name) -ForegroundColor Green
@@ -135,6 +162,7 @@ function Show-ThemeMenu {
 
     Read-Host "Press Enter to continue..."
 }
+
 
 # =========================
 # B. Backups & Updates
