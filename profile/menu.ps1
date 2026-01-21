@@ -14,20 +14,17 @@ $NeonMag   = "`e[95m"
 $NeonPink  = "`e[91m"
 $NeonReset = "`e[0m"
 
-function Show-NeonHeader {
+function Show-RavenMenuHeader {
     Clear-Host
-    Write-Host ""
-    Write-Host "$NeonCyan██████╗  ██████╗ ███████╗$NeonReset"
-    Write-Host "$NeonPink██╔══██╗██╔═══██╗██╔════╝$NeonReset"
-    Write-Host "$NeonMag██████╔╝██║   ██║█████╗  $NeonReset"
-    Write-Host "$NeonCyan██╔══██╗██║   ██║██╔══╝  $NeonReset"
-    Write-Host "$NeonPink██║  ██║╚██████╔╝███████╗$NeonReset"
-    Write-Host "$NeonMag╚═╝  ╚═╝ ╚═════╝ ╚══════╝$NeonReset"
-    Write-Host ""
-    Write-Host "$NeonPink        [ O Z   S Y S T E M ]$NeonReset"
-    Write-Host "---------------------------------------------------"
+    Write-Host "╭───────────────────────────────────────────────╮" -ForegroundColor DarkMagenta
+    Write-Host "│  🦇 R A V E N   C O N S O L E                 │" -ForegroundColor DarkMagenta
+    Write-Host "│  Profile Menu                                 │" -ForegroundColor DarkMagenta
+    Write-Host ("│  {0}@{1}  |  PS {2}" -f $env:USERNAME, $env:COMPUTERNAME, $PSVersionTable.PSVersion) -ForegroundColor DarkMagenta
+    Write-Host ("│  CWD: {0}" -f (Get-Location).Path) -ForegroundColor DarkMagenta
+    Write-Host "╰───────────────────────────────────────────────╯" -ForegroundColor DarkMagenta
     Write-Host ""
 }
+
 function Invoke-RavenSelfRepair {
     [CmdletBinding()]
     param(
@@ -148,7 +145,7 @@ function global:profile-menu {
 
     while (-not $ExitMenu) {
 
-        Show-NeonHeader
+        Show-RavenMenuHeader
 
         Write-Host "$NeonCyan 1$NeonReset • Switch Theme"
         Write-Host "$NeonCyan 2$NeonReset • Toggle Fast Mode"
@@ -197,22 +194,6 @@ function global:profile-menu {
 
 # =============== SUBMENUS =======================================================
 
-function Show-ThemeMenu {
-    Clear-Host
-    Write-Host "$NeonMagTHEME ENGINE$NeonReset"
-    Write-Host "----------------------------------------"
-    Write-Host "1) cobalt2"
-    Write-Host "2) default"
-    Write-Host ""
-    $c = Read-Host "Choose theme"
-
-    switch ($c) {
-        "1" { Switch-Theme cobalt2 }
-        "2" { Switch-Theme default }
-        default { Write-Host "Unknown theme." -ForegroundColor Red }
-    }
-}
-
 function Toggle-FastMode {
     if (-not $global:FastMode) {
         $global:FastMode = $true
@@ -235,7 +216,7 @@ function Profile-Update {
 }
 
 function Edit-ProfileFiles {
-    Show-NeonHeader
+    Show-RavenMenuHeader
     Write-Host "Files:"
     $files = Get-ChildItem $ProfileRoot -Filter *.ps1
     $i = 1
@@ -329,33 +310,32 @@ function Show-CleanupMenu {
 }
 
 function global:Show-FunMenu {
-    Clear-Host
     $esc = [char]27
+    $ExitFun = $false
 
-    while ($true) {
+    while (-not $ExitFun) {
         Clear-Host
-        Write-Host "$NeonPinkFUN ZONE$NeonReset"
+        Write-Host "$NeonPink FUN ZONE $NeonReset"
         Write-Host "------------------------"
-        Write-Host " 1) Matrix Rain"
-        Write-Host " 2) Neon Wave"
-        Write-Host " 3) Ripple Wave"
-        Write-Host " 4) Typing Boot Animation"
-        Write-Host " 5) Cyber Cursor Demo"
-        Write-Host " 6) Cyberpunk Prompt"
-        Write-Host " 7) Reset Prompt"
-        Write-Host " 8) Neon Border (Gradient)"
-		Write-Host "$NeonCyan 9$NeonReset • Neon FX"
-        Write-Host " 9) Task App"
-        Write-Host "10) Git App"
-        Write-Host "11) File App"
-        Write-Host "12) Back"
+        Write-Host "  1) Matrix Rain"
+        Write-Host "  2) Neon Wave"
+        Write-Host "  3) Ripple Wave"
+        Write-Host "  4) Typing Boot Animation"
+        Write-Host "  5) Cyber Cursor Demo"
+        Write-Host "  6) Cyberpunk Prompt"
+        Write-Host "  7) Reset Prompt"
+        Write-Host "  8) Neon Border (Gradient)"
+        Write-Host "$NeonCyan  9$NeonReset • Neon FX (Full Menu)"
+        Write-Host " 10) Process Panel (Kill/Refresh)"
+        Write-Host " 11) Git App (only inside a repo)"
+        Write-Host " 12) File App"
+        Write-Host " 13) Back"
         Write-Host ""
 
         $c = Read-Host "Choose"
 
         switch ($c) {
 
-            # 1) MATRIX RAIN
             "1" {
                 Clear-Host
                 $chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray()
@@ -371,7 +351,6 @@ function global:Show-FunMenu {
                 Read-Host "Press Enter to return..."
             }
 
-            # 2) NEON WAVE
             "2" {
                 Clear-Host
                 $colors = @("$esc[95m", "$esc[96m", "$esc[94m", "$esc[91m")
@@ -387,7 +366,6 @@ function global:Show-FunMenu {
                 Read-Host "Press Enter to return..."
             }
 
-            # 3) RIPPLE WAVE
             "3" {
                 Clear-Host
                 $radius = 15
@@ -402,12 +380,10 @@ function global:Show-FunMenu {
                 Read-Host "Press Enter to return..."
             }
 
-            # 4) TYPING BOOT ANIMATION
             "4" {
                 Clear-Host
                 $text = "BOOTING OZ NEON SYSTEM..."
-                $chars = $text.ToCharArray()
-                foreach ($ch in $chars) {
+                foreach ($ch in $text.ToCharArray()) {
                     Write-Host -NoNewline "$esc[95m$ch$esc[0m"
                     Start-Sleep -Milliseconds 40
                 }
@@ -415,7 +391,6 @@ function global:Show-FunMenu {
                 Read-Host "Press Enter to return..."
             }
 
-            # 5) CYBER CURSOR DEMO
             "5" {
                 Clear-Host
                 $frames = @("|","/","-","\")
@@ -431,7 +406,6 @@ function global:Show-FunMenu {
                 Read-Host "Press Enter to return..."
             }
 
-            # 6) CYBERPUNK PROMPT
             "6" {
                 function global:prompt {
                     $esc   = [char]27
@@ -450,7 +424,6 @@ function global:Show-FunMenu {
                 Read-Host "Press Enter to return..."
             }
 
-            # 7) RESET PROMPT
             "7" {
                 function global:prompt {
                     Invoke-Profile-PostInit
@@ -461,7 +434,6 @@ function global:Show-FunMenu {
                 Read-Host "Press Enter to return..."
             }
 
-            # 8) NEON BORDER (GRADIENT)
             "8" {
                 Clear-Host
                 $text = "OZ NEON SYSTEM"
@@ -482,16 +454,23 @@ function global:Show-FunMenu {
                 Write-Host ""
                 Read-Host "Press Enter to return..."
             }
-			
 
-            # 9) TASK APP
             "9" {
+                if (Get-Command Show-NeonFXMenu -ErrorAction SilentlyContinue) {
+                    Show-NeonFXMenu
+                } else {
+                    Write-Warning "Show-NeonFXMenu not found. Make sure fx.ps1 is loaded."
+                    Read-Host "Press Enter to return..."
+                }
+            }
+
+            "10" {
                 while ($true) {
                     Clear-Host
-                    Write-Host "OZ TASK APP" -ForegroundColor Cyan
+                    Write-Host "OZ PROCESS PANEL" -ForegroundColor Cyan
                     Write-Host "------------------------------------"
-                    Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 `
-                        | Select-Object Id, CPU, WorkingSet, ProcessName
+                    Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 |
+                        Select-Object Id, CPU, WorkingSet, ProcessName
                     Write-Host ""
                     Write-Host "[K]ill process  [R]efresh  [Q]uit" -ForegroundColor Yellow
                     $choice = Read-Host "Choice"
@@ -500,10 +479,10 @@ function global:Show-FunMenu {
                             $pid = Read-Host "Enter PID to kill"
                             if ($pid) {
                                 try {
-                                    Stop-Process -Id [int]$pid -Force
-                                    Write-Host "Killed PID $pid" -ForegroundColor Green
+                                    Stop-Process -Id ([int]$pid) -Force
+                                    Write-Host ("Killed PID {0}" -f $pid) -ForegroundColor Green
                                 } catch {
-                                    Write-Warning ("Failed to kill PID {0}: {1}" -f $pid, $_)
+                                    Write-Warning ("Failed to kill PID {0}: {1}" -f $pid, $_.Exception.Message)
                                 }
                                 Start-Sleep -Seconds 1
                             }
@@ -515,8 +494,7 @@ function global:Show-FunMenu {
                 }
             }
 
-            # 10) GIT APP
-            "10" {
+            "11" {
                 if (-not (Test-Path ".git")) {
                     Write-Warning "No .git folder here. Not a git repo."
                     Read-Host "Press Enter to return..."
@@ -544,8 +522,7 @@ function global:Show-FunMenu {
                 }
             }
 
-            # 11) FILE APP
-            "11" {
+            "12" {
                 while ($true) {
                     Clear-Host
                     $cwd = Get-Location
@@ -579,14 +556,9 @@ function global:Show-FunMenu {
                 }
             }
 
-            # 12) BACK
-            "12" {
-                return
-            }
+            "13" { $ExitFun = $true }
 
-            default {
-                # ignore
-            }
+            default { }
         }
     }
 }

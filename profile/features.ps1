@@ -82,6 +82,7 @@ function Set-ProfilePromptMode {
 function Show-ThemeMenu {
     if (-not (Get-Command -Name 'oh-my-posh' -ErrorAction SilentlyContinue)) {
         Write-Warning "oh-my-posh is not installed. Install it first to use theme switching."
+        Read-Host "Press Enter to return..."
         return
     }
 
@@ -91,37 +92,48 @@ function Show-ThemeMenu {
         @{ Name = 'atomic';         Id = 'atomic' },
         @{ Name = 'jandedobbeleer'; Id = 'jandedobbeleer' },
         @{ Name = 'agnoster';       Id = 'agnoster' },
-        @{ Name = 'dracula';        Id = 'dracula' }
+        @{ Name = 'dracula';        Id = 'dracula' },
+        @{ Name = 'tokyonight';     Id = 'tokyonight_storm' },
+        @{ Name = 'night-owl';      Id = 'night-owl' },
+        @{ Name = 'powerline';      Id = 'powerline' }
     )
 
-    Write-Host ""
+    Clear-Host
+    Write-Host "THEME ENGINE" -ForegroundColor Magenta
+    Write-Host "----------------------------------------" -ForegroundColor DarkGray
     Write-Host "Available themes:" -ForegroundColor Cyan
     for ($i = 0; $i -lt $themes.Count; $i++) {
         Write-Host (" [{0}] {1}" -f ($i+1), $themes[$i].Name) -ForegroundColor Yellow
     }
-    $choice = Read-Host "Choose a theme number (or press Enter to cancel)"
+    Write-Host ""
+    $choice = Read-Host "Choose a theme number (Enter to cancel)"
     if (-not $choice) { return }
 
     [int]$index = 0
     if (-not [int]::TryParse($choice, [ref]$index)) {
         Write-Warning "Invalid choice."
+        Read-Host "Press Enter to return..."
         return
     }
 
     $idx = $index - 1
     if ($idx -lt 0 -or $idx -ge $themes.Count) {
         Write-Warning "Choice out of range."
+        Read-Host "Press Enter to return..."
         return
     }
 
     $themeId = $themes[$idx].Id
     $url = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/$themeId.omp.json"
+
     try {
         oh-my-posh init pwsh --config $url | Invoke-Expression
-        Write-Host "Switched theme to $($themes[$idx].Name)." -ForegroundColor Green
+        Write-Host ("Switched theme to {0}." -f $themes[$idx].Name) -ForegroundColor Green
     } catch {
-        Write-Warning "Failed to apply theme: ${_}"
+        Write-Warning ("Failed to apply theme: {0}" -f $_.Exception.Message)
     }
+
+    Read-Host "Press Enter to continue..."
 }
 
 # =========================

@@ -60,8 +60,33 @@ function Get-Theme {
 function Switch-Theme {
     param([string]$Name = 'cobalt2')
 
-    switch ($Name.ToLower()) {
-        'cobalt2' { Get-Theme }
-        default   { Write-Warning "Unknown theme: $Name" }
+    if (-not (Get-Command 'oh-my-posh' -ErrorAction SilentlyContinue)) {
+        Write-Warning "oh-my-posh not installed."
+        return
+    }
+
+    $themes = @{
+        "cobalt2"   = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/cobalt2.omp.json"
+        "jandedo"   = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/jandedobbeleer.omp.json"
+        "paradox"   = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/paradox.omp.json"
+        "tokyo"     = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/tokyonight_storm.omp.json"
+        "nightowl"  = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/night-owl.omp.json"
+        "agnoster"  = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/agnoster.omp.json"
+        "powerline" = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/powerline.omp.json"
+    }
+
+    $key = $Name.ToLower()
+    if (-not $themes.ContainsKey($key)) {
+        Write-Warning "Unknown theme '$Name'. Available: $($themes.Keys -join ', ')"
+        return
+    }
+
+    $url = $themes[$key]
+    try {
+        oh-my-posh init pwsh --config $url | Invoke-Expression
+        Write-Host ("Theme set: {0}" -f $key) -ForegroundColor Cyan
+    } catch {
+        Write-Warning ("Theme init failed: {0}" -f $_.Exception.Message)
     }
 }
+
