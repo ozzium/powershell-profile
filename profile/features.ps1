@@ -133,14 +133,18 @@ function Show-ThemeMenu {
         @{ Name = 'night-owl';      Id = 'night-owl' },
         @{ Name = 'powerline';      Id = 'powerline' }
     )
-
+$currentTheme = if ($global:RavenTheme) { $global:RavenTheme } else { "cobalt2" }
     Clear-Host
     Write-Host "THEME ENGINE" -ForegroundColor Magenta
     Write-Host "----------------------------------------" -ForegroundColor DarkGray
 
-    for ($i = 0; $i -lt $themes.Count; $i++) {
-        Write-Host (" [{0}] {1}" -f ($i + 1), $themes[$i].Name) -ForegroundColor Yellow
-    }
+   for ($i = 0; $i -lt $themes.Count; $i++) {
+    $theme = $themes[$i]
+    $marker = if ($theme.Id -eq $currentTheme) { " ⭐ current" } else { "" }
+
+    Write-Host (" [{0}] {1}{2}" -f ($i + 1), $theme.Name, $marker) -ForegroundColor Yellow
+}
+
 
     Write-Host ""
     $choice = Read-Host "Choose a theme number (Enter to cancel)"
@@ -163,7 +167,17 @@ function Show-ThemeMenu {
     $themeId = $themes[$idx].Id
     $url = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/$themeId.omp.json"
 
-    # Save preference in-session (so other scripts can reuse it)
+    # Save preference (persist across sessions)
+$global:RavenTheme = $themeId
+
+$cfg = Get-RavenConfig
+$cfg["Theme"] = $themeId
+$ok = Save-RavenConfig $cfg
+
+if (-not $ok) {
+    Write-Warning "Could not save theme preference."
+}
+	# Save preference in-session (so other scripts can reuse it)
     $global:RavenTheme = $themeId
 
     try {

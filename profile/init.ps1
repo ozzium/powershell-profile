@@ -42,7 +42,11 @@ function Invoke-Profile-PostInit {
     $script:ProfilePostInitRegistered = $true
 
     Start-Sleep -Milliseconds 50
-
+# Apply persisted theme once
+if (-not $script:RavenThemeApplied) {
+    $script:RavenThemeApplied = $true
+    if (Get-Command Get-Theme -ErrorAction SilentlyContinue) { Get-Theme }
+}
     # Terminal-Icons (optional)
     if (Get-Module -ListAvailable -Name Terminal-Icons) {
         Import-Module Terminal-Icons -ErrorAction SilentlyContinue

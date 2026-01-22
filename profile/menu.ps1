@@ -20,7 +20,8 @@ function Show-RavenMenuHeader {
     Write-Host "│  🦇 R A V E N   C O N S O L E                 │" -ForegroundColor DarkMagenta
     Write-Host "│  Profile Menu                                 │" -ForegroundColor DarkMagenta
     Write-Host ("│  {0}@{1}  |  PS {2}" -f $env:USERNAME, $env:COMPUTERNAME, $PSVersionTable.PSVersion) -ForegroundColor DarkMagenta
-    Write-Host ("│  CWD: {0}" -f (Get-Location).Path) -ForegroundColor DarkMagenta
+    Write-Host ("│  Theme: {0}" -f ($global:RavenTheme ?? "cobalt2")) -ForegroundColor DarkMagenta
+	Write-Host ("│  CWD: {0}" -f (Get-Location).Path) -ForegroundColor DarkMagenta
     Write-Host "╰───────────────────────────────────────────────╯" -ForegroundColor DarkMagenta
     Write-Host ""
 }
@@ -156,8 +157,9 @@ function global:profile-menu {
         Write-Host "$NeonCyan 7$NeonReset • Cleanup Tools"
         Write-Host "$NeonCyan 8$NeonReset • Fun FX"
         Write-Host "$NeonCyan 9$NeonReset • Neon FX"
-		Write-Host "$NeonCyan 10$NeonReset • Self-Repair (Reload Modules)"
-        Write-Host "$NeonCyan 11$NeonReset • Exit"
+		Write-Host "$NeonCyan 10$NeonReset • Toggle Fog Prompt"
+		Write-Host "$NeonCyan 11$NeonReset • Self-Repair (Reload Modules)"
+        Write-Host "$NeonCyan 12$NeonReset • Exit"
 		
 		$choice = Read-Host "Choose an option"
 
@@ -172,8 +174,9 @@ function global:profile-menu {
             "7" { Show-CleanupMenu }
             "8" { Show-FunMenu }
 			"9"  { Show-NeonFXMenu }
-			"10" { Invoke-RavenSelfRepair }
-			"11" { $ExitMenu = $true; break }
+			"10" { Toggle-FogPrompt }
+			"11" { Invoke-RavenSelfRepair }
+			"12" { $ExitMenu = $true; break }
 
             # FIXED EXIT
             "11" { 
@@ -422,4 +425,8 @@ while (-not $ExitFun) {
 }
 }
 
+# Sanity check – will error loudly if braces are unbalanced
+$null = {
+    1
+}
 
