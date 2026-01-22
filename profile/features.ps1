@@ -24,6 +24,19 @@ Set-PSProfileDefault -Name 'BackupRoot'        -Value (Join-Path $HOME 'Document
 Set-PSProfileDefault -Name 'AutoUpdateEnabled' -Value $true
 Set-PSProfileDefault -Name 'BookmarksPath'     -Value (Join-Path $HOME 'Documents\PowerShell\ProfileBookmarks.xml')
 
+function Get-RavenRepoRoot {
+    # env points to ...\powershell-profile\profile
+    if (-not $env:RAVEN_PROFILE_ROOT) { return $null }
+
+    $profileRoot = (Resolve-Path $env:RAVEN_PROFILE_ROOT -ErrorAction SilentlyContinue)?.Path
+    if (-not $profileRoot) { return $null }
+
+    $repoRoot = (Resolve-Path (Join-Path $profileRoot "..") -ErrorAction SilentlyContinue)?.Path
+    if ($repoRoot -and (Test-Path (Join-Path $repoRoot ".git"))) { return $repoRoot }
+
+    return $null
+}
+
 # Helper: find profile root (same logic as loader, but safe)
 function Get-ProfileRoot {
     $candidates = @(

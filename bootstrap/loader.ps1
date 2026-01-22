@@ -74,10 +74,32 @@ if (-not $script:RavenBootShown) {
 
 # Load modules (order matters)
 $files = @(
-  "config.ps1","utils.ps1","update.ps1","completions.ps1",
-  "appearance.ps1","features.ps1","fx.ps1","inline.ps1",
-  "shadows.ps1","raven.ps1","dashboard.ps1","menu.ps1",
-  "help.ps1","init.ps1"
+  "config.ps1",
+
+  # Appearance first: defines Get-Theme / PSReadLine / prompt helpers
+  "appearance.ps1",
+
+  # Core utilities & update logic
+  "utils.ps1",
+  "update.ps1",
+  "completions.ps1",
+
+  # Features and FX next (menus call these)
+  "features.ps1",
+  "fx.ps1",
+  "inline.ps1",
+  "shadows.ps1",
+
+  # Raven core + apps
+  "raven.ps1",
+  "dashboard.ps1",
+
+  # Menu UI should come late (depends on features/fx)
+  "menu.ps1",
+  "help.ps1",
+
+  # Init last (post-init hooks, admin checks, editor, etc.)
+  "init.ps1"
 )
 
 foreach ($f in $files) {
