@@ -735,6 +735,12 @@ function global:Set-DefaultPrompt {
         if ($global:IsAdmin) { "[$cwd] # " } else { "[$cwd] $ " }
     }
     Write-Host "Default prompt restored." -ForegroundColor Yellow
+	$fog = ""
+if ($global:RavenFogEnabled) {
+    $esc = [char]27
+    $fog = "$esc[38;5;245m$(Get-RavenFogGlyph)$esc[0m "
+}
+return "$fog$existingPromptText"
 }
 
 # =========================

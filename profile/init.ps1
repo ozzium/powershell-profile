@@ -96,3 +96,38 @@ function prompt {
     if ($global:IsAdmin) { "[$cwd] # " } else { "[$cwd] $ " }
 	
 }
+if (-not $script:RavenFogPromptWrapped) {
+    $script:RavenFogPromptWrapped = $true
+
+    $orig = (Get-Command prompt -ErrorAction SilentlyContinue).ScriptBlock
+
+    function global:prompt {
+        $base = & $orig
+
+        if ($global:RavenFogEnabled) {
+            $esc = [char]27
+            $fog = "$esc[38;5;245m$(Get-RavenFogGlyph)$esc[0m "
+            return "$fog$base"
+        }
+
+        return $base
+    }
+}
+# Inject fog into the prompt (works with oh-my-posh too)
+if (-not $script:RavenFogPromptWrapped) {
+    $script:RavenFogPromptWrapped = $true
+
+    $orig = (Get-Command prompt -ErrorAction SilentlyContinue).ScriptBlock
+
+    function global:prompt {
+        $base = & $orig
+
+        if ($global:RavenFogEnabled) {
+            $esc = [char]27
+            $fog = "$esc[38;5;245m$(Get-RavenFogGlyph)$esc[0m "
+            return "$fog$base"
+        }
+
+        return $base
+    }
+}

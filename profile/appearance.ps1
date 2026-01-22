@@ -241,6 +241,138 @@ function Start-RavenFog {
 
     Write-Host "🌫️ Fog drift started. (Run Stop-RavenFog to stop)" -ForegroundColor Magenta
 }
+# ===============================
+# Fog Drift (PSReadLine repaint)
+# ===============================
+
+if (-not $global:RavenFogEnabled) { $global:RavenFogEnabled = $false }
+
+$script:RavenFogFrames = @("·", "•", "∙", "○", "◌", "◍", "◎")
+$script:RavenFogWave = @(
+  "  ", "   ", "    ", "     ", "    ", "   ", "  ", " "
+)
+$script:RavenFogIndex = 0
+$script:RavenFogJobRunning = $false
+
+function Get-RavenFogGlyph {
+    $i = $script:RavenFogIndex
+    $script:RavenFogIndex++
+
+    $dot  = $script:RavenFogFrames[$i % $script:RavenFogFrames.Count]
+    $pad  = $script:RavenFogWave[$i % $script:RavenFogWave.Count]
+
+    return "$pad$dot$pad"
+}
+
+function Start-RavenFog {
+    if ($script:RavenFogJobRunning) { return }
+    $global:RavenFogEnabled = $true
+    $script:RavenFogJobRunning = $true
+
+    Write-Host "🌫️ Fog drift started (PSReadLine repaint)." -ForegroundColor Magenta
+
+    # Background repaint loop using a job in the same process (safe-ish)
+    Start-ThreadJob -Name "RavenFog" -ScriptBlock {
+        while ($global:RavenFogEnabled) {
+            try {
+                # repaint current input line (PSReadLine)
+                [Microsoft.PowerShell.PSConsoleReadLine]::InvokePrompt()
+            } catch {}
+            Start-Sleep -Milliseconds 250
+        }
+    } | Out-Null
+}
+
+function Stop-RavenFog {
+    $global:RavenFogEnabled = $false
+    $script:RavenFogJobRunning = $false
+
+    # Stop the thread job if present
+    try {
+        Get-Job -Name "RavenFog" -ErrorAction SilentlyContinue | Remove-Job -Force -ErrorAction SilentlyContinue
+    } catch {}
+
+    Write-Host "🌫️ Fog drift stopped." -ForegroundColor DarkGray
+}
+
+function Toggle-FogPrompt {
+    if ($global:RavenFogEnabled) { Stop-RavenFog } else { Start-RavenFog }
+}
+
+function Toggle-FogPrompt {
+    if ($global:RavenFogEnabled) { Stop-RavenFog } else { Start-RavenFog }
+}
+# ===============================
+# Fog Drift (Idle Animation)
+# Uses PSReadLine ForceRepaint (no ANSI cursor ops needed)
+# ===============================
+
+if (-not $global:RavenFogEnabled) { $global:RavenFogEnabled = $false }
+
+$script:RavenFogTimer = $null
+$script:RavenFogIndex = 0
+$script:RavenFogFrames = @("·","•","∙","○","◌","◍","◎")
+$script:RavenFogPad = @(""," ","  ","   ","  "," ","")
+
+function Get-RavenFogGlyph {
+    $i = $script:RavenFogIndex
+    $script:RavenFogIndex++
+
+    $dot = $script:RavenFogFrames[$i % $script:RavenFogFrames.Count]
+    $pad = $script:RavenFogPad[$i % $script:RavenFogPad.Count]
+    return "$pad$dot$pad"
+}
+
+function Start-RavenFog {
+    if ($script:RavenFogTimer) { return }
+
+    # PSReadLine must be loaded
+    if (-not ([type]::GetType("Microsoft.PowerShell.PSConsoleReadLine", $false))) {
+        try { Import-Module PSReadLine -ErrorAction Stop } catch {
+            Write-Warning "PSReadLine not available in this host."
+            return
+        }
+    }
+
+    $global:RavenFogEnabled = $true
+
+    $timer = New-Object System.Timers.Timer
+    $timer.Interval = 250
+    $timer.AutoReset = $true
+
+    Register-ObjectEvent -InputObject $timer -EventName Elapsed -SourceIdentifier "RavenFogTick" -Action {
+        if (-not $global:RavenFogEnabled) { return }
+        try {
+            # bump the fog frame and repaint the line
+            $null = Get-RavenFogGlyph
+            [Microsoft.PowerShell.PSConsoleReadLine]::ForceRepaint()
+        } catch { }
+    } | Out-Null
+
+    $timer.Start()
+    $script:RavenFogTimer = $timer
+
+    Write-Host "🌫️ Fog drift started." -ForegroundColor Magenta
+}
+
+function Stop-RavenFog {
+    $global:RavenFogEnabled = $false
+
+    if ($script:RavenFogTimer) {
+        try {
+            $script:RavenFogTimer.Stop()
+            $script:RavenFogTimer.Dispose()
+        } catch {}
+        $script:RavenFogTimer = $null
+    }
+
+    try { Unregister-Event -SourceIdentifier "RavenFogTick" -ErrorAction SilentlyContinue } catch {}
+    try { Remove-Event -SourceIdentifier "RavenFogTick" -ErrorAction SilentlyContinue } catch {}
+
+    try { [Microsoft.PowerShell.PSConsoleReadLine]::ForceRepaint() } catch {}
+
+    Write-Host "🌫️ Fog drift stopped." -ForegroundColor DarkGray
+}
 
 function Toggle-FogPrompt {
     if ($global:RavenFogEnabled) { Stop-RavenFog } else { Start-RavenFog }
