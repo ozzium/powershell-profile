@@ -120,3 +120,19 @@ foreach ($f in $files) {
 try {
     if ((Get-Location).Path -like "C:\Windows\System32*") { Set-Location $HOME }
 } catch {}
+# Ensure fog wrapper is applied LAST (so later modules don't overwrite it)
+if (-not $script:RavenFogPromptWrapped -and (Get-Command Get-RavenFogGlyph -ErrorAction SilentlyContinue)) {
+    $script:RavenFogPromptWrapped = $true
+
+    $orig = (Get-Command prompt -ErrorAction SilentlyContinue).ScriptBlock
+
+    function global:prompt {
+        $base = & $orig
+        if ($global:RavenFogEnabled) {
+            $esc = [char]27
+            $fog = "$esc[38;5;245m$(Get-RavenFogGlyph)$esc[0m "
+            return "$fog$base"
+        }
+        return $base
+    }
+}
