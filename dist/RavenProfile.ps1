@@ -1,6 +1,6 @@
 <#
   RAVEN SINGLE-FILE BUILD
-  Generated: 2026-01-21 00:03:19
+  Generated: 2026-02-17 13:27:24
   Source: C:\Users\Ozzium\Documents\GitHub\powershell-profile\profile
 #>
 
@@ -19,7 +19,51 @@ if (-not $global:PSProfileConfig) {
         Debug          = $false     # set $true to skip update checks etc.
     }
 }
+# ===============================
+# Raven Theme Persistence
+# ===============================
 
+# Cross-platform config location (user-local; NOT in git)
+$global:RavenConfigPath = Join-Path $HOME ".raven-profile.json"
+
+function Get-RavenConfig {
+    if (-not (Test-Path $global:RavenConfigPath)) {
+        return @{}
+    }
+
+    try {
+        $raw = Get-Content -Path $global:RavenConfigPath -Raw
+        if (-not $raw.Trim()) { return @{} }
+        $obj = $raw | ConvertFrom-Json -ErrorAction Stop
+
+        # Convert PSObject -> Hashtable for easy indexing
+        $ht = @{}
+        foreach ($p in $obj.PSObject.Properties) { $ht[$p.Name] = $p.Value }
+        return $ht
+    } catch {
+        return @{}
+    }
+}
+
+function Save-RavenConfig([hashtable]$cfg) {
+    try {
+        $cfg | ConvertTo-Json -Depth 6 | Set-Content -Path $global:RavenConfigPath -Encoding UTF8
+        return $true
+    } catch {
+        return $false
+    }
+}
+
+# Load theme preference (default is cobalt2)
+$cfg = Get-RavenConfig
+if ($cfg.ContainsKey("Theme") -and $cfg.Theme) {
+    $global:RavenTheme = [string]$cfg.Theme
+} else {
+    $global:RavenTheme = "cobalt2"
+}
+
+# Theme preference (oh-my-posh theme name without .omp.json)
+if (-not $global:RavenTheme) { $global:RavenTheme = "cobalt2" }
 
 # ------------------------------
 # END:   config.ps1
@@ -114,7 +158,10 @@ function uptime {
         Write-Error "Failed to calculate uptime: $_"
     }
 }
-
+function global:reload-profile {
+    Write-Host "Reloading profile..." -ForegroundColor Cyan
+    . $PROFILE
+}
 # Git shortcuts
 function gs    { git status }
 function ga    { git add . }
@@ -167,6 +214,10 @@ function hb {
 # Reload profile quickly
 function Update-Profile {
     & $PROFILE
+}
+function global:reload-profile {
+    Write-Host "Reloading profile..." -ForegroundColor Cyan
+    . $PROFILE
 }
 
 # ------------------------------
@@ -381,22 +432,334 @@ function Get-Theme {
         return
     }
 
-    $themeUrl = 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/cobalt2.omp.json'
-    Write-Host "Using theme: cobalt2 (oh-my-posh)" -ForegroundColor Cyan
+    $themeName = if ($global:RavenTheme) { $global:RavenTheme } else { "cobalt2" }
+    $themeUrl  = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/$themeName.omp.json"
+
     try {
         oh-my-posh init pwsh --config $themeUrl | Invoke-Expression
+        Write-Host ("Using theme: {0} (oh-my-posh)" -f $themeName) -ForegroundColor Cyan
     } catch {
-        Write-Warning "oh-my-posh init failed: $_"
+        Write-Warning ("oh-my-posh init failed: {0}" -f $_.Exception.Message)
     }
 }
 
-function Switch-Theme {
-    param([string]$Name = 'cobalt2')
 
-    switch ($Name.ToLower()) {
-        'cobalt2' { Get-Theme }
-        default   { Write-Warning "Unknown theme: $Name" }
+    $themes = @{
+        "cobalt2"   = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/cobalt2.omp.json"
+        "jandedo"   = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/jandedobbeleer.omp.json"
+        "paradox"   = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/paradox.omp.json"
+        "tokyo"     = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/tokyonight_storm.omp.json"
+        "nightowl"  = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/night-owl.omp.json"
+        "agnoster"  = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/agnoster.omp.json"
+        "powerline" = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/powerline.omp.json"
     }
+
+    $key = $Name.ToLower()
+    if (-not $themes.ContainsKey($key)) {
+        Write-Warning "Unknown theme '$Name'. Available: $($themes.Keys -join ', ')"
+        return
+    }
+
+    $url = $themes[$key]
+    try {
+        oh-my-posh init pwsh --config $url | Invoke-Expression
+        Write-Host ("Theme set: {0}" -f $key) -ForegroundColor Cyan
+    } catch {
+        Write-Warning ("Theme init failed: {0}" -f $_.Exception.Message)
+    }
+}
+
+# ===============================
+# Fog / Drift Prompt (Optional)
+# ===============================
+
+# Global toggle
+if (-not $global:RavenFogEnabled) { $global:RavenFogEnabled = $false }
+
+# Internal fog state
+$script:RavenFogIndex = 0
+$script:RavenFogFrames = @(
+    "  .   ",
+    "   .  ",
+    "    . ",
+    "   .  ",
+    "  .   ",
+    " .    "
+)
+
+function Enable-FogPrompt {
+    $global:RavenFogEnabled = $true
+    Write-Host "🌫️ Fog prompt enabled." -ForegroundColor Magenta
+}
+
+function Disable-FogPrompt {
+    $global:RavenFogEnabled = $false
+    Write-Host "🌫️ Fog prompt disabled." -ForegroundColor DarkGray
+}
+
+function Toggle-FogPrompt {
+    if ($global:RavenFogEnabled) { Disable-FogPrompt } else { Enable-FogPrompt }
+}
+
+# A helper that returns a tiny drifting fog string
+function Get-RavenFog {
+    $frame = $script:RavenFogFrames[$script:RavenFogIndex % $script:RavenFogFrames.Count]
+    $script:RavenFogIndex++
+    return $frame
+}
+# Wrap existing prompt once (safe)
+if (-not $script:RavenPromptWrapped) {
+    $script:RavenPromptWrapped = $true
+
+    $origPrompt = (Get-Command prompt -ErrorAction SilentlyContinue).ScriptBlock
+
+    function global:prompt {
+        # keep your normal behavior
+        $base = & $origPrompt
+
+        # If oh-my-posh is active, it already renders prompt; base may be empty.
+        # We'll only add fog if enabled, and we won't spam if base is null.
+        if ($global:RavenFogEnabled) {
+            $esc = [char]27
+            $fog = Get-RavenFog
+
+            # subtle fog color (ANSI grey)
+            $fogPart = "$esc[38;5;245m$fog$esc[0m"
+
+            return "$base$fogPart "
+        }
+
+        return $base
+    }
+}
+# ===============================
+# Fog Drift (Idle Animation)
+# ===============================
+
+if (-not $global:RavenFogEnabled) { $global:RavenFogEnabled = $false }
+
+# Internal state
+$script:RavenFogTimer = $null
+$script:RavenFogFrames = @("·", "•", "∙", "○", "◌", "◍", "◎")
+$script:RavenFogWave = @(
+  "        ",
+  "   .    ",
+  "    .   ",
+  "     .  ",
+  "    .   ",
+  "   .    ",
+  "  .     ",
+  " .      ",
+  ".       ",
+  " .      ",
+  "  .     "
+)
+$script:RavenFogIndex = 0
+
+function Stop-RavenFog {
+    $global:RavenFogEnabled = $false
+
+    if ($script:RavenFogTimer) {
+        try {
+            $script:RavenFogTimer.Stop()
+            $script:RavenFogTimer.Dispose()
+        } catch {}
+        $script:RavenFogTimer = $null
+    }
+
+    # Clear the fog line (best-effort)
+    try {
+        $esc = [char]27
+        Write-Host "$esc[1A$esc[2K$esc[1B" -NoNewline
+    } catch {}
+
+    Write-Host "🌫️ Fog drift stopped." -ForegroundColor DarkGray
+}
+
+function Start-RavenFog {
+    # Avoid double-start
+    if ($script:RavenFogTimer) { return }
+
+    $global:RavenFogEnabled = $true
+
+    # Use a .NET timer (lightweight)
+    $timer = New-Object System.Timers.Timer
+    $timer.Interval = 220   # ms (low CPU)
+    $timer.AutoReset = $true
+
+    Register-ObjectEvent -InputObject $timer -EventName Elapsed -SourceIdentifier "RavenFogTick" -Action {
+        if (-not $global:RavenFogEnabled) { return }
+
+        try {
+            $esc = [char]27
+
+            $i = $script:RavenFogIndex
+            $script:RavenFogIndex++
+
+            $wave = $script:RavenFogWave[$i % $script:RavenFogWave.Count]
+            $dot  = $script:RavenFogFrames[$i % $script:RavenFogFrames.Count]
+
+            # Build a subtle fog ribbon (grey)
+            $fog = "$wave$dot$wave"
+
+            # Cursor-save, move up one line, clear it, print fog, restore cursor
+            # This prints ABOVE the current input line so it won't fight oh-my-posh.
+            $grey = "$esc[38;5;245m"
+            $reset = "$esc[0m"
+
+            # Save cursor position
+            [Console]::Write("$esc[s")
+            # Move up 1 line and clear that line
+            [Console]::Write("$esc[1A$esc[2K")
+            # Print fog line
+            [Console]::Write("$grey$fog$reset")
+            # Restore cursor
+            [Console]::Write("$esc[u")
+        } catch {
+            # If ANSI cursor ops not supported, silently ignore
+        }
+    } | Out-Null
+
+    $timer.Start()
+    $script:RavenFogTimer = $timer
+
+    Write-Host "🌫️ Fog drift started. (Run Stop-RavenFog to stop)" -ForegroundColor Magenta
+}
+# ===============================
+# Fog Drift (PSReadLine repaint)
+# ===============================
+
+if (-not $global:RavenFogEnabled) { $global:RavenFogEnabled = $false }
+
+$script:RavenFogFrames = @("·", "•", "∙", "○", "◌", "◍", "◎")
+$script:RavenFogWave = @(
+  "  ", "   ", "    ", "     ", "    ", "   ", "  ", " "
+)
+$script:RavenFogIndex = 0
+$script:RavenFogJobRunning = $false
+
+function Get-RavenFogGlyph {
+    $i = $script:RavenFogIndex
+    $script:RavenFogIndex++
+
+    $dot  = $script:RavenFogFrames[$i % $script:RavenFogFrames.Count]
+    $pad  = $script:RavenFogWave[$i % $script:RavenFogWave.Count]
+
+    return "$pad$dot$pad"
+}
+
+function Start-RavenFog {
+    if ($script:RavenFogJobRunning) { return }
+    $global:RavenFogEnabled = $true
+    $script:RavenFogJobRunning = $true
+
+    Write-Host "🌫️ Fog drift started (PSReadLine repaint)." -ForegroundColor Magenta
+
+    # Background repaint loop using a job in the same process (safe-ish)
+    Start-ThreadJob -Name "RavenFog" -ScriptBlock {
+        while ($global:RavenFogEnabled) {
+            try {
+                # repaint current input line (PSReadLine)
+                [Microsoft.PowerShell.PSConsoleReadLine]::InvokePrompt()
+            } catch {}
+            Start-Sleep -Milliseconds 250
+        }
+    } | Out-Null
+}
+
+function Stop-RavenFog {
+    $global:RavenFogEnabled = $false
+    $script:RavenFogJobRunning = $false
+
+    # Stop the thread job if present
+    try {
+        Get-Job -Name "RavenFog" -ErrorAction SilentlyContinue | Remove-Job -Force -ErrorAction SilentlyContinue
+    } catch {}
+
+    Write-Host "🌫️ Fog drift stopped." -ForegroundColor DarkGray
+}
+
+function Toggle-FogPrompt {
+    if ($global:RavenFogEnabled) { Stop-RavenFog } else { Start-RavenFog }
+}
+
+function Toggle-FogPrompt {
+    if ($global:RavenFogEnabled) { Stop-RavenFog } else { Start-RavenFog }
+}
+# ===============================
+# Fog Drift (Idle Animation)
+# Uses PSReadLine ForceRepaint (no ANSI cursor ops needed)
+# ===============================
+
+if (-not $global:RavenFogEnabled) { $global:RavenFogEnabled = $false }
+
+$script:RavenFogTimer = $null
+$script:RavenFogIndex = 0
+$script:RavenFogFrames = @("·","•","∙","○","◌","◍","◎")
+$script:RavenFogPad = @(""," ","  ","   ","  "," ","")
+
+function Get-RavenFogGlyph {
+    $i = $script:RavenFogIndex
+    $script:RavenFogIndex++
+
+    $dot = $script:RavenFogFrames[$i % $script:RavenFogFrames.Count]
+    $pad = $script:RavenFogPad[$i % $script:RavenFogPad.Count]
+    return "$pad$dot$pad"
+}
+
+function Start-RavenFog {
+    if ($script:RavenFogTimer) { return }
+
+    # PSReadLine must be loaded
+    if (-not ([type]::GetType("Microsoft.PowerShell.PSConsoleReadLine", $false))) {
+        try { Import-Module PSReadLine -ErrorAction Stop } catch {
+            Write-Warning "PSReadLine not available in this host."
+            return
+        }
+    }
+
+    $global:RavenFogEnabled = $true
+
+    $timer = New-Object System.Timers.Timer
+    $timer.Interval = 250
+    $timer.AutoReset = $true
+
+    Register-ObjectEvent -InputObject $timer -EventName Elapsed -SourceIdentifier "RavenFogTick" -Action {
+        if (-not $global:RavenFogEnabled) { return }
+        try {
+            # bump the fog frame and repaint the line
+            $null = Get-RavenFogGlyph
+            [Microsoft.PowerShell.PSConsoleReadLine]::ForceRepaint()
+        } catch { }
+    } | Out-Null
+
+    $timer.Start()
+    $script:RavenFogTimer = $timer
+
+    Write-Host "🌫️ Fog drift started." -ForegroundColor Magenta
+}
+
+function Stop-RavenFog {
+    $global:RavenFogEnabled = $false
+
+    if ($script:RavenFogTimer) {
+        try {
+            $script:RavenFogTimer.Stop()
+            $script:RavenFogTimer.Dispose()
+        } catch {}
+        $script:RavenFogTimer = $null
+    }
+
+    try { Unregister-Event -SourceIdentifier "RavenFogTick" -ErrorAction SilentlyContinue } catch {}
+    try { Remove-Event -SourceIdentifier "RavenFogTick" -ErrorAction SilentlyContinue } catch {}
+
+    try { [Microsoft.PowerShell.PSConsoleReadLine]::ForceRepaint() } catch {}
+
+    Write-Host "🌫️ Fog drift stopped." -ForegroundColor DarkGray
+}
+
+function Toggle-FogPrompt {
+    if ($global:RavenFogEnabled) { Stop-RavenFog } else { Start-RavenFog }
 }
 
 # ------------------------------
@@ -431,6 +794,19 @@ Set-PSProfileDefault -Name 'PromptMode'        -Value 'Normal'
 Set-PSProfileDefault -Name 'BackupRoot'        -Value (Join-Path $HOME 'Documents\PowerShell\Profile Backups')
 Set-PSProfileDefault -Name 'AutoUpdateEnabled' -Value $true
 Set-PSProfileDefault -Name 'BookmarksPath'     -Value (Join-Path $HOME 'Documents\PowerShell\ProfileBookmarks.xml')
+
+function Get-RavenRepoRoot {
+    # env points to ...\powershell-profile\profile
+    if (-not $env:RAVEN_PROFILE_ROOT) { return $null }
+
+    $profileRoot = (Resolve-Path $env:RAVEN_PROFILE_ROOT -ErrorAction SilentlyContinue)?.Path
+    if (-not $profileRoot) { return $null }
+
+    $repoRoot = (Resolve-Path (Join-Path $profileRoot "..") -ErrorAction SilentlyContinue)?.Path
+    if ($repoRoot -and (Test-Path (Join-Path $repoRoot ".git"))) { return $repoRoot }
+
+    return $null
+}
 
 # Helper: find profile root (same logic as loader, but safe)
 function Get-ProfileRoot {
@@ -486,10 +862,34 @@ function Set-ProfilePromptMode {
         Write-Host "Normal mode: full themed prompt." -ForegroundColor Yellow
     }
 }
+function Switch-Theme {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Name
+    )
+
+    if (-not (Get-Command -Name 'oh-my-posh' -ErrorAction SilentlyContinue)) {
+        Write-Warning "oh-my-posh is not installed. Install it first to use theme switching."
+        return
+    }
+
+    # "default" should mean: your preferred baseline
+    if ($Name -eq "default") { $Name = "cobalt2" }
+
+    $url = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/$Name.omp.json"
+
+    try {
+        oh-my-posh init pwsh --config $url | Invoke-Expression
+        Write-Host ("Switched theme to {0}." -f $Name) -ForegroundColor Green
+    } catch {
+        Write-Warning ("Failed to apply theme: {0}" -f $_.Exception.Message)
+    }
+}
 
 function Show-ThemeMenu {
     if (-not (Get-Command -Name 'oh-my-posh' -ErrorAction SilentlyContinue)) {
         Write-Warning "oh-my-posh is not installed. Install it first to use theme switching."
+        Read-Host "Press Enter to return..."
         return
     }
 
@@ -499,38 +899,68 @@ function Show-ThemeMenu {
         @{ Name = 'atomic';         Id = 'atomic' },
         @{ Name = 'jandedobbeleer'; Id = 'jandedobbeleer' },
         @{ Name = 'agnoster';       Id = 'agnoster' },
-        @{ Name = 'dracula';        Id = 'dracula' }
+        @{ Name = 'dracula';        Id = 'dracula' },
+        @{ Name = 'tokyonight';     Id = 'tokyonight_storm' },
+        @{ Name = 'night-owl';      Id = 'night-owl' },
+        @{ Name = 'powerline';      Id = 'powerline' }
     )
+$currentTheme = if ($global:RavenTheme) { $global:RavenTheme } else { "cobalt2" }
+    Clear-Host
+    Write-Host "THEME ENGINE" -ForegroundColor Magenta
+    Write-Host "----------------------------------------" -ForegroundColor DarkGray
+
+   for ($i = 0; $i -lt $themes.Count; $i++) {
+    $theme = $themes[$i]
+    $marker = if ($theme.Id -eq $currentTheme) { " ⭐ current" } else { "" }
+
+    Write-Host (" [{0}] {1}{2}" -f ($i + 1), $theme.Name, $marker) -ForegroundColor Yellow
+}
+
 
     Write-Host ""
-    Write-Host "Available themes:" -ForegroundColor Cyan
-    for ($i = 0; $i -lt $themes.Count; $i++) {
-        Write-Host (" [{0}] {1}" -f ($i+1), $themes[$i].Name) -ForegroundColor Yellow
-    }
-    $choice = Read-Host "Choose a theme number (or press Enter to cancel)"
+    $choice = Read-Host "Choose a theme number (Enter to cancel)"
     if (-not $choice) { return }
 
     [int]$index = 0
     if (-not [int]::TryParse($choice, [ref]$index)) {
         Write-Warning "Invalid choice."
+        Read-Host "Press Enter to return..."
         return
     }
 
     $idx = $index - 1
     if ($idx -lt 0 -or $idx -ge $themes.Count) {
         Write-Warning "Choice out of range."
+        Read-Host "Press Enter to return..."
         return
     }
 
     $themeId = $themes[$idx].Id
     $url = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/$themeId.omp.json"
+
+    # Save preference (persist across sessions)
+$global:RavenTheme = $themeId
+
+$cfg = Get-RavenConfig
+$cfg["Theme"] = $themeId
+$ok = Save-RavenConfig $cfg
+
+if (-not $ok) {
+    Write-Warning "Could not save theme preference."
+}
+	# Save preference in-session (so other scripts can reuse it)
+    $global:RavenTheme = $themeId
+
     try {
         oh-my-posh init pwsh --config $url | Invoke-Expression
-        Write-Host "Switched theme to $($themes[$idx].Name)." -ForegroundColor Green
+        Write-Host ("Switched theme to {0}." -f $themes[$idx].Name) -ForegroundColor Green
     } catch {
-        Write-Warning "Failed to apply theme: ${_}"
+        Write-Warning ("Failed to apply theme: {0}" -f $_.Exception.Message)
     }
+
+    Read-Host "Press Enter to continue..."
 }
+
 
 # =========================
 # B. Backups & Updates
@@ -1076,6 +1506,12 @@ function global:Set-DefaultPrompt {
         if ($global:IsAdmin) { "[$cwd] # " } else { "[$cwd] $ " }
     }
     Write-Host "Default prompt restored." -ForegroundColor Yellow
+	$fog = ""
+if ($global:RavenFogEnabled) {
+    $esc = [char]27
+    $fog = "$esc[38;5;245m$(Get-RavenFogGlyph)$esc[0m "
+}
+return "$fog$existingPromptText"
 }
 
 # =========================
@@ -2047,20 +2483,18 @@ $NeonMag   = "`e[95m"
 $NeonPink  = "`e[91m"
 $NeonReset = "`e[0m"
 
-function Show-NeonHeader {
+function Show-RavenMenuHeader {
     Clear-Host
-    Write-Host ""
-    Write-Host "$NeonCyan██████╗  ██████╗ ███████╗$NeonReset"
-    Write-Host "$NeonPink██╔══██╗██╔═══██╗██╔════╝$NeonReset"
-    Write-Host "$NeonMag██████╔╝██║   ██║█████╗  $NeonReset"
-    Write-Host "$NeonCyan██╔══██╗██║   ██║██╔══╝  $NeonReset"
-    Write-Host "$NeonPink██║  ██║╚██████╔╝███████╗$NeonReset"
-    Write-Host "$NeonMag╚═╝  ╚═╝ ╚═════╝ ╚══════╝$NeonReset"
-    Write-Host ""
-    Write-Host "$NeonPink        [ O Z   S Y S T E M ]$NeonReset"
-    Write-Host "---------------------------------------------------"
+    Write-Host "╭───────────────────────────────────────────────╮" -ForegroundColor DarkMagenta
+    Write-Host "│  🦇 R A V E N   C O N S O L E                 │" -ForegroundColor DarkMagenta
+    Write-Host "│  Profile Menu                                 │" -ForegroundColor DarkMagenta
+    Write-Host ("│  {0}@{1}  |  PS {2}" -f $env:USERNAME, $env:COMPUTERNAME, $PSVersionTable.PSVersion) -ForegroundColor DarkMagenta
+    Write-Host ("│  Theme: {0}" -f ($global:RavenTheme ?? "cobalt2")) -ForegroundColor DarkMagenta
+	Write-Host ("│  CWD: {0}" -f (Get-Location).Path) -ForegroundColor DarkMagenta
+    Write-Host "╰───────────────────────────────────────────────╯" -ForegroundColor DarkMagenta
     Write-Host ""
 }
+
 function Invoke-RavenSelfRepair {
     [CmdletBinding()]
     param(
@@ -2181,7 +2615,7 @@ function global:profile-menu {
 
     while (-not $ExitMenu) {
 
-        Show-NeonHeader
+        Show-RavenMenuHeader
 
         Write-Host "$NeonCyan 1$NeonReset • Switch Theme"
         Write-Host "$NeonCyan 2$NeonReset • Toggle Fast Mode"
@@ -2192,8 +2626,9 @@ function global:profile-menu {
         Write-Host "$NeonCyan 7$NeonReset • Cleanup Tools"
         Write-Host "$NeonCyan 8$NeonReset • Fun FX"
         Write-Host "$NeonCyan 9$NeonReset • Neon FX"
-		Write-Host "$NeonCyan 10$NeonReset • Self-Repair (Reload Modules)"
-        Write-Host "$NeonCyan 11$NeonReset • Exit"
+		Write-Host "$NeonCyan 10$NeonReset • Toggle Fog Prompt"
+		Write-Host "$NeonCyan 11$NeonReset • Self-Repair (Reload Modules)"
+        Write-Host "$NeonCyan 12$NeonReset • Exit"
 		
 		$choice = Read-Host "Choose an option"
 
@@ -2208,8 +2643,9 @@ function global:profile-menu {
             "7" { Show-CleanupMenu }
             "8" { Show-FunMenu }
 			"9"  { Show-NeonFXMenu }
-			"10" { Invoke-RavenSelfRepair }
-			"11" { $ExitMenu = $true; break }
+			"10" { Toggle-FogPrompt }
+			"11" { Invoke-RavenSelfRepair }
+			"12" { $ExitMenu = $true; break }
 
             # FIXED EXIT
             "11" { 
@@ -2226,25 +2662,78 @@ function global:profile-menu {
         }
     }
 }
+function Show-ProcessPanel {
+    $Exit = $false
+
+    while (-not $Exit) {
+        Clear-Host
+        Write-Host "OZ PROCESS PANEL" -ForegroundColor Cyan
+        Write-Host "------------------------------------"
+        Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 |
+            Select-Object Id, CPU, WorkingSet, ProcessName
+
+        Write-Host ""
+        Write-Host "[K]ill process  [R]efresh  [Q]uit" -ForegroundColor Yellow
+        $choice = Read-Host "Choice"
+
+        switch ($choice.ToUpper()) {
+            "K" {
+                $pid = Read-Host "Enter PID to kill"
+                if ($pid) {
+                    try {
+                        Stop-Process -Id ([int]$pid) -Force
+                        Write-Host ("Killed PID {0}" -f $pid) -ForegroundColor Green
+                    } catch {
+                        Write-Warning ("Failed to kill PID {0}: {1}" -f $pid, $_.Exception.Message)
+                    }
+                    Start-Sleep -Seconds 1
+                }
+            }
+            "R" { }
+            "Q" { $Exit = $true }
+            default { }
+        }
+    }
+}
+
+function Show-FileApp {
+    while ($true) {
+        Clear-Host
+        $cwd = Get-Location
+        Write-Host "OZ FILE APP - $cwd" -ForegroundColor Cyan
+        Write-Host "----------------------------------------------"
+
+        $items = Get-ChildItem
+        $index = 1
+        foreach ($it in $items) {
+            $mark = if ($it.PSIsContainer) { "[D]" } else { "   " }
+            Write-Host ("{0,2}) {1} {2}" -f $index, $mark, $it.Name)
+            $index++
+        }
+
+        Write-Host ""
+        Write-Host "[Number]=Open/Enter  [U]=Up  [Q]=Quit" -ForegroundColor Yellow
+        $choice = Read-Host "Choice"
+
+        if ($choice.ToUpper() -eq "Q") { break }
+        elseif ($choice.ToUpper() -eq "U") { Set-Location ..; continue }
+
+        [int]$idx = 0
+        if (-not [int]::TryParse($choice, [ref]$idx)) { continue }
+        $realIndex = $idx - 1
+        if ($realIndex -lt 0 -or $realIndex -ge $items.Count) { continue }
+
+        $sel = $items[$realIndex]
+        if ($sel.PSIsContainer) {
+            Set-Location $sel.FullName
+        } else {
+            try { Start-Process $sel.FullName } catch {}
+        }
+    }
+}
 
 
 # =============== SUBMENUS =======================================================
-
-function Show-ThemeMenu {
-    Clear-Host
-    Write-Host "$NeonMagTHEME ENGINE$NeonReset"
-    Write-Host "----------------------------------------"
-    Write-Host "1) cobalt2"
-    Write-Host "2) default"
-    Write-Host ""
-    $c = Read-Host "Choose theme"
-
-    switch ($c) {
-        "1" { Switch-Theme cobalt2 }
-        "2" { Switch-Theme default }
-        default { Write-Host "Unknown theme." -ForegroundColor Red }
-    }
-}
 
 function Toggle-FastMode {
     if (-not $global:FastMode) {
@@ -2257,18 +2746,39 @@ function Toggle-FastMode {
 }
 
 function Profile-Update {
+    Write-Host "Updating profile..." -ForegroundColor Cyan
+
+    $repo = Get-RavenRepoRoot
+    if (-not $repo) {
+        Write-Warning "Raven repo not found. Expected .git next to: $env:RAVEN_PROFILE_ROOT"
+        Read-Host "Press Enter to continue..."
+        return
+    }
+
+    Push-Location $repo
     try {
-        Write-Host "Updating profile..." -ForegroundColor Cyan
         git pull
-        reload-profile
+        if ($LASTEXITCODE -ne 0) { throw "git pull failed." }
+
+        Write-Host "Reloading profile..." -ForegroundColor Cyan
+        if (Get-Command reload-profile -ErrorAction SilentlyContinue) {
+            reload-profile
+        } else {
+            . $PROFILE
+        }
+
         Write-Host "Done!" -ForegroundColor Green
     } catch {
-        Write-Host "Update failed: $_" -ForegroundColor Red
+        Write-Warning ("Update failed: {0}" -f $_.Exception.Message)
+    } finally {
+        Pop-Location
+        Read-Host "Press Enter to continue..."
     }
 }
 
+
 function Edit-ProfileFiles {
-    Show-NeonHeader
+    Show-RavenMenuHeader
     Write-Host "Files:"
     $files = Get-ChildItem $ProfileRoot -Filter *.ps1
     $i = 1
@@ -2362,266 +2872,31 @@ function Show-CleanupMenu {
 }
 
 function global:Show-FunMenu {
+    $ExitFun = $false
+
+while (-not $ExitFun) {
     Clear-Host
-    $esc = [char]27
+    Write-Host "$NeonPink UTIL ZONE $NeonReset"
+    Write-Host "------------------------"
+    Write-Host " 1) Process Panel (Kill/Refresh)"
+    Write-Host " 2) File App"
+    Write-Host " 3) Back"
+    Write-Host ""
 
-    while ($true) {
-        Clear-Host
-        Write-Host "$NeonPinkFUN ZONE$NeonReset"
-        Write-Host "------------------------"
-        Write-Host " 1) Matrix Rain"
-        Write-Host " 2) Neon Wave"
-        Write-Host " 3) Ripple Wave"
-        Write-Host " 4) Typing Boot Animation"
-        Write-Host " 5) Cyber Cursor Demo"
-        Write-Host " 6) Cyberpunk Prompt"
-        Write-Host " 7) Reset Prompt"
-        Write-Host " 8) Neon Border (Gradient)"
-		Write-Host "$NeonCyan 9$NeonReset • Neon FX"
-        Write-Host " 9) Task App"
-        Write-Host "10) Git App"
-        Write-Host "11) File App"
-        Write-Host "12) Back"
-        Write-Host ""
+    $c = Read-Host "Choose"
 
-        $c = Read-Host "Choose"
-
-        switch ($c) {
-
-            # 1) MATRIX RAIN
-            "1" {
-                Clear-Host
-                $chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray()
-                $lines = 40
-                $width = 80
-                for ($i = 0; $i -lt $lines; $i++) {
-                    $line = -join (1..$width | ForEach-Object {
-                        $chars[(Get-Random -Minimum 0 -Maximum $chars.Length)]
-                    })
-                    Write-Host "$esc[92m$line$esc[0m"
-                    Start-Sleep -Milliseconds 60
-                }
-                Read-Host "Press Enter to return..."
-            }
-
-            # 2) NEON WAVE
-            "2" {
-                Clear-Host
-                $colors = @("$esc[95m", "$esc[96m", "$esc[94m", "$esc[91m")
-                $lines  = 30
-                for ($i = 0; $i -lt $lines; $i++) {
-                    $offset = [int](15 * [Math]::Sin($i / 3.0))
-                    if ($offset -lt 0) { $offset = 0 }
-                    $color = $colors[$i % $colors.Count]
-                    $wave  = "~" * 10
-                    Write-Host (" " * $offset + $color + $wave + "$esc[0m")
-                    Start-Sleep -Milliseconds 50
-                }
-                Read-Host "Press Enter to return..."
-            }
-
-            # 3) RIPPLE WAVE
-            "3" {
-                Clear-Host
-                $radius = 15
-                $colors = @("$esc[96m", "$esc[95m")
-                for ($r = 1; $r -le $radius; $r++) {
-                    $color   = $colors[$r % $colors.Count]
-                    $padding = " " * ($radius - $r)
-                    $body    = "~" * ($r * 2)
-                    Write-Host ($padding + $color + $body + "$esc[0m")
-                    Start-Sleep -Milliseconds 50
-                }
-                Read-Host "Press Enter to return..."
-            }
-
-            # 4) TYPING BOOT ANIMATION
-            "4" {
-                Clear-Host
-                $text = "BOOTING OZ NEON SYSTEM..."
-                $chars = $text.ToCharArray()
-                foreach ($ch in $chars) {
-                    Write-Host -NoNewline "$esc[95m$ch$esc[0m"
-                    Start-Sleep -Milliseconds 40
-                }
-                Write-Host ""
-                Read-Host "Press Enter to return..."
-            }
-
-            # 5) CYBER CURSOR DEMO
-            "5" {
-                Clear-Host
-                $frames = @("|","/","-","\")
-                $sw = [Diagnostics.Stopwatch]::StartNew()
-                while ($sw.Elapsed.TotalSeconds -lt 5) {
-                    foreach ($f in $frames) {
-                        Write-Host "`r$esc[96m$f$esc[0m" -NoNewline
-                        Start-Sleep -Milliseconds 80
-                    }
-                }
-                Write-Host "`r " -NoNewline
-                Write-Host ""
-                Read-Host "Press Enter to return..."
-            }
-
-            # 6) CYBERPUNK PROMPT
-            "6" {
-                function global:prompt {
-                    $esc   = [char]27
-                    $cwd   = (Get-Location).Path
-                    $user  = [Environment]::UserName
-                    $hostN = $env:COMPUTERNAME
-                    $symbol = if ($global:IsAdmin) { "#" } else { "$" }
-
-                    $pathPart = "$esc[96m$cwd$esc[0m"
-                    $userPart = "$esc[95m$user@$hostN$esc[0m"
-                    $arrow    = "$esc[91m>$esc[0m"
-
-                    "$userPart $pathPart $arrow $symbol "
-                }
-                Write-Host "Cyberpunk prompt enabled." -ForegroundColor Magenta
-                Read-Host "Press Enter to return..."
-            }
-
-            # 7) RESET PROMPT
-            "7" {
-                function global:prompt {
-                    Invoke-Profile-PostInit
-                    $cwd = (Get-Location).Path
-                    if ($global:IsAdmin) { "[$cwd] # " } else { "[$cwd] $ " }
-                }
-                Write-Host "Default prompt restored." -ForegroundColor Yellow
-                Read-Host "Press Enter to return..."
-            }
-
-            # 8) NEON BORDER (GRADIENT)
-            "8" {
-                Clear-Host
-                $text = "OZ NEON SYSTEM"
-                $line = "─" * ($text.Length + 4)
-                $colors = @("$esc[95m","$esc[96m","$esc[94m","$esc[91m")
-
-                $top = ""
-                for ($i = 0; $i -lt $line.Length; $i++) {
-                    $top += $colors[$i % $colors.Count] + $line[$i]
-                }
-                Write-Host $top + "$esc[0m"
-                Write-Host "$esc[95m│$esc[0m $text $esc[96m│$esc[0m"
-                $bottom = ""
-                for ($i = 0; $i -lt $line.Length; $i++) {
-                    $bottom += $colors[($i + 2) % $colors.Count] + $line[$i]
-                }
-                Write-Host $bottom + "$esc[0m"
-                Write-Host ""
-                Read-Host "Press Enter to return..."
-            }
-			
-
-            # 9) TASK APP
-            "9" {
-                while ($true) {
-                    Clear-Host
-                    Write-Host "OZ TASK APP" -ForegroundColor Cyan
-                    Write-Host "------------------------------------"
-                    Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 `
-                        | Select-Object Id, CPU, WorkingSet, ProcessName
-                    Write-Host ""
-                    Write-Host "[K]ill process  [R]efresh  [Q]uit" -ForegroundColor Yellow
-                    $choice = Read-Host "Choice"
-                    switch ($choice.ToUpper()) {
-                        "K" {
-                            $pid = Read-Host "Enter PID to kill"
-                            if ($pid) {
-                                try {
-                                    Stop-Process -Id [int]$pid -Force
-                                    Write-Host "Killed PID $pid" -ForegroundColor Green
-                                } catch {
-                                    Write-Warning ("Failed to kill PID {0}: {1}" -f $pid, $_)
-                                }
-                                Start-Sleep -Seconds 1
-                            }
-                        }
-                        "R" { continue }
-                        "Q" { break }
-                        default { }
-                    }
-                }
-            }
-
-            # 10) GIT APP
-            "10" {
-                if (-not (Test-Path ".git")) {
-                    Write-Warning "No .git folder here. Not a git repo."
-                    Read-Host "Press Enter to return..."
-                } else {
-                    while ($true) {
-                        Clear-Host
-                        Write-Host "OZ GIT APP" -ForegroundColor Magenta
-                        Write-Host "------------------------------------"
-                        git status
-                        Write-Host ""
-                        Write-Host "[A]dd .  [C]ommit  [P]ush  [L]og  [Q]uit" -ForegroundColor Yellow
-                        $choice = Read-Host "Choice"
-                        switch ($choice.ToUpper()) {
-                            "A" { git add . }
-                            "C" {
-                                $msg = Read-Host "Commit message"
-                                if ($msg) { git commit -m $msg }
-                            }
-                            "P" { git push }
-                            "L" { git log --oneline --decorate --graph --max-count=15 | more }
-                            "Q" { break }
-                            default { }
-                        }
-                    }
-                }
-            }
-
-            # 11) FILE APP
-            "11" {
-                while ($true) {
-                    Clear-Host
-                    $cwd = Get-Location
-                    Write-Host "OZ FILE APP - $cwd" -ForegroundColor Cyan
-                    Write-Host "----------------------------------------------"
-                    $items = Get-ChildItem
-                    $index = 1
-                    foreach ($it in $items) {
-                        $mark = if ($it.PSIsContainer) { "[D]" } else { "   " }
-                        Write-Host ("{0,2}) {1} {2}" -f $index, $mark, $it.Name)
-                        $index++
-                    }
-                    Write-Host ""
-                    Write-Host "[Number]=Open/Enter  [U]=Up  [Q]=Quit" -ForegroundColor Yellow
-                    $choice = Read-Host "Choice"
-
-                    if ($choice.ToUpper() -eq "Q") { break }
-                    elseif ($choice.ToUpper() -eq "U") { Set-Location ..; continue }
-
-                    [int]$idx = 0
-                    if (-not [int]::TryParse($choice, [ref]$idx)) { continue }
-                    $realIndex = $idx - 1
-                    if ($realIndex -lt 0 -or $realIndex -ge $items.Count) { continue }
-
-                    $sel = $items[$realIndex]
-                    if ($sel.PSIsContainer) {
-                        Set-Location $sel.FullName
-                    } else {
-                        try { Start-Process $sel.FullName } catch {}
-                    }
-                }
-            }
-
-            # 12) BACK
-            "12" {
-                return
-            }
-
-            default {
-                # ignore
-            }
-        }
+    switch ($c) {
+        "1" { Show-ProcessPanel }
+        "2" { Show-FileApp }
+        "3" { $ExitFun = $true }
+        default { }
     }
+}
+}
+
+# Sanity check – will error loudly if braces are unbalanced
+$null = {
+    1
 }
 
 
@@ -2732,7 +3007,11 @@ function Invoke-Profile-PostInit {
     $script:ProfilePostInitRegistered = $true
 
     Start-Sleep -Milliseconds 50
-
+# Apply persisted theme once
+if (-not $script:RavenThemeApplied) {
+    $script:RavenThemeApplied = $true
+    if (Get-Command Get-Theme -ErrorAction SilentlyContinue) { Get-Theme }
+}
     # Terminal-Icons (optional)
     if (Get-Module -ListAvailable -Name Terminal-Icons) {
         Import-Module Terminal-Icons -ErrorAction SilentlyContinue
@@ -2780,6 +3059,42 @@ function prompt {
     Invoke-Profile-PostInit
     $cwd = (Get-Location).Path
     if ($global:IsAdmin) { "[$cwd] # " } else { "[$cwd] $ " }
+	
+}
+if (-not $script:RavenFogPromptWrapped) {
+    $script:RavenFogPromptWrapped = $true
+
+    $orig = (Get-Command prompt -ErrorAction SilentlyContinue).ScriptBlock
+
+    function global:prompt {
+        $base = & $orig
+
+        if ($global:RavenFogEnabled) {
+            $esc = [char]27
+            $fog = "$esc[38;5;245m$(Get-RavenFogGlyph)$esc[0m "
+            return "$fog$base"
+        }
+
+        return $base
+    }
+}
+# Inject fog into the prompt (works with oh-my-posh too)
+if (-not $script:RavenFogPromptWrapped) {
+    $script:RavenFogPromptWrapped = $true
+
+    $orig = (Get-Command prompt -ErrorAction SilentlyContinue).ScriptBlock
+
+    function global:prompt {
+        $base = & $orig
+
+        if ($global:RavenFogEnabled) {
+            $esc = [char]27
+            $fog = "$esc[38;5;245m$(Get-RavenFogGlyph)$esc[0m "
+            return "$fog$base"
+        }
+
+        return $base
+    }
 }
 
 # ------------------------------
