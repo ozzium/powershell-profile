@@ -24,6 +24,19 @@ Set-PSProfileDefault -Name 'BackupRoot'        -Value (Join-Path $HOME 'Document
 Set-PSProfileDefault -Name 'AutoUpdateEnabled' -Value $true
 Set-PSProfileDefault -Name 'BookmarksPath'     -Value (Join-Path $HOME 'Documents\PowerShell\ProfileBookmarks.xml')
 
+function Get-RavenRepoRoot {
+    # env points to ...\powershell-profile\profile
+    if (-not $env:RAVEN_PROFILE_ROOT) { return $null }
+
+    $profileRoot = (Resolve-Path $env:RAVEN_PROFILE_ROOT -ErrorAction SilentlyContinue)?.Path
+    if (-not $profileRoot) { return $null }
+
+    $repoRoot = (Resolve-Path (Join-Path $profileRoot "..") -ErrorAction SilentlyContinue)?.Path
+    if ($repoRoot -and (Test-Path (Join-Path $repoRoot ".git"))) { return $repoRoot }
+
+    return $null
+}
+
 # Helper: find profile root (same logic as loader, but safe)
 function Get-ProfileRoot {
     $candidates = @(
@@ -78,10 +91,34 @@ function Set-ProfilePromptMode {
         Write-Host "Normal mode: full themed prompt." -ForegroundColor Yellow
     }
 }
+function Switch-Theme {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Name
+    )
+
+    if (-not (Get-Command -Name 'oh-my-posh' -ErrorAction SilentlyContinue)) {
+        Write-Warning "oh-my-posh is not installed. Install it first to use theme switching."
+        return
+    }
+
+    # "default" should mean: your preferred baseline
+    if ($Name -eq "default") { $Name = "cobalt2" }
+
+    $url = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/$Name.omp.json"
+
+    try {
+        oh-my-posh init pwsh --config $url | Invoke-Expression
+        Write-Host ("Switched theme to {0}." -f $Name) -ForegroundColor Green
+    } catch {
+        Write-Warning ("Failed to apply theme: {0}" -f $_.Exception.Message)
+    }
+}
 
 function Show-ThemeMenu {
     if (-not (Get-Command -Name 'oh-my-posh' -ErrorAction SilentlyContinue)) {
         Write-Warning "oh-my-posh is not installed. Install it first to use theme switching."
+        Read-Host "Press Enter to return..."
         return
     }
 
@@ -91,38 +128,68 @@ function Show-ThemeMenu {
         @{ Name = 'atomic';         Id = 'atomic' },
         @{ Name = 'jandedobbeleer'; Id = 'jandedobbeleer' },
         @{ Name = 'agnoster';       Id = 'agnoster' },
-        @{ Name = 'dracula';        Id = 'dracula' }
+        @{ Name = 'dracula';        Id = 'dracula' },
+        @{ Name = 'tokyonight';     Id = 'tokyonight_storm' },
+        @{ Name = 'night-owl';      Id = 'night-owl' },
+        @{ Name = 'powerline';      Id = 'powerline' }
     )
+$currentTheme = if ($global:RavenTheme) { $global:RavenTheme } else { "cobalt2" }
+    Clear-Host
+    Write-Host "THEME ENGINE" -ForegroundColor Magenta
+    Write-Host "----------------------------------------" -ForegroundColor DarkGray
+
+   for ($i = 0; $i -lt $themes.Count; $i++) {
+    $theme = $themes[$i]
+    $marker = if ($theme.Id -eq $currentTheme) { " ⭐ current" } else { "" }
+
+    Write-Host (" [{0}] {1}{2}" -f ($i + 1), $theme.Name, $marker) -ForegroundColor Yellow
+}
+
 
     Write-Host ""
-    Write-Host "Available themes:" -ForegroundColor Cyan
-    for ($i = 0; $i -lt $themes.Count; $i++) {
-        Write-Host (" [{0}] {1}" -f ($i+1), $themes[$i].Name) -ForegroundColor Yellow
-    }
-    $choice = Read-Host "Choose a theme number (or press Enter to cancel)"
+    $choice = Read-Host "Choose a theme number (Enter to cancel)"
     if (-not $choice) { return }
 
     [int]$index = 0
     if (-not [int]::TryParse($choice, [ref]$index)) {
         Write-Warning "Invalid choice."
+        Read-Host "Press Enter to return..."
         return
     }
 
     $idx = $index - 1
     if ($idx -lt 0 -or $idx -ge $themes.Count) {
         Write-Warning "Choice out of range."
+        Read-Host "Press Enter to return..."
         return
     }
 
     $themeId = $themes[$idx].Id
     $url = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/$themeId.omp.json"
+
+    # Save preference (persist across sessions)
+$global:RavenTheme = $themeId
+
+$cfg = Get-RavenConfig
+$cfg["Theme"] = $themeId
+$ok = Save-RavenConfig $cfg
+
+if (-not $ok) {
+    Write-Warning "Could not save theme preference."
+}
+	# Save preference in-session (so other scripts can reuse it)
+    $global:RavenTheme = $themeId
+
     try {
         oh-my-posh init pwsh --config $url | Invoke-Expression
-        Write-Host "Switched theme to $($themes[$idx].Name)." -ForegroundColor Green
+        Write-Host ("Switched theme to {0}." -f $themes[$idx].Name) -ForegroundColor Green
     } catch {
-        Write-Warning "Failed to apply theme: ${_}"
+        Write-Warning ("Failed to apply theme: {0}" -f $_.Exception.Message)
     }
+
+    Read-Host "Press Enter to continue..."
 }
+
 
 # =========================
 # B. Backups & Updates
@@ -668,6 +735,12 @@ function global:Set-DefaultPrompt {
         if ($global:IsAdmin) { "[$cwd] # " } else { "[$cwd] $ " }
     }
     Write-Host "Default prompt restored." -ForegroundColor Yellow
+	$fog = ""
+if ($global:RavenFogEnabled) {
+    $esc = [char]27
+    $fog = "$esc[38;5;245m$(Get-RavenFogGlyph)$esc[0m "
+}
+return "$fog$existingPromptText"
 }
 
 # =========================

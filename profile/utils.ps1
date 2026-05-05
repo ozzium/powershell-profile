@@ -84,7 +84,10 @@ function uptime {
         Write-Error "Failed to calculate uptime: $_"
     }
 }
-
+function global:reload-profile {
+    Write-Host "Reloading profile..." -ForegroundColor Cyan
+    . $PROFILE
+}
 # Git shortcuts
 function gs    { git status }
 function ga    { git add . }
@@ -142,4 +145,8 @@ function hb {
 # Reload profile quickly
 function Update-Profile {
     & $PROFILE
+}
+function global:reload-profile {
+    Write-Host "Reloading profile..." -ForegroundColor Cyan
+    . $PROFILE
 }
