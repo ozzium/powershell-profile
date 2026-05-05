@@ -1,7 +1,7 @@
 <#
   RAVEN SINGLE-FILE BUILD
-  Generated: 2026-02-17 13:27:24
-  Source: C:\Users\Ozzium\Documents\GitHub\powershell-profile\profile
+  Generated: 2026-05-05 14:08:02
+  Source: C:\Users\ozzium\Documents\GitHub\powershell-profile\profile
 #>
 
 
@@ -177,6 +177,11 @@ function gcom {
     param([Parameter(Mandatory)][string]$Message)
     git add .
     git commit -m $Message
+}
+
+function reload-profile {
+    Write-Host "Reloading profile..." -ForegroundColor Cyan
+    & $PROFILE
 }
 
 function lazyg {
