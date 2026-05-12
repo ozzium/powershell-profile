@@ -109,11 +109,11 @@ foreach ($f in $files) {
     try {
         . $p
     } catch {
-        # Only scream when Raven breaks (so you don't get noise on harmless stuff)
-        if ($f -eq "raven.ps1") {
-            Write-Warning ("raven.ps1 failed to load: {0}" -f $_.Exception.Message)
-        }
+    # Show real module load failures for core Raven modules
+    if ($f -in @("features.ps1","appearance.ps1","menu.ps1","raven.ps1")) {
+        Write-Warning ("Failed loading {0}: {1}" -f $f, $_.Exception.Message)
     }
+}
 }
 
 # Avoid System32 start (Windows elevated)
