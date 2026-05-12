@@ -3,7 +3,6 @@
 # PSReadLine + Oh-My-Posh theme
 # ===============================
 
-# PSReadLine settings
 $PSReadLineOptions = @{
     EditMode                      = 'Windows'
     HistoryNoDuplicates           = $true
@@ -19,7 +18,6 @@ try {
     }
 } catch {}
 
-# Key handlers
 try {
     if (Get-Command Set-PSReadLineKeyHandler -ErrorAction SilentlyContinue) {
         Set-PSReadLineKeyHandler -Key UpArrow             -Function HistorySearchBackward
@@ -42,7 +40,6 @@ try {
     }
 } catch {}
 
-# Oh-my-posh theme helper
 function Get-Theme {
     if (Get-Command -Name "Get-Theme_Override" -ErrorAction SilentlyContinue) {
         Get-Theme_Override
