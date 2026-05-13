@@ -123,28 +123,41 @@ function Show-ThemeMenu {
     }
 
     $themes = @(
-        @{ Name = 'cobalt2';        Id = 'cobalt2' },
-        @{ Name = 'paradox';        Id = 'paradox' },
-        @{ Name = 'atomic';         Id = 'atomic' },
-        @{ Name = 'jandedobbeleer'; Id = 'jandedobbeleer' },
-        @{ Name = 'agnoster';       Id = 'agnoster' },
-        @{ Name = 'dracula';        Id = 'dracula' },
-        @{ Name = 'tokyonight';     Id = 'tokyonight_storm' },
-        @{ Name = 'night-owl';      Id = 'night-owl' },
-        @{ Name = 'powerline';      Id = 'powerline' }
+        @{ Name = 'cobalt2';            Id = 'cobalt2' },
+        @{ Name = 'paradox';            Id = 'paradox' },
+        @{ Name = 'atomic';             Id = 'atomic' },
+        @{ Name = 'jandedobbeleer';     Id = 'jandedobbeleer' },
+        @{ Name = 'agnoster';           Id = 'agnoster' },
+        @{ Name = 'dracula';            Id = 'dracula' },
+        @{ Name = 'tokyonight';         Id = 'tokyonight_storm' },
+        @{ Name = 'night-owl';          Id = 'night-owl' },
+        @{ Name = 'powerline';          Id = 'powerline' },
+        @{ Name = 'powerlevel10k';      Id = 'powerlevel10k_classic' },
+        @{ Name = 'catppuccin';         Id = 'catppuccin' },
+        @{ Name = 'space';              Id = 'space' },
+        @{ Name = 'takuya';             Id = 'takuya' },
+        @{ Name = 'blueish';            Id = 'blueish' },
+        @{ Name = 'clean-detailed';     Id = 'clean-detailed' },
+        @{ Name = 'cloud-native-azure'; Id = 'cloud-native-azure' },
+        @{ Name = 'pure';               Id = 'pure' },
+        @{ Name = 'quick-term';         Id = 'quick-term' },
+        @{ Name = 'robbyrussell';       Id = 'robbyrussell' },
+        @{ Name = 'slim';               Id = 'slim' },
+        @{ Name = 'spaceship';          Id = 'spaceship' },
+        @{ Name = 'zash';               Id = 'zash' }
     )
-$currentTheme = if ($global:RavenTheme) { $global:RavenTheme } else { "cobalt2" }
+
+    $currentTheme = if ($global:RavenTheme) { $global:RavenTheme } else { "cobalt2" }
+
     Clear-Host
     Write-Host "THEME ENGINE" -ForegroundColor Magenta
     Write-Host "----------------------------------------" -ForegroundColor DarkGray
 
-   for ($i = 0; $i -lt $themes.Count; $i++) {
-    $theme = $themes[$i]
-    $marker = if ($theme.Id -eq $currentTheme) { " ⭐ current" } else { "" }
-
-    Write-Host (" [{0}] {1}{2}" -f ($i + 1), $theme.Name, $marker) -ForegroundColor Yellow
-}
-
+    for ($i = 0; $i -lt $themes.Count; $i++) {
+        $theme = $themes[$i]
+        $marker = if ($theme.Id -eq $currentTheme) { " ⭐ current" } else { "" }
+        Write-Host (" [{0}] {1}{2}" -f ($i + 1), $theme.Name, $marker) -ForegroundColor Yellow
+    }
 
     Write-Host ""
     $choice = Read-Host "Choose a theme number (Enter to cancel)"
@@ -167,18 +180,13 @@ $currentTheme = if ($global:RavenTheme) { $global:RavenTheme } else { "cobalt2" 
     $themeId = $themes[$idx].Id
     $url = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/$themeId.omp.json"
 
-    # Save preference (persist across sessions)
-$global:RavenTheme = $themeId
-
-$cfg = Get-RavenConfig
-$cfg["Theme"] = $themeId
-$ok = Save-RavenConfig $cfg
-
-if (-not $ok) {
-    Write-Warning "Could not save theme preference."
-}
-	# Save preference in-session (so other scripts can reuse it)
     $global:RavenTheme = $themeId
+
+    if (Get-Command Get-RavenConfig -ErrorAction SilentlyContinue) {
+        $cfg = Get-RavenConfig
+        $cfg["Theme"] = $themeId
+        $null = Save-RavenConfig $cfg
+    }
 
     try {
         oh-my-posh init pwsh --config $url | Invoke-Expression
@@ -189,7 +197,6 @@ if (-not $ok) {
 
     Read-Host "Press Enter to continue..."
 }
-
 
 # =========================
 # B. Backups & Updates
