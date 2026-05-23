@@ -136,3 +136,5 @@ if (-not $script:RavenFogPromptWrapped -and (Get-Command Get-RavenFogGlyph -Erro
         return $base
     }
 }
+
+new-item alias:npp -value “C:\Program Files\Notepad++\notepad++.exe”
