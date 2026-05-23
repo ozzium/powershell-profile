@@ -5,7 +5,7 @@
   - Option 2 boot (banner + info box) once per session
   - Prints REAL error if raven.ps1 fails (instead of silent skipping)
 #>
-
+Install-Module -Name Terminal-Icons
 $ErrorActionPreference = "SilentlyContinue"
 
 function Resolve-RavenProfileRoot {
@@ -136,5 +136,3 @@ if (-not $script:RavenFogPromptWrapped -and (Get-Command Get-RavenFogGlyph -Erro
         return $base
     }
 }
-
-new-item alias:npp -value “C:\Program Files\Notepad++\notepad++.exe”
