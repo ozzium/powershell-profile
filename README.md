@@ -29,3 +29,7 @@ powershell-profile/
   installer.ps1
   README.md
   LICENSE
+## To Install:
+git clone https://github.com/ozzium/powershell-profile.git
+cd powershell-profile
+.\installer.ps1
