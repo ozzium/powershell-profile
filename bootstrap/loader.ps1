@@ -6,7 +6,7 @@
   - Prints REAL error if raven.ps1 fails (instead of silent skipping)
 #>
 Install-Module -Name Terminal-Icons
-$ErrorActionPreference = "SilentlyContinue"
+$ErrorActionPreference = "Stop"
 
 function Resolve-RavenProfileRoot {
     if ($env:RAVEN_PROFILE_ROOT -and (Test-Path $env:RAVEN_PROFILE_ROOT)) {
