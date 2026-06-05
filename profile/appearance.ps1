@@ -52,7 +52,7 @@ function Get-Theme {
     }
 
     $themeName = if ($global:RavenTheme) { $global:RavenTheme } else { "cobalt2" }
-    $themeUrl  = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/$themeName.omp.json"
+    $themeUrl  = https://github.com/JanDeDobbeleer/oh-my-posh/blob/main/themes/json.omp.json
 
     try {
         oh-my-posh init pwsh --config $themeUrl | Invoke-Expression
