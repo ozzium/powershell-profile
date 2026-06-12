@@ -11,7 +11,7 @@ $NeonMag   = "`e[95m"
 $NeonPink  = "`e[91m"
 $NeonReset = "`e[0m"
 
-function Show-RavenMenuHeader {
+function global:Show-RavenMenuHeader {
 
     Clear-Host
 
@@ -310,7 +310,7 @@ function Profile-Update {
     }
 }
 
-function Edit-ProfileFiles {
+function global:Edit-ProfileFiles {
     Show-RavenMenuHeader
 
     $profileRoot = Get-RavenProfileRoot
@@ -347,7 +347,7 @@ function Edit-ProfileFiles {
     }
 }
 
-function Profile-Backup {
+function global:Profile-Backup {
     $profileRoot = Get-RavenProfileRoot
     if (-not $profileRoot) {
         Write-Warning "Profile folder not found."
@@ -368,7 +368,7 @@ function Profile-Backup {
     Read-Host "Press Enter to continue..."
 }
 
-function Get-RavenRepoRoot {
+function global:Get-RavenRepoRoot {
     if (-not $env:RAVEN_PROFILE_ROOT) { return $null }
 
     $root = (Resolve-Path $env:RAVEN_PROFILE_ROOT -ErrorAction SilentlyContinue)?.Path
@@ -386,7 +386,7 @@ function Get-RavenRepoRoot {
     return $null
 }
 
-function Get-RavenProfileRoot {
+function global:Get-RavenProfileRoot {
     $repo = Get-RavenRepoRoot
     if (-not $repo) { return $null }
 

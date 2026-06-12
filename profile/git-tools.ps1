@@ -51,7 +51,7 @@ function Show-RavenGitStatus {
     Wait-RavenGit
 }
 
-function Update-RavenLocalProfile {
+function global:Update-RavenLocalProfile {
     $repo = Get-RavenRepoRoot
     if (-not $repo) {
         Write-Warning "Raven repo not found."
@@ -85,7 +85,7 @@ function Update-RavenLocalProfile {
     }
 }
 
-function Update-RavenGitHubVersion {
+function global:Update-RavenGitHubVersion {
     $repo = Get-RavenRepoRoot
     if (-not $repo) {
         Write-Warning "Raven repo not found."
@@ -130,7 +130,7 @@ function Update-RavenGitHubVersion {
     }
 }
 
-function Show-RavenGitMenu {
+function global:Show-RavenGitMenu {
     while ($true) {
         Clear-Host
 
