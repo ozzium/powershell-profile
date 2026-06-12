@@ -66,7 +66,8 @@ function Invoke-RavenSelfRepair {
         return
     }
 
-    $root = (Resolve-Path $root).Path
+    $repoRoot = (Resolve-Path $root).Path
+$root = Join-Path $repoRoot "profile"
 
     # 2) Load modules in known-good order (silent by default)
     $files = @(
@@ -81,7 +82,7 @@ function Invoke-RavenSelfRepair {
         "shadows.ps1",
         "raven.ps1",
         "dashboard.ps1",
-        "git-tools.ps1"
+        "git-tools.ps1",
         "menu.ps1",
         "help.ps1",
         "init.ps1"
@@ -279,37 +280,6 @@ function Toggle-FastMode {
     }
 }
 
-function Profile-Update {
-    Write-Host "Updating profile..." -ForegroundColor Cyan
-
-    $repo = Get-RavenRepoRoot
-    if (-not $repo) {
-        Write-Warning "Raven repo not found. Expected .git next to: $env:RAVEN_PROFILE_ROOT"
-        Read-Host "Press Enter to continue..."
-        return
-    }
-
-    Push-Location $repo
-    try {
-        git pull
-        if ($LASTEXITCODE -ne 0) { throw "git pull failed." }
-
-        Write-Host "Reloading profile..." -ForegroundColor Cyan
-        if (Get-Command reload-profile -ErrorAction SilentlyContinue) {
-            reload-profile
-        } else {
-            . $PROFILE
-        }
-
-        Write-Host "Done!" -ForegroundColor Green
-    } catch {
-        Write-Warning ("Update failed: {0}" -f $_.Exception.Message)
-    } finally {
-        Pop-Location
-        Read-Host "Press Enter to continue..."
-    }
-}
-
 function global:Edit-ProfileFiles {
     Show-RavenMenuHeader
 
@@ -395,34 +365,6 @@ function global:Get-RavenProfileRoot {
 
     return $null
 }
-
-
-    Push-Location $repo
-    try {
-        Write-Host "🦇 Syncing Raven from: $repo" -ForegroundColor DarkMagenta
-
-        git pull
-        if ($LASTEXITCODE -ne 0) { throw "git pull failed." }
-
-        # Optional: only commit if changes exist
-        git add -A
-        git diff --cached --quiet
-        if ($LASTEXITCODE -ne 0) {
-            git commit -m "Raven sync $(Get-Date -Format 'yyyy-MM-dd HH:mm')" | Out-Null
-        }
-
-        git push
-        if ($LASTEXITCODE -ne 0) { throw "git push failed." }
-
-        Write-Host "✅ GitHub sync complete." -ForegroundColor Green
-    }
-    catch {
-        Write-Warning ("GitHub sync failed: {0}" -f $_)
-    }
-    finally {
-        Pop-Location
-        Read-Host "Press Enter to continue..."
-    }
 
 function Show-CleanupMenu {
     Clear-Host
