@@ -325,7 +325,7 @@ function global:Profile-Backup {
         return
     }
 
-    $backupDir = Join-Path $HOME "Documents/PowerShell/Profile Backups"
+    $backupDir = Get-RavenPath Backups
     if (-not (Test-Path $backupDir)) {
         New-Item -Path $backupDir -ItemType Directory -Force | Out-Null
     }

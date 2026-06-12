@@ -1,3 +1,16 @@
+function Get-RavenPath {
+    param([string]$Name)
+
+    $root = Join-Path $HOME "Documents/Raven"
+
+    switch ($Name) {
+        "Backups" { Join-Path $root "Backups" }
+        "Logs"    { Join-Path $root "Logs" }
+        "Cache"   { Join-Path $root "Cache" }
+        "Exports" { Join-Path $root "Exports" }
+    }
+}
+
 # Central configuration object for the profile
 
 if (-not $global:PSProfileConfig) {
