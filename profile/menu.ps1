@@ -45,29 +45,37 @@ function Invoke-RavenSelfRepair {
         [switch]$VerboseReport
     )
 
-    # 1) Find profile root
-    $root = $env:RAVEN_PROFILE_ROOT
-    if (-not $root) {
-        # Try common locations (fallback)
-        $candidates = @(
-            "$HOME\Documents\GitHub\powershell-profile\profile",
-            "$HOME\Documents\Github\powershell-profile\profile",
-            "$HOME\GitHub\powershell-profile\profile",
-            "$HOME\Github\powershell-profile\profile",
-            "$HOME\powershell-profile\profile"
-        )
-        $root = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
-        if ($root) { $env:RAVEN_PROFILE_ROOT = $root }
-    }
+# 1) Find repo root
+$repoRoot = $env:RAVEN_PROFILE_ROOT
 
-    if (-not $root -or -not (Test-Path $root)) {
-        Write-Warning "Raven Self-Repair: profile root not found. Set `$env:RAVEN_PROFILE_ROOT to your /profile folder."
-        Read-Host "Press Enter to continue..."
-        return
-    }
+if (-not $repoRoot -or -not (Test-Path $repoRoot)) {
+    $candidates = @(
+        (Join-Path $HOME "Documents/GitHub/powershell-profile"),
+        (Join-Path $HOME "GitHub/powershell-profile"),
+        (Join-Path $HOME "powershell-profile")
+    )
 
-    $repoRoot = (Resolve-Path $root).Path
+    $repoRoot = $candidates | Where-Object {
+        Test-Path (Join-Path $_ "profile")
+    } | Select-Object -First 1
+}
+
+if (-not $repoRoot -or -not (Test-Path $repoRoot)) {
+    Write-Warning "Raven Self-Repair: repo root not found."
+    Read-Host "Press Enter to continue..."
+    return
+}
+
+$repoRoot = (Resolve-Path $repoRoot).Path
+$env:RAVEN_PROFILE_ROOT = $repoRoot
+
 $root = Join-Path $repoRoot "profile"
+
+if (-not (Test-Path $root)) {
+    Write-Warning "Raven Self-Repair: profile folder not found: $root"
+    Read-Host "Press Enter to continue..."
+    return
+}
 
     # 2) Load modules in known-good order (silent by default)
     $files = @(

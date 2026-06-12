@@ -108,7 +108,7 @@ function Switch-Theme {
     $url = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/$Name.omp.json"
 
     try {
-        oh-my-posh init pwsh --config $url | Invoke-Expression
+        Apply-RavenTheme -ThemeId $themeId
         Write-Host ("Switched theme to {0}." -f $Name) -ForegroundColor Green
     } catch {
         Write-Warning ("Failed to apply theme: {0}" -f $_.Exception.Message)
@@ -181,6 +181,7 @@ function Show-ThemeMenu {
     $url = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/$themeId.omp.json"
 
     $global:RavenTheme = $themeId
+Apply-RavenTheme -ThemeId $themeId
 
     if (Get-Command Get-RavenConfig -ErrorAction SilentlyContinue) {
         $cfg = Get-RavenConfig
@@ -189,7 +190,7 @@ function Show-ThemeMenu {
     }
 
     try {
-        oh-my-posh init pwsh --config $url | Invoke-Expression
+        Apply-RavenTheme -ThemeId $themeId
         Write-Host ("Switched theme to {0}." -f $themes[$idx].Name) -ForegroundColor Green
     } catch {
         Write-Warning ("Failed to apply theme: {0}" -f $_.Exception.Message)

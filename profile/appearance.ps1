@@ -40,23 +40,73 @@ try {
     }
 } catch {}
 
-function Get-Theme {
-    if (Get-Command -Name "Get-Theme_Override" -ErrorAction SilentlyContinue) {
-        Get-Theme_Override
+# PSReadLine setup...
+
+function global:Apply-RavenTheme {
+    param(
+        [string]$ThemeId = $global:RavenTheme,
+        [switch]$Quiet
+    )
+
+    if (-not $ThemeId) { $ThemeId = "cobalt2" }
+
+    if (-not (Get-Command oh-my-posh -ErrorAction SilentlyContinue)) {
+        if (-not $Quiet) { Write-Warning "oh-my-posh not found." }
         return
     }
 
-    if (-not (Get-Command -Name 'oh-my-posh' -ErrorAction SilentlyContinue)) {
-        Write-Verbose "oh-my-posh not installed."
+    $themeRoots = @()
+
+    if ($env:POSH_THEMES_PATH) {
+        $themeRoots += $env:POSH_THEMES_PATH
+    }
+
+    $themeRoots += @(
+        "/opt/homebrew/opt/oh-my-posh/themes",
+        "/usr/local/opt/oh-my-posh/themes",
+        "/usr/local/share/oh-my-posh/themes",
+        "/opt/homebrew/share/oh-my-posh/themes",
+        "$HOME/.cache/oh-my-posh/themes",
+        "$env:LOCALAPPDATA/Programs/oh-my-posh/themes"
+    )
+
+    $brewCellars = @(
+        "/usr/local/Cellar/oh-my-posh",
+        "/opt/homebrew/Cellar/oh-my-posh"
+    )
+
+    foreach ($cellar in $brewCellars) {
+        $brewThemeDir = Get-ChildItem $cellar -Directory -ErrorAction SilentlyContinue |
+            Sort-Object Name -Descending |
+            Select-Object -First 1
+
+        if ($brewThemeDir) {
+            $themeRoots += (Join-Path $brewThemeDir.FullName "themes")
+        }
+    }
+
+    $themeRoots = $themeRoots |
+        Where-Object { $_ -and (Test-Path $_) } |
+        Select-Object -Unique
+
+    $themeFile = $null
+
+    foreach ($root in $themeRoots) {
+        $candidate = Join-Path $root "$ThemeId.omp.json"
+        if (Test-Path $candidate) {
+            $themeFile = $candidate
+            break
+        }
+    }
+
+    if (-not $themeFile) {
+        if (-not $Quiet) {
+            Write-Warning "Theme file not found for: $ThemeId"
+            Write-Warning "Checked: $($themeRoots -join ', ')"
+        }
         return
     }
 
-    $themeName = if ($global:RavenTheme) { $global:RavenTheme } else { "cobalt2" }
-    $themeUrl  = https://github.com/JanDeDobbeleer/oh-my-posh/blob/main/themes/json.omp.json
-
-    try {
-        oh-my-posh init pwsh --config $themeUrl | Invoke-Expression
-    } catch {
-        Write-Warning ("oh-my-posh init failed: {0}" -f $_.Exception.Message)
-    }
+    $global:RavenTheme = $ThemeId
+    oh-my-posh init pwsh --config $themeFile | Invoke-Expression
 }

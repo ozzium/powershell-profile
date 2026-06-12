@@ -45,6 +45,40 @@ function Invoke-Profile-PostInit {
 # Apply persisted theme once
 if (-not $script:RavenThemeApplied) {
     $script:RavenThemeApplied = $true
+
+    if ($global:RavenTheme) {
+        switch ($global:RavenTheme) {
+            "cobalt2" {
+                if (Get-Command Set-PromptTheme-Cobalt2 -ErrorAction SilentlyContinue) {
+                    Set-PromptTheme-Cobalt2
+                }
+            }
+
+            "neon-blue" {
+                if (Get-Command Set-PromptTheme-NeonBlue -ErrorAction SilentlyContinue) {
+                    Set-PromptTheme-NeonBlue
+                }
+            }
+
+            "pastel-pink" {
+                if (Get-Command Set-PromptTheme-PastelPink -ErrorAction SilentlyContinue) {
+                    Set-PromptTheme-PastelPink
+                }
+            }
+
+            "cyber-green" {
+                if (Get-Command Set-PromptTheme-CyberGreen -ErrorAction SilentlyContinue) {
+                    Set-PromptTheme-CyberGreen
+                }
+            }
+
+            default {
+                Write-Host "Theme selected but no startup applier found: $global:RavenTheme" -ForegroundColor Yellow
+            }
+        }
+    }
+}
+
     if (Get-Command Get-Theme -ErrorAction SilentlyContinue) { Get-Theme }
 }
     # Terminal-Icons (optional)
@@ -56,10 +90,6 @@ if (-not $script:RavenThemeApplied) {
     if (Get-Command -Name 'oh-my-posh' -ErrorAction SilentlyContinue) {
         try {
             $ompConfig = 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/cobalt2.omp.json'
-            oh-my-posh init pwsh --config $ompConfig | Invoke-Expression
-        } catch {
-            Write-Warning "oh-my-posh failed to initialize: $_"
-        }
     }
 
     # zoxide (optional)
@@ -89,45 +119,7 @@ if (-not $script:RavenThemeApplied) {
     }
 }
 
-# Prompt uses lazy init
-function prompt {
-    Invoke-Profile-PostInit
-    $cwd = (Get-Location).Path
-    if ($global:IsAdmin) { "[$cwd] # " } else { "[$cwd] $ " }
-	
-}
-if (-not $script:RavenFogPromptWrapped) {
-    $script:RavenFogPromptWrapped = $true
-
-    $orig = (Get-Command prompt -ErrorAction SilentlyContinue).ScriptBlock
-
-    function global:prompt {
-        $base = & $orig
-
-        if ($global:RavenFogEnabled) {
-            $esc = [char]27
-            $fog = "$esc[38;5;245m$(Get-RavenFogGlyph)$esc[0m "
-            return "$fog$base"
-        }
-
-        return $base
-    }
-}
-# Inject fog into the prompt (works with oh-my-posh too)
-if (-not $script:RavenFogPromptWrapped) {
-    $script:RavenFogPromptWrapped = $true
-
-    $orig = (Get-Command prompt -ErrorAction SilentlyContinue).ScriptBlock
-
-    function global:prompt {
-        $base = & $orig
-
-        if ($global:RavenFogEnabled) {
-            $esc = [char]27
-            $fog = "$esc[38;5;245m$(Get-RavenFogGlyph)$esc[0m "
-            return "$fog$base"
-        }
-
-        return $base
-    }
+# Apply saved Oh My Posh theme last
+if (Get-Command Apply-RavenTheme -ErrorAction SilentlyContinue) {
+    Apply-RavenTheme -ThemeId $global:RavenTheme -Quiet
 }

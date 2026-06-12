@@ -1,20 +1,20 @@
 $ErrorActionPreference = "Continue"
 
 function Resolve-RavenRepoRoot {
-    if ($env:RAVEN_PROFILE_ROOT -and (Test-Path $env:RAVEN_PROFILE_ROOT)) {
-        return (Resolve-Path $env:RAVEN_PROFILE_ROOT).Path
+    $preferred = Join-Path $HOME "Documents/GitHub/powershell-profile"
+
+    if (Test-Path $preferred) {
+        return $preferred
     }
 
     $candidates = @(
-        (Join-Path $HOME "Documents/GitHub/powershell-profile"),
-        (Join-Path $HOME "Documents/Github/powershell-profile"),
         (Join-Path $HOME "GitHub/powershell-profile"),
-        (Join-Path $HOME "Github/powershell-profile")
+        (Join-Path $HOME "powershell-profile")
     )
 
     foreach ($repo in $candidates) {
         if (Test-Path (Join-Path $repo "bootstrap/loader.ps1")) {
-            return (Resolve-Path $repo).Path
+            return $repo
         }
     }
 
@@ -42,21 +42,40 @@ CWD: $c
 "@ | Write-Host -ForegroundColor DarkMagenta
 }
 
+function Resolve-RavenRepoRoot {
+    $preferred = Join-Path $HOME "Documents/GitHub/powershell-profile"
+
+    if (Test-Path (Join-Path $preferred "bootstrap/loader.ps1")) {
+        return $preferred
+    }
+
+    $candidates = @(
+        (Join-Path $HOME "GitHub/powershell-profile"),
+        (Join-Path $HOME "powershell-profile")
+    )
+
+    foreach ($repo in $candidates) {
+        if (Test-Path (Join-Path $repo "bootstrap/loader.ps1")) {
+            return $repo
+        }
+    }
+
+    return $null
+}
+
 $RepoRoot = Resolve-RavenRepoRoot
 if (-not $RepoRoot) {
     Write-Warning "Raven repo root not found."
     return
 }
 
-$ProfileRoot = Join-Path $RepoRoot "profile"
+$env:RAVEN_PROFILE_ROOT = $RepoRoot
 
+$ProfileRoot = Join-Path $RepoRoot "profile"
 if (-not (Test-Path $ProfileRoot)) {
     Write-Warning "Raven profile folder not found: $ProfileRoot"
     return
 }
-
-$env:RAVEN_PROFILE_ROOT = $RepoRoot
-
 
 if (-not $script:RavenBootShown) {
     $script:RavenBootShown = $true
