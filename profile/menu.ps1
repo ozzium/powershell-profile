@@ -1,11 +1,8 @@
-<# 
-   ███╗   ██╗███████╗ ██████╗ ███╗   ██╗
-   ████╗  ██║██╔════╝██╔═══██╗████╗  ██║
-   ██╔██╗ ██║█████╗  ██║   ██║██╔██╗ ██║
-   ██║╚██╗██║██╔══╝  ██║   ██║██║╚██╗██║
-   ██║ ╚████║███████╗╚██████╔╝██║ ╚████║
-   ╚═╝  ╚═══╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝
-        [ O Z Z I U M   S Y S T E M ]
+<#
+==========================================
+ Raven Menu System
+ Profile Navigation & Maintenance Tools
+==========================================
 #>
 
 # Colors used for neon effect
@@ -15,14 +12,30 @@ $NeonPink  = "`e[91m"
 $NeonReset = "`e[0m"
 
 function Show-RavenMenuHeader {
+
     Clear-Host
-    Write-Host "╭───────────────────────────────────────────────╮" -ForegroundColor DarkMagenta
-    Write-Host "│  🦇 R A V E N   C O N S O L E                 │" -ForegroundColor DarkMagenta
-    Write-Host "│  Profile Menu                                 │" -ForegroundColor DarkMagenta
-    Write-Host ("│  {0}@{1}  |  PS {2}" -f $env:USERNAME, $env:COMPUTERNAME, $PSVersionTable.PSVersion) -ForegroundColor DarkMagenta
-    Write-Host ("│  Theme: {0}" -f ($global:RavenTheme ?? "cobalt2")) -ForegroundColor DarkMagenta
-	Write-Host ("│  CWD: {0}" -f (Get-Location).Path) -ForegroundColor DarkMagenta
-    Write-Host "╰───────────────────────────────────────────────╯" -ForegroundColor DarkMagenta
+
+    $user = if ($env:USERNAME) {
+        "$env:USERNAME@$env:COMPUTERNAME"
+    } else {
+        "$env:USER@$env:HOSTNAME"
+    }
+
+    $theme = if ($global:RavenTheme) {
+        $global:RavenTheme
+    } else {
+        "default"
+    }
+
+    $repo = Split-Path $env:RAVEN_PROFILE_ROOT -Leaf
+
+    Write-Host "╭──────────────────────────────────────────────╮" -ForegroundColor DarkMagenta
+    Write-Host "│ 🦇 Raven Console                             │" -ForegroundColor Magenta
+    Write-Host ("│ User: {0,-36} │" -f $user) -ForegroundColor DarkMagenta
+    Write-Host ("│ Theme: {0,-35} │" -f $theme) -ForegroundColor DarkMagenta
+    Write-Host ("│ Repo: {0,-36} │" -f $repo) -ForegroundColor DarkMagenta
+    Write-Host ("│ PS {0,-8} {1,-24} │" -f $PSVersionTable.PSVersion,$PSVersionTable.Platform) -ForegroundColor DarkMagenta
+    Write-Host "╰──────────────────────────────────────────────╯" -ForegroundColor DarkMagenta
     Write-Host ""
 }
 
@@ -68,6 +81,7 @@ function Invoke-RavenSelfRepair {
         "shadows.ps1",
         "raven.ps1",
         "dashboard.ps1",
+        "git-tools.ps1"
         "menu.ps1",
         "help.ps1",
         "init.ps1"
@@ -95,7 +109,6 @@ function Invoke-RavenSelfRepair {
     # 3) Ensure key functions exist (and dot-source targeted files if needed)
     $mustHave = @(
         "profile-menu",
-        "Git-Sync",
         "Show-NeonFXMenu",
         "raven",
         "Raven-Dashboard"
@@ -150,16 +163,15 @@ function global:profile-menu {
 
         Write-Host "$NeonCyan 1$NeonReset • Switch Theme"
         Write-Host "$NeonCyan 2$NeonReset • Toggle Fast Mode"
-        Write-Host "$NeonCyan 3$NeonReset • Update Profile"
-        Write-Host "$NeonCyan 4$NeonReset • Edit Profile Files"
-        Write-Host "$NeonCyan 5$NeonReset • Backup Profile"
-        Write-Host "$NeonCyan 6$NeonReset • GitHub Sync"
-        Write-Host "$NeonCyan 7$NeonReset • Cleanup Tools"
-        Write-Host "$NeonCyan 8$NeonReset • Fun FX"
-        Write-Host "$NeonCyan 9$NeonReset • Neon FX"
-		Write-Host "$NeonCyan 10$NeonReset • Toggle Fog Prompt"
-		Write-Host "$NeonCyan 11$NeonReset • Self-Repair (Reload Modules)"
-        Write-Host "$NeonCyan 12$NeonReset • Exit"
+        Write-Host "$NeonCyan 3$NeonReset • Edit Profile Files"
+        Write-Host "$NeonCyan 4$NeonReset • Backup Profile"
+        Write-Host "$NeonCyan 5$NeonReset • Git & GitHub Tools"
+        Write-Host "$NeonCyan 6$NeonReset • Cleanup Tools"
+        Write-Host "$NeonCyan 7$NeonReset • Fun FX"
+        Write-Host "$NeonCyan 8$NeonReset • Neon FX"
+		    Write-Host "$NeonCyan 9$NeonReset • Toggle Fog Prompt"
+		    Write-Host "$NeonCyan 10$NeonReset • Self-Repair (Reload Modules)"
+        Write-Host "$NeonCyan 11$NeonReset • Exit"
 		
 		$choice = Read-Host "Choose an option"
 
@@ -167,30 +179,21 @@ function global:profile-menu {
 
             "1" { Show-ThemeMenu }
             "2" { Toggle-FastMode }
-            "3" { Profile-Update }
-            "4" { Edit-ProfileFiles }
-            "5" { Profile-Backup }
-            "6" { Git-Sync }
-            "7" { Show-CleanupMenu }
-            "8" { Show-FunMenu }
-			"9"  { Show-NeonFXMenu }
-			"10" { Toggle-FogPrompt }
-			"11" { Invoke-RavenSelfRepair }
-			"12" { $ExitMenu = $true; break }
-
-            # FIXED EXIT
-            "11" { 
-                $ExitMenu = $true
-            }
+            "3" { Edit-ProfileFiles }
+            "4" { Profile-Backup }
+            "5" { Show-RavenGitMenu }
+            "6" { Show-CleanupMenu }
+            "7" { Show-FunMenu }
+            "8"  { Show-NeonFXMenu }
+            "9" { Toggle-FogPrompt }
+            "10" { Invoke-RavenSelfRepair }
+            "11" { $ExitMenu = $true; break }
 
             default {
                 Write-Host "Invalid option!" -ForegroundColor Red
             }
         }
 
-        if (-not $ExitMenu) {
-            Pause
-        }
     }
 }
 function Show-ProcessPanel {
@@ -307,55 +310,92 @@ function Profile-Update {
     }
 }
 
-
 function Edit-ProfileFiles {
     Show-RavenMenuHeader
+
+    $profileRoot = Get-RavenProfileRoot
+    if (-not $profileRoot) {
+        Write-Warning "Profile folder not found."
+        Read-Host "Press Enter to continue..."
+        return
+    }
+
     Write-Host "Files:"
-    $files = Get-ChildItem $ProfileRoot -Filter *.ps1
+    $files = Get-ChildItem $profileRoot -Filter *.ps1 | Sort-Object Name
+
     $i = 1
     foreach ($f in $files) {
         Write-Host "$i) $($f.Name)"
         $i++
     }
+
     Write-Host ""
     $choice = Read-Host "Select file number"
-    $file = $files[$choice - 1]
+
+    [int]$idx = 0
+    if (-not [int]::TryParse($choice, [ref]$idx)) { return }
+
+    $file = $files[$idx - 1]
     if ($file) {
-        & $global:PSProfileConfig.Editor $file.FullName
+        if (Get-Command e -ErrorAction SilentlyContinue) {
+            e $file.FullName
+        } elseif (Get-Command code -ErrorAction SilentlyContinue) {
+            code $file.FullName
+        } else {
+            notepad $file.FullName
+        }
     }
 }
 
 function Profile-Backup {
-    $backupDir = Join-Path $HOME "Documents\PowerShell\Profile Backups"
-    if (-not (Test-Path $backupDir)) { New-Item -Path $backupDir -ItemType Directory | Out-Null }
+    $profileRoot = Get-RavenProfileRoot
+    if (-not $profileRoot) {
+        Write-Warning "Profile folder not found."
+        Read-Host "Press Enter to continue..."
+        return
+    }
+
+    $backupDir = Join-Path $HOME "Documents/PowerShell/Profile Backups"
+    if (-not (Test-Path $backupDir)) {
+        New-Item -Path $backupDir -ItemType Directory -Force | Out-Null
+    }
 
     $timestamp = (Get-Date).ToString("yyyyMMdd-HHmmss")
-    $dest = Join-Path $backupDir "backup-$timestamp.zip"
+    $dest = Join-Path $backupDir "raven-profile-backup-$timestamp.zip"
 
-    Compress-Archive -Path $ProfileRoot -DestinationPath $dest
+    Compress-Archive -Path $profileRoot -DestinationPath $dest -Force
     Write-Host "Backup created at: $dest" -ForegroundColor Green
+    Read-Host "Press Enter to continue..."
 }
 
 function Get-RavenRepoRoot {
-    # Repo root is the parent of the profile folder
     if (-not $env:RAVEN_PROFILE_ROOT) { return $null }
 
-    $profileRoot = (Resolve-Path $env:RAVEN_PROFILE_ROOT -ErrorAction SilentlyContinue)?.Path
-    if (-not $profileRoot) { return $null }
+    $root = (Resolve-Path $env:RAVEN_PROFILE_ROOT -ErrorAction SilentlyContinue)?.Path
+    if (-not $root) { return $null }
 
-    $repoRoot = (Resolve-Path (Join-Path $profileRoot "..") -ErrorAction SilentlyContinue)?.Path
-    if ($repoRoot -and (Test-Path (Join-Path $repoRoot ".git"))) { return $repoRoot }
+    if (Test-Path (Join-Path $root ".git")) {
+        return $root
+    }
+
+    $parent = (Resolve-Path (Join-Path $root "..") -ErrorAction SilentlyContinue)?.Path
+    if ($parent -and (Test-Path (Join-Path $parent ".git"))) {
+        return $parent
+    }
 
     return $null
 }
 
-function Git-Sync {
+function Get-RavenProfileRoot {
     $repo = Get-RavenRepoRoot
-    if (-not $repo) {
-        Write-Warning "Raven repo not found. Expected '.git' next to: $env:RAVEN_PROFILE_ROOT"
-        Read-Host "Press Enter to continue..."
-        return
-    }
+    if (-not $repo) { return $null }
+
+    $profile = Join-Path $repo "profile"
+    if (Test-Path $profile) { return $profile }
+
+    return $null
+}
+
 
     Push-Location $repo
     try {
@@ -383,7 +423,6 @@ function Git-Sync {
         Pop-Location
         Read-Host "Press Enter to continue..."
     }
-}
 
 function Show-CleanupMenu {
     Clear-Host

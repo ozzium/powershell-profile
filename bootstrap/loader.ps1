@@ -1,14 +1,6 @@
-<#
-  Raven Universal Loader v2 (Windows + macOS)
-  - Uses $env:RAVEN_PROFILE_ROOT if set
-  - Else auto-detects common GitHub locations
-  - Option 2 boot (banner + info box) once per session
-  - Prints REAL error if raven.ps1 fails (instead of silent skipping)
-#>
-Install-Module -Name Terminal-Icons
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 
-function Resolve-RavenProfileRoot {
+function Resolve-RavenRepoRoot {
     if ($env:RAVEN_PROFILE_ROOT -and (Test-Path $env:RAVEN_PROFILE_ROOT)) {
         return (Resolve-Path $env:RAVEN_PROFILE_ROOT).Path
     }
@@ -21,11 +13,8 @@ function Resolve-RavenProfileRoot {
     )
 
     foreach ($repo in $candidates) {
-        if (-not (Test-Path $repo)) { continue }
-
-        $profileDir = Join-Path $repo "profile"
-        if ((Test-Path (Join-Path $profileDir "config.ps1")) -and (Test-Path (Join-Path $profileDir "menu.ps1"))) {
-            return (Resolve-Path $profileDir).Path
+        if (Test-Path (Join-Path $repo "bootstrap/loader.ps1")) {
+            return (Resolve-Path $repo).Path
         }
     }
 
@@ -33,8 +22,7 @@ function Resolve-RavenProfileRoot {
 }
 
 function Show-RavenBootHeader {
-    $u = "$env:USERNAME@$env:COMPUTERNAME"
-    if (-not $env:USERNAME) { $u = "$env:USER@$env:HOSTNAME" }  # macOS friendliness
+    $u = if ($env:USERNAME) { "$env:USERNAME@$env:COMPUTERNAME" } else { "$env:USER@$env:HOSTNAME" }
     $v = $PSVersionTable.PSVersion.ToString()
     $d = (Get-Date).ToString("yyyy-MM-dd HH:mm")
     $c = (Get-Location).Path
@@ -48,31 +36,71 @@ function Show-RavenBootHeader {
 ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝
       🦇  R A V E N   A W A K E N S  🦇
 
-╭───────────────────────────────────────────────╮
-│  💜 $u
-│  PS Version: $v
-│  Date: $d
-│  CWD: $c
-╰───────────────────────────────────────────────╯
+PS Version: $v
+Date: $d
+CWD: $c
 "@ | Write-Host -ForegroundColor DarkMagenta
 }
 
-$root = Resolve-RavenProfileRoot
-if (-not $root) {
-    Write-Warning "Raven root not found. Clone to ~/Documents/GitHub/powershell-profile or set RAVEN_PROFILE_ROOT."
+$RepoRoot = Resolve-RavenRepoRoot
+if (-not $RepoRoot) {
+    Write-Warning "Raven repo root not found."
     return
 }
 
-# Export for this session
-$env:RAVEN_PROFILE_ROOT = $root
+$ProfileRoot = Join-Path $RepoRoot "profile"
 
-# Boot header once per session
+if (-not (Test-Path $ProfileRoot)) {
+    Write-Warning "Raven profile folder not found: $ProfileRoot"
+    return
+}
+
+$env:RAVEN_PROFILE_ROOT = $RepoRoot
+
+
 if (-not $script:RavenBootShown) {
     $script:RavenBootShown = $true
     Show-RavenBootHeader
 }
+function Import-RavenModules {
+    param(
+        [string]$ModulesFile
+    )
 
+    if (-not (Test-Path $ModulesFile)) { return }
+
+    try {
+        $modules = Get-Content $ModulesFile -Raw | ConvertFrom-Json
+    } catch {
+        Write-Warning "Could not read modules file: $ModulesFile"
+        return
+    }
+
+    foreach ($m in @($modules)) {
+        $name = [string]$m.Name
+        if (-not $name) { continue }
+
+        $exists = Get-Module -ListAvailable -Name $name
+
+        if (-not $exists -and $m.InstallIfMissing) {
+            try {
+                Install-Module -Name $name -Scope CurrentUser -Force -AllowClobber -ErrorAction Stop
+            } catch {
+                Write-Warning "Failed installing module '$name': $($_.Exception.Message)"
+                continue
+            }
+        }
+
+        try {
+            Import-Module $name -ErrorAction Stop
+        } catch {
+            Write-Warning "Failed importing module '$name': $($_.Exception.Message)"
+        }
+    }
+}
 # Load modules (order matters)
+Import-RavenModules -ModulesFile (Join-Path $ProfileRoot "modules.json")
+
 $files = @(
   "config.ps1",
 
@@ -95,7 +123,8 @@ $files = @(
   "dashboard.ps1",
 
   # Menu UI should come late (depends on features/fx)
-  "menu.ps1",
+  "git-tools.ps1",
+	"menu.ps1",
   "help.ps1",
 
   # Init last (post-init hooks, admin checks, editor, etc.)
@@ -103,7 +132,7 @@ $files = @(
 )
 
 foreach ($f in $files) {
-    $p = Join-Path $root $f
+    $p = Join-Path $ProfileRoot $f
     if (-not (Test-Path $p)) { continue }
 
     try {
