@@ -80,18 +80,14 @@ if (-not (Test-Path $root)) {
     # 2) Load modules in known-good order (silent by default)
     $files = @(
         "config.ps1",
-        "utils.ps1",
-        "update.ps1",
-        "completions.ps1",
         "appearance.ps1",
+        "editors.ps1",
         "features.ps1",
-        "fx.ps1",
-        "inline.ps1",
-        "shadows.ps1",
         "raven.ps1",
         "dashboard.ps1",
         "git-tools.ps1",
         "menu.ps1",
+        "module-manager.ps1",
         "help.ps1",
         "init.ps1"
     )
@@ -118,7 +114,6 @@ if (-not (Test-Path $root)) {
     # 3) Ensure key functions exist (and dot-source targeted files if needed)
     $mustHave = @(
         "profile-menu",
-        "Show-NeonFXMenu",
         "raven",
         "Raven-Dashboard"
     )
@@ -175,12 +170,9 @@ function global:profile-menu {
         Write-Host "$NeonCyan 3$NeonReset • Edit Profile Files"
         Write-Host "$NeonCyan 4$NeonReset • Backup Profile"
         Write-Host "$NeonCyan 5$NeonReset • Git & GitHub Tools"
-        Write-Host "$NeonCyan 6$NeonReset • Cleanup Tools"
-        Write-Host "$NeonCyan 7$NeonReset • Fun FX"
-        Write-Host "$NeonCyan 8$NeonReset • Neon FX"
-		    Write-Host "$NeonCyan 9$NeonReset • Toggle Fog Prompt"
-		    Write-Host "$NeonCyan 10$NeonReset • Self-Repair (Reload Modules)"
-        Write-Host "$NeonCyan 11$NeonReset • Exit"
+        Write-Host "$NeonCyan 6$NeonReset • Self-Repair (Reload Modules)"
+        Write-Host "$NeonCyan 7$NeonReset • Module Manager"
+        Write-Host "$NeonCyan 8$NeonReset • Exit"
 		
 		$choice = Read-Host "Choose an option"
 
@@ -191,12 +183,9 @@ function global:profile-menu {
             "3" { Edit-ProfileFiles }
             "4" { Profile-Backup }
             "5" { Show-RavenGitMenu }
-            "6" { Show-CleanupMenu }
-            "7" { Show-FunMenu }
-            "8"  { Show-NeonFXMenu }
-            "9" { Toggle-FogPrompt }
-            "10" { Invoke-RavenSelfRepair }
-            "11" { $ExitMenu = $true; break }
+            "6" { Invoke-RavenSelfRepair }
+            "7" { Show-RavenModuleMenu }
+            "8" { $ExitMenu = $true; break }
 
             default {
                 Write-Host "Invalid option!" -ForegroundColor Red
@@ -205,76 +194,6 @@ function global:profile-menu {
 
     }
 }
-function Show-ProcessPanel {
-    $Exit = $false
-
-    while (-not $Exit) {
-        Clear-Host
-        Write-Host "OZ PROCESS PANEL" -ForegroundColor Cyan
-        Write-Host "------------------------------------"
-        Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 |
-            Select-Object Id, CPU, WorkingSet, ProcessName
-
-        Write-Host ""
-        Write-Host "[K]ill process  [R]efresh  [Q]uit" -ForegroundColor Yellow
-        $choice = Read-Host "Choice"
-
-        switch ($choice.ToUpper()) {
-            "K" {
-                $pid = Read-Host "Enter PID to kill"
-                if ($pid) {
-                    try {
-                        Stop-Process -Id ([int]$pid) -Force
-                        Write-Host ("Killed PID {0}" -f $pid) -ForegroundColor Green
-                    } catch {
-                        Write-Warning ("Failed to kill PID {0}: {1}" -f $pid, $_.Exception.Message)
-                    }
-                    Start-Sleep -Seconds 1
-                }
-            }
-            "R" { }
-            "Q" { $Exit = $true }
-            default { }
-        }
-    }
-}
-
-function Show-FileApp {
-    while ($true) {
-        Clear-Host
-        $cwd = Get-Location
-        Write-Host "OZ FILE APP - $cwd" -ForegroundColor Cyan
-        Write-Host "----------------------------------------------"
-
-        $items = Get-ChildItem
-        $index = 1
-        foreach ($it in $items) {
-            $mark = if ($it.PSIsContainer) { "[D]" } else { "   " }
-            Write-Host ("{0,2}) {1} {2}" -f $index, $mark, $it.Name)
-            $index++
-        }
-
-        Write-Host ""
-        Write-Host "[Number]=Open/Enter  [U]=Up  [Q]=Quit" -ForegroundColor Yellow
-        $choice = Read-Host "Choice"
-
-        if ($choice.ToUpper() -eq "Q") { break }
-        elseif ($choice.ToUpper() -eq "U") { Set-Location ..; continue }
-
-        [int]$idx = 0
-        if (-not [int]::TryParse($choice, [ref]$idx)) { continue }
-        $realIndex = $idx - 1
-        if ($realIndex -lt 0 -or $realIndex -ge $items.Count) { continue }
-
-        $sel = $items[$realIndex]
-        if ($sel.PSIsContainer) {
-            Set-Location $sel.FullName
-        } else {
-            try { Start-Process $sel.FullName } catch {}
-        }
-    }
-}
-
 
 # =============== SUBMENUS =======================================================
 
@@ -289,40 +208,15 @@ function Toggle-FastMode {
 }
 
 function global:Edit-ProfileFiles {
-    Show-RavenMenuHeader
-
-    $profileRoot = Get-RavenProfileRoot
-    if (-not $profileRoot) {
-        Write-Warning "Profile folder not found."
-        Read-Host "Press Enter to continue..."
+    if (Get-Command Show-RavenEditProfileFiles -ErrorAction SilentlyContinue) {
+        Show-RavenEditProfileFiles
         return
     }
 
-    Write-Host "Files:"
-    $files = Get-ChildItem $profileRoot -Filter *.ps1 | Sort-Object Name
-
-    $i = 1
-    foreach ($f in $files) {
-        Write-Host "$i) $($f.Name)"
-        $i++
-    }
-
     Write-Host ""
-    $choice = Read-Host "Select file number"
-
-    [int]$idx = 0
-    if (-not [int]::TryParse($choice, [ref]$idx)) { return }
-
-    $file = $files[$idx - 1]
-    if ($file) {
-        if (Get-Command e -ErrorAction SilentlyContinue) {
-            e $file.FullName
-        } elseif (Get-Command code -ErrorAction SilentlyContinue) {
-            code $file.FullName
-        } else {
-            notepad $file.FullName
-        }
-    }
+    Write-Host "Raven editor tools are not loaded." -ForegroundColor Red
+    Write-Host "Make sure profile/editors.ps1 exists and loader.ps1 loads it before menu.ps1." -ForegroundColor Yellow
+    Read-Host "Press Enter to continue..."
 }
 
 function global:Profile-Backup {
@@ -374,45 +268,6 @@ function global:Get-RavenProfileRoot {
     return $null
 }
 
-function Show-CleanupMenu {
-    Clear-Host
-    Write-Host "$NeonCyanCLEANUP TOOLS$NeonReset"
-    Write-Host "------------------------"
-    Write-Host "1) Clear Temp"
-    Write-Host "2) Clear DNS"
-    Write-Host "3) Clear Recycle Bin"
-    Write-Host ""
-    $c = Read-Host "Choose"
-
-    switch ($c) {
-        "1" { Clean-Temp }
-        "2" { flushdns }
-        "3" { Clear-RecycleBin -Force }
-    }
-}
-
-function global:Show-FunMenu {
-    $ExitFun = $false
-
-while (-not $ExitFun) {
-    Clear-Host
-    Write-Host "$NeonPink UTIL ZONE $NeonReset"
-    Write-Host "------------------------"
-    Write-Host " 1) Process Panel (Kill/Refresh)"
-    Write-Host " 2) File App"
-    Write-Host " 3) Back"
-    Write-Host ""
-
-    $c = Read-Host "Choose"
-
-    switch ($c) {
-        "1" { Show-ProcessPanel }
-        "2" { Show-FileApp }
-        "3" { $ExitFun = $true }
-        default { }
-    }
-}
-}
 
 # Sanity check – will error loudly if braces are unbalanced
 $null = {

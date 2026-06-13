@@ -1,6 +1,32 @@
 [
   {
     "Name": "Terminal-Icons",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSReadLine",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "z",
+    "Enabled": false,
+    "InstallIfMissing": true
+  },
+  {
+    "Name": "UltraTree",
+    "Enabled": true,
+    "InstallIfMissing": true
+  },
+  {
+    "Name": "TreeView",
+    "Enabled": true,
+    "InstallIfMissing": true
+  },
+  {
+    "Name": "PowerShellGet",
+    "Enabled": true,
     "InstallIfMissing": false
   }
 ]
