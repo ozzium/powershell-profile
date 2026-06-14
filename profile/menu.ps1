@@ -197,14 +197,25 @@ function global:profile-menu {
 
 # =============== SUBMENUS =======================================================
 
-function Toggle-FastMode {
-    if (-not $global:FastMode) {
-        $global:FastMode = $true
-        Write-Host "Fast mode: ENABLED" -ForegroundColor Green
-    } else {
-        $global:FastMode = $false
-        Write-Host "Fast mode: DISABLED" -ForegroundColor Yellow
+function global:Toggle-RavenFastMode {
+    if ($null -eq $global:RavenFastMode) {
+        $global:RavenFastMode = $false
     }
+
+    $global:RavenFastMode = -not [bool]$global:RavenFastMode
+
+    if (Get-Command Save-RavenSettings -ErrorAction SilentlyContinue) {
+        Save-RavenSettings -FastMode $global:RavenFastMode
+    }
+
+    if ($global:RavenFastMode) {
+        Write-Host "Fast Mode Enabled" -ForegroundColor Green
+    }
+    else {
+        Write-Host "Fast Mode Disabled" -ForegroundColor Yellow
+    }
+
+    Read-Host "Press Enter to continue..."
 }
 
 function global:Edit-ProfileFiles {

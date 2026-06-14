@@ -40,6 +40,79 @@ try {
     }
 } catch {}
 
+function global:Get-RavenSettingsPath {
+    $repoRoot = $null
+
+    if (Get-Command Get-RavenRepoRoot -ErrorAction SilentlyContinue) {
+        $repoRoot = Get-RavenRepoRoot
+    }
+
+    if (-not $repoRoot) {
+        $possibleRepoRoots = @(
+            "$HOME/Documents/GitHub/powershell-profile",
+            "$HOME\Documents\GitHub\powershell-profile"
+        )
+
+        foreach ($possibleRepoRoot in $possibleRepoRoots) {
+            if (Test-Path $possibleRepoRoot) {
+                $repoRoot = $possibleRepoRoot
+                break
+            }
+        }
+    }
+
+    if (-not $repoRoot) {
+        return $null
+    }
+
+    return Join-Path $repoRoot "profile/raven-settings.json"
+}
+
+function global:Get-RavenSettings {
+    $path = Get-RavenSettingsPath
+
+    if (-not $path -or -not (Test-Path $path)) {
+        return [pscustomobject]@{
+            theme    = "cobalt2-custom"
+            fastMode = $false
+        }
+    }
+
+    try {
+        return Get-Content $path -Raw | ConvertFrom-Json
+    }
+    catch {
+        return [pscustomobject]@{
+            theme    = "cobalt2-custom"
+            fastMode = $false
+        }
+    }
+}
+
+function global:Save-RavenSettings {
+    param(
+        [string]$Theme,
+        [Nullable[bool]]$FastMode
+    )
+
+    $path = Get-RavenSettingsPath
+
+    if (-not $path) {
+        return
+    }
+
+    $current = Get-RavenSettings
+
+    $data = [ordered]@{
+        theme    = if ($Theme) { $Theme } else { $current.theme }
+        fastMode = if ($null -ne $FastMode) { [bool]$FastMode } else { [bool]$current.fastMode }
+    }
+
+    $data |
+        ConvertTo-Json -Depth 5 |
+        Set-Content -Path $path -Encoding UTF8
+}
+
 # PSReadLine setup...
 
 function global:Apply-RavenTheme {
@@ -152,6 +225,8 @@ function global:Apply-RavenTheme {
 
     $global:RavenTheme = $ThemeId
     $global:RavenThemeFile = $themeFile
+    
+    Save-RavenSettings -Theme $ThemeId
 
 $ompInit = oh-my-posh init pwsh --config $themeFile
 

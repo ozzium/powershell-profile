@@ -121,9 +121,30 @@ catch {}
 
 # Apply saved Raven theme last
 try {
+    try {
     if (Get-Command Apply-RavenTheme -ErrorAction SilentlyContinue) {
+        $settings = Get-RavenSettings
+
+        try {
+    if (Get-Command Get-RavenSettings -ErrorAction SilentlyContinue) {
+        $settings = Get-RavenSettings
+        $global:RavenFastMode = [bool]$settings.fastMode
+    }
+}
+catch {
+    $global:RavenFastMode = $false
+}
+
+        if ($settings.theme) {
+            $global:RavenTheme = $settings.theme
+        }
+
         Apply-RavenTheme -ThemeId $global:RavenTheme -Quiet | Out-Null
     }
+}
+catch {
+    Write-Warning "Failed to apply Raven theme: $_"
+}
 }
 catch {
     Write-Warning "Failed to apply Raven theme: $_"
