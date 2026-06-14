@@ -179,7 +179,7 @@ function global:profile-menu {
         switch ($choice) {
 
             "1" { Switch-RavenTheme }
-            "2" { Toggle-FastMode }
+            "2" { Toggle-RavenFastMode }
             "3" { Edit-ProfileFiles }
             "4" { Profile-Backup }
             "5" { Show-RavenGitMenu }
