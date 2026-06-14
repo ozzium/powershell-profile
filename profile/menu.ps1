@@ -178,7 +178,7 @@ function global:profile-menu {
 
         switch ($choice) {
 
-            "1" { Show-ThemeMenu }
+            "1" { Switch-RavenTheme }
             "2" { Toggle-FastMode }
             "3" { Edit-ProfileFiles }
             "4" { Profile-Backup }

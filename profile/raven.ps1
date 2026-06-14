@@ -360,6 +360,14 @@ function global:Raven-Dashboard {
     }
 }
 
+function global:Reload-RavenProfile {
+    . $PROFILE
+    Write-Host "Raven profile reloaded." -ForegroundColor Green
+}
+
+Set-Alias -Name reload-profile -Value Reload-RavenProfile -Scope Global
+Set-Alias -Name reload-raven -Value Reload-RavenProfile -Scope Global
+
 # ===============================
 #    EXPORT PUBLIC FUNCTIONS
 # ===============================

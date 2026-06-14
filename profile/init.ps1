@@ -1,125 +1,130 @@
-# Admin check (fixed)
-$global:IsAdmin = (New-Object Security.Principal.WindowsPrincipal(
-    [Security.Principal.WindowsIdentity]::GetCurrent()
-)).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+# Raven v3 - Init
+# Lightweight shell startup helpers only.
+# Theme logic lives in appearance.ps1.
+# Editor logic lives in editors.ps1.
+
+# Admin check
+try {
+    if ($IsWindows) {
+        $global:IsAdmin = (New-Object Security.Principal.WindowsPrincipal(
+            [Security.Principal.WindowsIdentity]::GetCurrent()
+        )).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+    }
+    else {
+        $global:IsAdmin = $false
+    }
+}
+catch {
+    $global:IsAdmin = $false
+}
 
 # Window title
-$adminSuffix = if ($global:IsAdmin) { " [ADMIN]" } else { "" }
-$Host.UI.RawUI.WindowTitle = "PowerShell $($PSVersionTable.PSVersion)$adminSuffix"
-
 try {
-  if ((Get-Location).Path -like "C:\Windows\System32*") {
-    Set-Location $HOME
-  }
-} catch {}
+    $adminSuffix = if ($global:IsAdmin) { " [ADMIN]" } else { "" }
+    $Host.UI.RawUI.WindowTitle = "PowerShell $($PSVersionTable.PSVersion)$adminSuffix"
+}
+catch {}
 
-# Editor detection (only runs once)
-if (-not $global:PSProfileConfig.Editor) {
-    $candidates = @('nvim','pvim','vim','vi','code','codium','notepad++','sublime_text')
-    foreach ($c in $candidates) {
-        if (Get-Command -Name $c -ErrorAction SilentlyContinue) {
-            $global:PSProfileConfig.Editor = $c
-            break
+# Avoid opening in System32 on Windows
+try {
+    if ($IsWindows -and (Get-Location).Path -like "C:\Windows\System32*") {
+        Set-Location $HOME
+    }
+}
+catch {}
+
+function global:Reload-RavenProfile {
+    . $PROFILE
+    Write-Host "Raven profile reloaded." -ForegroundColor Green
+}
+
+Set-Alias -Name reload-profile -Value Reload-RavenProfile -Scope Global -ErrorAction SilentlyContinue
+Set-Alias -Name reload-raven -Value Reload-RavenProfile -Scope Global -ErrorAction SilentlyContinue
+
+function global:Edit-Profile {
+    if (Get-Command Open-RavenFileWithEditor -ErrorAction SilentlyContinue) {
+        $saved = Get-RavenSavedEditor
+
+        if ($saved) {
+            Open-RavenFileWithEditor -Path $PROFILE -Editor ([pscustomobject]@{
+                Name       = $saved.name
+                Command    = $saved.command
+                LaunchMode = $saved.launchMode
+            })
+            return
         }
     }
-    if (-not $global:PSProfileConfig.Editor) {
-        $global:PSProfileConfig.Editor = 'notepad'
+
+    if (Get-Command code -ErrorAction SilentlyContinue) {
+        code $PROFILE
+        return
     }
-}
 
-Set-Alias -Name vim -Value $global:PSProfileConfig.Editor -ErrorAction SilentlyContinue
-
-function Edit-Profile {
-    & $global:PSProfileConfig.Editor $PROFILE
-}
-Set-Alias -Name ep -Value Edit-Profile -ErrorAction SilentlyContinue
-
-# Lazy one-time init for heavier stuff (themes, icons, zoxide)
-$script:ProfilePostInitRegistered = $false
-
-function Invoke-Profile-PostInit {
-    if ($script:ProfilePostInitRegistered) { return }
-    $script:ProfilePostInitRegistered = $true
-
-    Start-Sleep -Milliseconds 50
-# Apply persisted theme once
-if (-not $script:RavenThemeApplied) {
-    $script:RavenThemeApplied = $true
-
-    if ($global:RavenTheme) {
-        switch ($global:RavenTheme) {
-            "cobalt2" {
-                if (Get-Command Set-PromptTheme-Cobalt2 -ErrorAction SilentlyContinue) {
-                    Set-PromptTheme-Cobalt2
-                }
-            }
-
-            "neon-blue" {
-                if (Get-Command Set-PromptTheme-NeonBlue -ErrorAction SilentlyContinue) {
-                    Set-PromptTheme-NeonBlue
-                }
-            }
-
-            "pastel-pink" {
-                if (Get-Command Set-PromptTheme-PastelPink -ErrorAction SilentlyContinue) {
-                    Set-PromptTheme-PastelPink
-                }
-            }
-
-            "cyber-green" {
-                if (Get-Command Set-PromptTheme-CyberGreen -ErrorAction SilentlyContinue) {
-                    Set-PromptTheme-CyberGreen
-                }
-            }
-
-            default {
-                Write-Host "Theme selected but no startup applier found: $global:RavenTheme" -ForegroundColor Yellow
-            }
-        }
+    if ($IsWindows) {
+        notepad.exe $PROFILE
+        return
     }
+
+    if ($IsMacOS) {
+        & "/usr/bin/open" -a "TextEdit" $PROFILE
+        return
+    }
+
+    nano $PROFILE
 }
 
-    if (Get-Command Get-Theme -ErrorAction SilentlyContinue) { Get-Theme }
-}
-    # Terminal-Icons (optional)
+Set-Alias -Name ep -Value Edit-Profile -Scope Global -ErrorAction SilentlyContinue
+
+# Optional Terminal-Icons
+try {
     if (Get-Module -ListAvailable -Name Terminal-Icons) {
         Import-Module Terminal-Icons -ErrorAction SilentlyContinue
     }
+}
+catch {}
 
-    # oh-my-posh (optional)
-    if (Get-Command -Name 'oh-my-posh' -ErrorAction SilentlyContinue) {
-        try {
-            $ompConfig = 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/cobalt2.omp.json'
+# Optional zoxide
+try {
+    if (Get-Command zoxide -ErrorAction SilentlyContinue) {
+        Invoke-Expression (& { zoxide init --cmd z powershell | Out-String })
+    }
+}
+catch {
+    Write-Warning "zoxide init failed: $_"
+}
+
+# Optional external function folder
+try {
+    $repoRoot = $null
+
+    if (Get-Command Get-RavenRepoRoot -ErrorAction SilentlyContinue) {
+        $repoRoot = Get-RavenRepoRoot
     }
 
-    # zoxide (optional)
-    if (Get-Command -Name 'zoxide' -ErrorAction SilentlyContinue) {
-        try {
-            Invoke-Expression (& { (zoxide init --cmd z powershell | Out-String) })
-        } catch {
-            Write-Warning "zoxide init failed: $_"
-        }
-    }
+    if ($repoRoot) {
+        $funcFolder = Join-Path $repoRoot "modules/Functions"
 
-    # Optional: auto-load external user functions from modules/Functions
-    $funcFolder = Join-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) '..\modules\Functions'
-    $funcFolder = (Resolve-Path $funcFolder -ErrorAction SilentlyContinue)?.Path
-    if ($funcFolder -and (Test-Path $funcFolder)) {
-        $files = Get-ChildItem -Path $funcFolder -Filter *.ps1 -File -ErrorAction SilentlyContinue
-        $i = 1
-        foreach ($f in $files) {
-            try {
-                . $f.FullName
-                Write-Host "$i : $($f.Name) loaded" -ForegroundColor Yellow -BackgroundColor DarkMagenta
-                $i++
-            } catch {
-                Write-Warning "Failed to load function file $($f.Name): $_"
-            }
+        if (Test-Path $funcFolder) {
+            Get-ChildItem -Path $funcFolder -Filter *.ps1 -File -ErrorAction SilentlyContinue |
+                ForEach-Object {
+                    try {
+                        . $_.FullName
+                    }
+                    catch {
+                        Write-Warning "Failed to load function file $($_.Name): $_"
+                    }
+                }
         }
     }
 }
+catch {}
 
-# Apply saved Oh My Posh theme last
-if (Get-Command Apply-RavenTheme -ErrorAction SilentlyContinue) {
-    Apply-RavenTheme -ThemeId $global:RavenTheme -Quiet
+# Apply saved Raven theme last
+try {
+    if (Get-Command Apply-RavenTheme -ErrorAction SilentlyContinue) {
+        Apply-RavenTheme -ThemeId $global:RavenTheme -Quiet | Out-Null
+    }
+}
+catch {
+    Write-Warning "Failed to apply Raven theme: $_"
 }

@@ -20,11 +20,6 @@
     "InstallIfMissing": true
   },
   {
-    "Name": "TreeView",
-    "Enabled": true,
-    "InstallIfMissing": true
-  },
-  {
     "Name": "PowerShellGet",
     "Enabled": true,
     "InstallIfMissing": false

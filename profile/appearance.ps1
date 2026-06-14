@@ -48,14 +48,48 @@ function global:Apply-RavenTheme {
         [switch]$Quiet
     )
 
-    if (-not $ThemeId) { $ThemeId = "cobalt2" }
+    if (-not $ThemeId) {
+        $ThemeId = "cobalt2-custom"
+    }
 
     if (-not (Get-Command oh-my-posh -ErrorAction SilentlyContinue)) {
-        if (-not $Quiet) { Write-Warning "oh-my-posh not found." }
-        return
+        if (-not $Quiet) {
+            Write-Warning "oh-my-posh not found."
+        }
+        return $false
+    }
+
+    $repoRoot = $null
+
+    if (Get-Command Get-RavenRepoRoot -ErrorAction SilentlyContinue) {
+        $repoRoot = Get-RavenRepoRoot
+    }
+
+    if (-not $repoRoot) {
+        $possibleRepoRoots = @(
+            "$HOME/Documents/GitHub/powershell-profile",
+            "$HOME\Documents\GitHub\powershell-profile"
+        )
+
+        foreach ($possibleRepoRoot in $possibleRepoRoots) {
+            if (Test-Path $possibleRepoRoot) {
+                $repoRoot = $possibleRepoRoot
+                break
+            }
+        }
     }
 
     $themeRoots = @()
+
+    if ($repoRoot) {
+        $themeRoots += @(
+            Join-Path $repoRoot "modules/Themes"
+            Join-Path $repoRoot "themes"
+            Join-Path $repoRoot "profile/themes"
+            Join-Path $repoRoot "profile/oh-my-posh"
+            Join-Path $repoRoot "oh-my-posh"
+        )
+    }
 
     if ($env:POSH_THEMES_PATH) {
         $themeRoots += $env:POSH_THEMES_PATH
@@ -67,7 +101,8 @@ function global:Apply-RavenTheme {
         "/usr/local/share/oh-my-posh/themes",
         "/opt/homebrew/share/oh-my-posh/themes",
         "$HOME/.cache/oh-my-posh/themes",
-        "$env:LOCALAPPDATA/Programs/oh-my-posh/themes"
+        "$env:LOCALAPPDATA/Programs/oh-my-posh/themes",
+        "$env:LOCALAPPDATA\Programs\oh-my-posh\themes"
     )
 
     $brewCellars = @(
@@ -91,22 +126,232 @@ function global:Apply-RavenTheme {
 
     $themeFile = $null
 
+    $possibleThemeNames = @(
+        "$ThemeId.omp.json",
+        "$ThemeId.json"
+    )
+
     foreach ($root in $themeRoots) {
-        $candidate = Join-Path $root "$ThemeId.omp.json"
-        if (Test-Path $candidate) {
-            $themeFile = $candidate
+        foreach ($themeName in $possibleThemeNames) {
+            $candidate = Join-Path $root $themeName
+
+            if (Test-Path $candidate) {
+                $themeFile = $candidate
+                break
+            }
+        }
+
+        if ($themeFile) {
             break
         }
     }
 
     if (-not $themeFile) {
-        if (-not $Quiet) {
-            Write-Warning "Theme file not found for: $ThemeId"
-            Write-Warning "Checked: $($themeRoots -join ', ')"
+    $themeFile = $ThemeId
+}
+
+    $global:RavenTheme = $ThemeId
+    $global:RavenThemeFile = $themeFile
+
+$ompInit = oh-my-posh init pwsh --config $themeFile
+
+Invoke-Expression $ompInit
+
+if (Get-Command prompt -ErrorAction SilentlyContinue) {
+    $localPrompt = Get-Command prompt
+
+    if ($localPrompt.ScriptBlock) {
+        Set-Item -Path Function:\global:prompt -Value $localPrompt.ScriptBlock
+    }
+}
+
+    if (-not $Quiet) {
+        Write-Host "Applied theme: $ThemeId" -ForegroundColor Green
+        Write-Host $themeFile -ForegroundColor DarkGray
+    }
+
+    return $true
+}
+
+function global:Get-RavenThemeRoots {
+    $repoRoot = $null
+
+    if (Get-Command Get-RavenRepoRoot -ErrorAction SilentlyContinue) {
+        $repoRoot = Get-RavenRepoRoot
+    }
+
+    if (-not $repoRoot) {
+        $possibleRepoRoots = @(
+            "$HOME/Documents/GitHub/powershell-profile",
+            "$HOME\Documents\GitHub\powershell-profile"
+        )
+
+        foreach ($possibleRepoRoot in $possibleRepoRoots) {
+            if (Test-Path $possibleRepoRoot) {
+                $repoRoot = $possibleRepoRoot
+                break
+            }
         }
+    }
+
+    $roots = @()
+
+    if ($repoRoot) {
+        $roots += @(
+            Join-Path $repoRoot "modules/Themes"
+            Join-Path $repoRoot "themes"
+            Join-Path $repoRoot "profile/themes"
+            Join-Path $repoRoot "profile/oh-my-posh"
+            Join-Path $repoRoot "oh-my-posh"
+        )
+    }
+
+    if ($env:POSH_THEMES_PATH) {
+        $roots += $env:POSH_THEMES_PATH
+    }
+
+    $roots += @(
+        "$env:LOCALAPPDATA/Programs/oh-my-posh/themes",
+        "$env:LOCALAPPDATA\Programs\oh-my-posh\themes",
+        "/opt/homebrew/opt/oh-my-posh/themes",
+        "/usr/local/opt/oh-my-posh/themes",
+        "/usr/local/share/oh-my-posh/themes",
+        "/opt/homebrew/share/oh-my-posh/themes",
+        "$HOME/.cache/oh-my-posh/themes"
+    )
+
+    return $roots |
+        Where-Object { $_ -and (Test-Path $_) } |
+        Select-Object -Unique
+}
+
+
+function global:Get-RavenAvailableThemes {
+    $themes = @()
+
+    foreach ($root in Get-RavenThemeRoots) {
+        $themes += Get-ChildItem $root -File -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -match '\.omp\.json$|\.json$' } |
+            ForEach-Object {
+                $id = $_.Name
+                $id = $id -replace '\.omp\.json$', ''
+                $id = $id -replace '\.json$', ''
+
+                [pscustomobject]@{
+                    Id   = $id
+                    Name = $id
+                    Path = $_.FullName
+                }
+            }
+    }
+
+$builtInThemes = @(
+    "cobalt2",
+    "jandedobbeleer",
+    "zash",
+    "agnoster",
+    "atomic",
+    "bubbles",
+    "catppuccin",
+    "clean-detailed",
+    "dracula",
+    "emodipt",
+    "gruvbox",
+    "huvix",
+    "iterm2",
+    "kali",
+    "marcduiker",
+    "montys",
+    "multiverse-neon",
+    "negligible",
+    "night-owl",
+    "paradox",
+    "powerlevel10k_classic",
+    "pure",
+    "robbyrussell",
+    "spaceship",
+    "star",
+    "thecyberden",
+    "tokyonight_storm",
+    "ys"
+)
+
+        foreach ($themeName in $builtInThemes) {
+            $themes += [pscustomobject]@{
+                Id   = $themeName
+                Name = "$themeName [built-in]"
+                Path = $themeName
+            }
+        }
+
+    return $themes | Sort-Object Id -Unique
+}
+
+function global:Switch-RavenTheme {
+    Clear-Host
+
+    if (Get-Command Show-RavenMenuHeader -ErrorAction SilentlyContinue) {
+        Show-RavenMenuHeader
+    }
+
+    Write-Host "Switch Theme" -ForegroundColor Cyan
+    Write-Host "------------" -ForegroundColor DarkGray
+    Write-Host ""
+
+    $themes = @(Get-RavenAvailableThemes)
+
+    if (-not $themes -or $themes.Count -eq 0) {
+        Write-Host "No theme files found." -ForegroundColor Red
+        Write-Host ""
+        Write-Host "Checked these folders:" -ForegroundColor Yellow
+
+        foreach ($root in Get-RavenThemeRoots) {
+            Write-Host " - $root" -ForegroundColor DarkGray
+        }
+
+        Read-Host "Press Enter to continue..."
         return
     }
 
-    $global:RavenTheme = $ThemeId
-    oh-my-posh init pwsh --config $themeFile | Invoke-Expression
+    for ($i = 0; $i -lt $themes.Count; $i++) {
+        Write-Host ("{0,2} • {1}" -f ($i + 1), $themes[$i].Id)
+    }
+
+    Write-Host ""
+    Write-Host "Enter to cancel." -ForegroundColor DarkGray
+    Write-Host ""
+
+    $choice = Read-Host "Choose a theme number"
+
+    if ([string]::IsNullOrWhiteSpace($choice)) {
+        return
+    }
+
+    [int]$idx = 0
+    if (-not [int]::TryParse($choice, [ref]$idx)) {
+        Write-Host "Invalid selection." -ForegroundColor Red
+        Read-Host "Press Enter to continue..."
+        return
+    }
+
+    $realIndex = $idx - 1
+
+    if ($realIndex -lt 0 -or $realIndex -ge $themes.Count) {
+        Write-Host "Invalid selection." -ForegroundColor Red
+        Read-Host "Press Enter to continue..."
+        return
+    }
+
+    $selected = $themes[$realIndex]
+
+    $applied = Apply-RavenTheme -ThemeId $selected.Id
+
+    if ($applied) {
+        Write-Host "Switched theme to $($selected.Id)." -ForegroundColor Green
+    }
+    else {
+        Write-Host "Theme switch failed. No changes were made." -ForegroundColor Red
+    }
+
+    Read-Host "Press Enter to continue..."
 }
