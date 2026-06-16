@@ -1,5 +1,5 @@
 {
-  "name": "ZITEXT Editor",
-  "command": "/Applications/ZITEXT Editor.app",
-  "launchMode": "mac-app-path"
+  "name": "Notepad++",
+  "command": "C:\\Program Files\\Notepad++\\notepad++.exe",
+  "launchMode": "path"
 }

@@ -198,6 +198,7 @@ function global:profile-menu {
 # =============== SUBMENUS =======================================================
 
 function global:Toggle-RavenFastMode {
+	
     if ($null -eq $global:RavenFastMode) {
         $global:RavenFastMode = $false
     }
