@@ -23,5 +23,10 @@
     "Name": "PowerShellGet",
     "Enabled": true,
     "InstallIfMissing": false
+  },
+  {
+    "Name": "Symlink",
+    "Enabled": true,
+    "InstallIfMissing": true
   }
 ]
