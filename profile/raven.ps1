@@ -19,7 +19,110 @@ function Raven-Banner {
 }
 
 # Load API key
-$env:OPENAI_API_KEY = [System.Environment]::GetEnvironmentVariable("OPENAI_API_KEY", "User")
+function global:Get-RavenSecretRoot {
+    if ($IsWindows) {
+        $root = Join-Path $env:LOCALAPPDATA "Raven"
+    }
+    elseif ($IsMacOS) {
+        $root = Join-Path $HOME "Library/Application Support/Raven"
+    }
+    else {
+        $root = Join-Path $HOME ".config/raven"
+    }
+
+    if (-not (Test-Path $root)) {
+        New-Item -ItemType Directory -Path $root -Force | Out-Null
+    }
+
+    return $root
+}
+
+function global:Get-RavenOpenAISecretPath {
+    return Join-Path (Get-RavenSecretRoot) "openai-api-key.secret"
+}
+
+function global:Set-RavenOpenAIKey {
+    param(
+        [Parameter(Mandatory)]
+        [string]$ApiKey
+    )
+
+    if ([string]::IsNullOrWhiteSpace($ApiKey)) {
+        Write-Host "API key was blank. Nothing saved." -ForegroundColor Red
+        return
+    }
+
+    $path = Get-RavenOpenAISecretPath
+
+    try {
+        $secure = ConvertTo-SecureString $ApiKey -AsPlainText -Force
+        $encrypted = $secure | ConvertFrom-SecureString
+
+        Set-Content -Path $path -Value $encrypted -Encoding UTF8
+
+        $env:OPENAI_API_KEY = $ApiKey
+
+        Write-Host "Raven OpenAI API key saved." -ForegroundColor Green
+        Write-Host $path -ForegroundColor DarkGray
+    }
+    catch {
+        Write-Host "Could not save Raven OpenAI API key." -ForegroundColor Red
+        Write-Host $_.Exception.Message -ForegroundColor DarkGray
+    }
+}
+
+function global:Get-RavenOpenAIKey {
+    if ($env:OPENAI_API_KEY) {
+        return $env:OPENAI_API_KEY
+    }
+
+    $userKey = [System.Environment]::GetEnvironmentVariable("OPENAI_API_KEY", "User")
+    if ($userKey) {
+        $env:OPENAI_API_KEY = $userKey
+        return $userKey
+    }
+
+    $machineKey = [System.Environment]::GetEnvironmentVariable("OPENAI_API_KEY", "Machine")
+    if ($machineKey) {
+        $env:OPENAI_API_KEY = $machineKey
+        return $machineKey
+    }
+
+    $path = Get-RavenOpenAISecretPath
+
+    if (Test-Path $path) {
+        try {
+            $encrypted = Get-Content $path -Raw
+            $secure = ConvertTo-SecureString $encrypted
+            $plain = [System.Net.NetworkCredential]::new("", $secure).Password
+
+            if ($plain) {
+                $env:OPENAI_API_KEY = $plain
+                return $plain
+            }
+        }
+        catch {
+            return $null
+        }
+    }
+
+    return $null
+}
+
+function global:Remove-RavenOpenAIKey {
+    $path = Get-RavenOpenAISecretPath
+
+    if (Test-Path $path) {
+        Remove-Item $path -Force
+        Remove-Item Env:\OPENAI_API_KEY -ErrorAction SilentlyContinue
+        Write-Host "Raven OpenAI API key removed." -ForegroundColor Yellow
+    }
+    else {
+        Write-Host "No Raven OpenAI API key file found." -ForegroundColor DarkGray
+    }
+}
+
+$env:OPENAI_API_KEY = Get-RavenOpenAIKey
 
 function Raven-Log {
     param([string]$Content)
@@ -78,10 +181,18 @@ function Raven-Remember {
 function Invoke-RavenCore {
     param([string]$Prompt)
 
-    if (-not $env:OPENAI_API_KEY) {
-        Write-Host "❌ No API key." -ForegroundColor Red
-        return
-    }
+$apiKey = Get-RavenOpenAIKey
+
+if (-not $apiKey) {
+    Write-Host "❌ No API key found." -ForegroundColor Red
+    Write-Host ""
+    Write-Host "Save one securely with:" -ForegroundColor Yellow
+    Write-Host 'Set-RavenOpenAIKey "sk-your-key-here"' -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "Or use the standard environment variable:" -ForegroundColor Yellow
+    Write-Host '[System.Environment]::SetEnvironmentVariable("OPENAI_API_KEY", "sk-your-key-here", "User")' -ForegroundColor Cyan
+    return
+}
 
     $memoryPath = Join-Path $HOME "Documents\raven-memory.json"
     $memoryContent = (Test-Path $memoryPath) ? (Get-Content $memoryPath -Raw) : "{}"
@@ -104,7 +215,7 @@ You tease, guide, and whisper brilliance in the dark.
     try {
         $response = Invoke-RestMethod `
             -Uri "https://api.openai.com/v1/chat/completions" `
-            -Headers @{ "Authorization"="Bearer $env:OPENAI_API_KEY" } `
+            -Headers @{ "Authorization" = "Bearer $apiKey" } `
             -Method POST -ContentType "application/json" `
             -Body $body
 
@@ -121,7 +232,24 @@ You tease, guide, and whisper brilliance in the dark.
     }
 }
 
-function raven { param([string[]]$Message) Invoke-RavenCore -Prompt ($Message -join " ") }
+function global:raven {
+    param(
+        [Parameter(ValueFromRemainingArguments = $true)]
+        [string[]]$Message
+    )
+
+    if (-not $Message -or $Message.Count -eq 0) {
+        if (Get-Command profile-menu -ErrorAction SilentlyContinue) {
+            profile-menu
+            return
+        }
+
+        Raven-Dashboard
+        return
+    }
+
+    Invoke-RavenCore -Prompt ($Message -join " ") | Out-Null
+}
 
 # ===============================
 #        RAVEN TASK SYSTEM

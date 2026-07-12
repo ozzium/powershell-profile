@@ -11,11 +11,6 @@
   },
   {
     "Name": "z",
-    "Enabled": false,
-    "InstallIfMissing": true
-  },
-  {
-    "Name": "UltraTree",
     "Enabled": true,
     "InstallIfMissing": true
   },
@@ -26,6 +21,11 @@
   },
   {
     "Name": "Symlink",
+    "Enabled": true,
+    "InstallIfMissing": true
+  },
+  {
+    "Name": "OnePowerShellProfile",
     "Enabled": true,
     "InstallIfMissing": true
   }

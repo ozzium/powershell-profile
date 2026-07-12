@@ -3,8 +3,57 @@
 # Theme logic lives in appearance.ps1.
 # Editor logic lives in editors.ps1.
 
+$global:RavenInitTimings = @()
+
+function Add-RavenInitTiming {
+    param(
+        [Parameter(Mandatory)][string]$Name,
+        [Parameter(Mandatory)][scriptblock]$Script
+    )
+
+    $sw = [System.Diagnostics.Stopwatch]::StartNew()
+
+    try {
+        & $Script
+    }
+    catch {
+        Write-Warning "$Name failed: $($_.Exception.Message)"
+    }
+    finally {
+        $sw.Stop()
+
+        $global:RavenInitTimings += [pscustomobject]@{
+            Step = $Name
+            Ms   = $sw.ElapsedMilliseconds
+        }
+    }
+}
+
+function global:raven-init-time {
+    $global:RavenInitTimings |
+        Sort-Object Ms -Descending |
+        Format-Table Step, Ms -AutoSize
+}
+
+# Load Raven settings early so Fast Mode affects startup helpers.
+Add-RavenInitTiming "Load settings" {
+    $global:RavenFastMode = $false
+
+    if (Get-Command Get-RavenSettings -ErrorAction SilentlyContinue) {
+        $settings = Get-RavenSettings
+
+        if ($null -ne $settings.fastMode) {
+            $global:RavenFastMode = [bool]$settings.fastMode
+        }
+
+        if ($settings.theme) {
+            $global:RavenTheme = $settings.theme
+        }
+    }
+}
+
 # Admin check
-try {
+Add-RavenInitTiming "Admin check" {
     if ($IsWindows) {
         $global:IsAdmin = (New-Object Security.Principal.WindowsPrincipal(
             [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -14,24 +63,19 @@ try {
         $global:IsAdmin = $false
     }
 }
-catch {
-    $global:IsAdmin = $false
-}
 
 # Window title
-try {
+Add-RavenInitTiming "Window title" {
     $adminSuffix = if ($global:IsAdmin) { " [ADMIN]" } else { "" }
     $Host.UI.RawUI.WindowTitle = "PowerShell $($PSVersionTable.PSVersion)$adminSuffix"
 }
-catch {}
 
 # Avoid opening in System32 on Windows
-try {
+Add-RavenInitTiming "Set location" {
     if ($IsWindows -and (Get-Location).Path -like "C:\Windows\System32*") {
         Set-Location $HOME
     }
 }
-catch {}
 
 function global:Reload-RavenProfile {
     . $PROFILE
@@ -76,25 +120,25 @@ function global:Edit-Profile {
 Set-Alias -Name ep -Value Edit-Profile -Scope Global -ErrorAction SilentlyContinue
 
 # Optional Terminal-Icons
-try {
-    if (Get-Module -ListAvailable -Name Terminal-Icons) {
-        Import-Module Terminal-Icons -ErrorAction SilentlyContinue
+Add-RavenInitTiming "Terminal-Icons" {
+    if (-not $global:RavenFastMode) {
+        if (Get-Module -ListAvailable -Name Terminal-Icons) {
+            Import-Module Terminal-Icons -ErrorAction SilentlyContinue
+        }
     }
 }
-catch {}
 
 # Optional zoxide
-try {
-    if (Get-Command zoxide -ErrorAction SilentlyContinue) {
-        Invoke-Expression (& { zoxide init --cmd z powershell | Out-String })
+Add-RavenInitTiming "zoxide" {
+    if (-not $global:RavenFastMode) {
+        if (Get-Command zoxide -ErrorAction SilentlyContinue) {
+            Invoke-Expression (& { zoxide init --cmd z powershell | Out-String })
+        }
     }
-}
-catch {
-    Write-Warning "zoxide init failed: $_"
 }
 
 # Optional external function folder
-try {
+Add-RavenInitTiming "External functions" {
     $repoRoot = $null
 
     if (Get-Command Get-RavenRepoRoot -ErrorAction SilentlyContinue) {
@@ -111,41 +155,18 @@ try {
                         . $_.FullName
                     }
                     catch {
-                        Write-Warning "Failed to load function file $($_.Name): $_"
+                        Write-Warning "Failed to load function file $($_.Name): $($_.Exception.Message)"
                     }
                 }
         }
     }
 }
-catch {}
 
 # Apply saved Raven theme last
-try {
-    try {
-    if (Get-Command Apply-RavenTheme -ErrorAction SilentlyContinue) {
-        $settings = Get-RavenSettings
-
-        try {
-    if (Get-Command Get-RavenSettings -ErrorAction SilentlyContinue) {
-        $settings = Get-RavenSettings
-        $global:RavenFastMode = [bool]$settings.fastMode
-    }
-}
-catch {
-    $global:RavenFastMode = $false
-}
-
-        if ($settings.theme) {
-            $global:RavenTheme = $settings.theme
+Add-RavenInitTiming "Apply theme" {
+    if (-not $global:RavenFastMode) {
+        if (Get-Command Apply-RavenTheme -ErrorAction SilentlyContinue) {
+            Apply-RavenTheme -ThemeId $global:RavenTheme -Quiet | Out-Null
         }
-
-        Apply-RavenTheme -ThemeId $global:RavenTheme -Quiet | Out-Null
     }
-}
-catch {
-    Write-Warning "Failed to apply Raven theme: $_"
-}
-}
-catch {
-    Write-Warning "Failed to apply Raven theme: $_"
 }

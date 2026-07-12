@@ -226,7 +226,9 @@ function global:Apply-RavenTheme {
     $global:RavenTheme = $ThemeId
     $global:RavenThemeFile = $themeFile
     
+    if (-not $Quiet) {
     Save-RavenSettings -Theme $ThemeId
+}
 
 $ompInit = oh-my-posh init pwsh --config $themeFile
 
