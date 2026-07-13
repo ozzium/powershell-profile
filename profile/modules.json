@@ -28,5 +28,10 @@
     "Name": "OnePowerShellProfile",
     "Enabled": true,
     "InstallIfMissing": true
+  },
+  {
+    "Name": "AsciiTreeScaffolder",
+    "Enabled": true,
+    "InstallIfMissing": false
   }
 ]
