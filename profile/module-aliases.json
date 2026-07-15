@@ -4,4 +4,18 @@
       "Command": "Replace-With-Actual-Command"
     }
   ]
+},
+{
+  "Get-Clipboard"
+      "Alias": "gclip",
+      "Command": "Replace-With-Actual-Command"
+    }
+  ]
+},
+{
+  "Get-FolderTree"
+      "Alias": "gft",
+      "Command": "Replace-With-Actual-Command"
+    }
+  ]
 }
