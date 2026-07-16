@@ -206,9 +206,8 @@ function global:profile-menu {
                 }
                 else {
                     Write-Warning "Theme switcher not found."
+                    Read-Host "Press Enter to continue..."
                 }
-
-                Read-Host "Press Enter to continue..."
             }
 
             "2" {
@@ -217,9 +216,8 @@ function global:profile-menu {
                 }
                 else {
                     Write-Warning "Fast Mode toggle not found."
+                    Read-Host "Press Enter to continue..."
                 }
-
-                Read-Host "Press Enter to continue..."
             }
 
             "3" {
@@ -238,9 +236,8 @@ function global:profile-menu {
                 }
                 else {
                     Write-Warning "Profile backup function not found."
+                    Read-Host "Press Enter to continue..."
                 }
-
-                Read-Host "Press Enter to continue..."
             }
 
             "5" {
@@ -249,9 +246,8 @@ function global:profile-menu {
                 }
                 else {
                     Write-Warning "Git tools menu not found."
+                    Read-Host "Press Enter to continue..."
                 }
-
-                Read-Host "Press Enter to continue..."
             }
 
             "6" {
@@ -260,9 +256,8 @@ function global:profile-menu {
                 }
                 else {
                     Write-Warning "Self-Repair function not found."
+                    Read-Host "Press Enter to continue..."
                 }
-
-                Read-Host "Press Enter to continue..."
             }
 
             "7" {
@@ -271,9 +266,8 @@ function global:profile-menu {
                 }
                 else {
                     Write-Warning "Module Manager not found."
+                    Read-Host "Press Enter to continue..."
                 }
-
-                Read-Host "Press Enter to continue..."
             }
 
             "8" {
@@ -287,7 +281,6 @@ function global:profile-menu {
         }
     }
 }
-
 # =============== SUBMENUS =======================================================
 
 function global:Toggle-RavenFastMode {
