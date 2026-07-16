@@ -1,0 +1,156 @@
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
+  <Obj RefId="0">
+    <TN RefId="0">
+      <T>Microsoft.PowerShell.Commands.PSRepositoryItemInfo</T>
+      <T>System.Management.Automation.PSCustomObject</T>
+      <T>System.Object</T>
+    </TN>
+    <MS>
+      <S N="Name">PSTui</S>
+      <Version N="Version">1.0.5</Version>
+      <S N="Type">Module</S>
+      <S N="Description">PowerShell TUI tools: interactive terminal UI cmdlets (Out-ConsoleGridView and Show-ObjectTree) built on Terminal.Gui. The community continuation of Microsoft.PowerShell.ConsoleGuiTools.</S>
+      <S N="Author">Tig Kindel and tui-cs contributors</S>
+      <S N="CompanyName">tkindel</S>
+      <S N="Copyright">© Tig Kindel and tui-cs contributors. Licensed under the MIT License.</S>
+      <DT N="PublishedDate">2026-06-28T19:21:03-04:00</DT>
+      <Obj N="InstalledDate" RefId="1">
+        <DT>2026-07-15T21:45:30.6944842-04:00</DT>
+        <MS>
+          <Obj N="DisplayHint" RefId="2">
+            <TN RefId="1">
+              <T>Microsoft.PowerShell.Commands.DisplayHintType</T>
+              <T>System.Enum</T>
+              <T>System.ValueType</T>
+              <T>System.Object</T>
+            </TN>
+            <ToString>DateTime</ToString>
+            <I32>2</I32>
+          </Obj>
+        </MS>
+      </Obj>
+      <Nil N="UpdatedDate" />
+      <URI N="LicenseUri">https://github.com/tui-cs/PSTui/blob/main/LICENSE.txt</URI>
+      <URI N="ProjectUri">https://github.com/tui-cs/PSTui</URI>
+      <Nil N="IconUri" />
+      <Obj N="Tags" RefId="3">
+        <TN RefId="2">
+          <T>System.Object[]</T>
+          <T>System.Array</T>
+          <T>System.Object</T>
+        </TN>
+        <LST>
+          <S>TUI</S>
+          <S>Terminal.Gui</S>
+          <S>PSTui</S>
+          <S>Console</S>
+          <S>Out-ConsoleGridView</S>
+          <S>Show-ObjectTree</S>
+          <S>MacOS</S>
+          <S>Windows</S>
+          <S>Linux</S>
+          <S>PSEdition_Core</S>
+          <S>PSModule</S>
+        </LST>
+      </Obj>
+      <Obj N="Includes" RefId="4">
+        <TN RefId="3">
+          <T>System.Collections.Hashtable</T>
+          <T>System.Object</T>
+        </TN>
+        <DCT>
+          <En>
+            <S N="Key">Workflow</S>
+            <Obj N="Value" RefId="5">
+              <TNRef RefId="2" />
+              <LST />
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">RoleCapability</S>
+            <Ref N="Value" RefId="5" />
+          </En>
+          <En>
+            <S N="Key">Command</S>
+            <Obj N="Value" RefId="6">
+              <TNRef RefId="2" />
+              <LST>
+                <S>Out-ConsoleGridView</S>
+                <S>Show-ObjectTree</S>
+                <S>Show-PSTuiHistory</S>
+                <S>Enable-PSTuiHistoryKeyHandler</S>
+                <S>Disable-PSTuiHistoryKeyHandler</S>
+              </LST>
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">DscResource</S>
+            <Ref N="Value" RefId="5" />
+          </En>
+          <En>
+            <S N="Key">Function</S>
+            <Obj N="Value" RefId="7">
+              <TNRef RefId="2" />
+              <LST>
+                <S>Show-PSTuiHistory</S>
+                <S>Enable-PSTuiHistoryKeyHandler</S>
+                <S>Disable-PSTuiHistoryKeyHandler</S>
+              </LST>
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">Cmdlet</S>
+            <Obj N="Value" RefId="8">
+              <TNRef RefId="2" />
+              <LST>
+                <S>Out-ConsoleGridView</S>
+                <S>Show-ObjectTree</S>
+              </LST>
+            </Obj>
+          </En>
+        </DCT>
+      </Obj>
+      <Nil N="PowerShellGetFormatVersion" />
+      <S N="ReleaseNotes">Please see release notes at: https://github.com/tui-cs/PSTui/releases</S>
+      <Obj N="Dependencies" RefId="9">
+        <TNRef RefId="2" />
+        <LST />
+      </Obj>
+      <S N="RepositorySourceLocation">https://www.powershellgallery.com/api/v2</S>
+      <S N="Repository">PSGallery</S>
+      <S N="PackageManagementProvider">NuGet</S>
+      <Obj N="AdditionalMetadata" RefId="10">
+        <TN RefId="4">
+          <T>System.Management.Automation.PSCustomObject</T>
+          <T>System.Object</T>
+        </TN>
+        <MS>
+          <S N="copyright">© Tig Kindel and tui-cs contributors. Licensed under the MIT License.</S>
+          <S N="description">PowerShell TUI tools: interactive terminal UI cmdlets (Out-ConsoleGridView and Show-ObjectTree) built on Terminal.Gui. The community continuation of Microsoft.PowerShell.ConsoleGuiTools.</S>
+          <S N="requireLicenseAcceptance">False</S>
+          <S N="releaseNotes">Please see release notes at: https://github.com/tui-cs/PSTui/releases</S>
+          <S N="isLatestVersion">True</S>
+          <S N="isAbsoluteLatestVersion">True</S>
+          <S N="versionDownloadCount">78</S>
+          <S N="downloadCount">71</S>
+          <S N="packageSize">2085707</S>
+          <S N="published">6/28/2026 7:21:03 PM -04:00</S>
+          <S N="created">6/28/2026 7:21:03 PM -04:00</S>
+          <S N="lastUpdated">7/16/2026 1:00:01 AM -04:00</S>
+          <S N="tags">TUI Terminal.Gui PSTui Console Out-ConsoleGridView Show-ObjectTree MacOS Windows Linux PSEdition_Core PSModule PSCmdlet_Out-ConsoleGridView PSCommand_Out-ConsoleGridView PSCmdlet_Show-ObjectTree PSCommand_Show-ObjectTree PSIncludes_Cmdlet PSFunction_Show-PSTuiHistory PSCommand_Show-PSTuiHistory PSFunction_Enable-PSTuiHistoryKeyHandler PSCommand_Enable-PSTuiHistoryKeyHandler PSFunction_Disable-PSTuiHistoryKeyHandler PSCommand_Disable-PSTuiHistoryKeyHandler PSIncludes_Function</S>
+          <S N="developmentDependency">False</S>
+          <S N="updated">2026-07-16T01:00:01Z</S>
+          <S N="NormalizedVersion">1.0.5</S>
+          <S N="Authors">Tig Kindel and tui-cs contributors</S>
+          <S N="IsPrerelease">false</S>
+          <S N="ItemType">Module</S>
+          <S N="FileList">PSTui.nuspec|PSTui.History.psm1|Microsoft.Extensions.DependencyInjection.Abstractions.dll|Markdig.dll|TextMateSharp.dll|NOTICE.txt|PSTui.dll|LICENSE.txt|Wcwidth.dll|ColorHelper.dll|Testably.Abstractions.FileSystem.Interface.dll|TestableIO.System.IO.Abstractions.dll|Microsoft.Extensions.Logging.Abstractions.dll|TextMateSharp.Grammars.dll|README.md|JetBrains.Annotations.dll|Onigwrap.dll|PSTui.psd1|TestableIO.System.IO.Abstractions.Wrappers.dll|System.IO.Abstractions.dll|en-US\PSTui.dll-Help.xml|PSTui.Models.dll|Terminal.Gui.dll</S>
+          <S N="GUID">cb513e61-8105-4d72-9488-628ed758b3cc</S>
+          <S N="PowerShellVersion">7.6</S>
+          <S N="CompanyName">tui-cs</S>
+        </MS>
+      </Obj>
+      <S N="InstalledLocation">C:\Users\ozz\Documents\PowerShell\Modules\PSTui\1.0.5</S>
+    </MS>
+  </Obj>
+</Objs>

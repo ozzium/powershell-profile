@@ -1,0 +1,402 @@
+﻿TOPIC
+    about_Symlink
+
+    
+    
+SHORT DESCRIPTION
+    Explains how the Symlink module can be used to manage symbolic links on the
+    filesystem.
+    
+    
+    
+OVERVIEW
+ == This module manages symlink definitions (properties defined in a database)
+    and the actual symbolic-link items on the filesystem. It allows for the
+    creation of symlink definitions, which exist until removed. The module also
+    allows for the creation of the symbolic-link items on the filesystem, which
+    may or may not exist. An example use of this module would be if you have a
+    separate partition with game save data stored there (files moved from the 
+    usual %appdata% location), and you want to easily create/modify/remove the
+    symbolic-links required to make the games read that data.
+    
+    
+ == When specifying any paths for any of the cmdlets, you can include
+    environment variables in the '%VARIABLE%' notation. These will then get
+    expanded when necessary, assuming the variable is defined on the system.
+    
+ [!]If the environment variable is modified, you can update the symlinks target
+    to point to the new path by running the `Build-Symlink` cmdlet.
+    
+ [!]If an environment variable is used in the path of a symlink definition, then
+    running the `Build-Symlink` cmdlet will create a new item at the new 
+    location, however, the old item will remain on the filesystem since the
+    cmdlet has no way of figuring out what the old path of an environment
+    variable used to be.
+    
+    
+ == The cmdlets in this module operate on [Symlink] objects. The objects
+    retrieved by the `Get-Symlink` cmdlet can be piped to:
+        - Remove-Symlink
+        - Set-Symlink
+        - Build-Symlink
+    
+    
+ == This module has custom-defined formatting outputs for:
+        -------	        -----
+        Cmdlet	        Alias
+        -------         -----
+        Format-List     fl
+        Format-Table    ft
+        Format-Custom   fc
+        Format-Wide     fw
+    
+    The `Format-Custom` & `Format-List` views contain the largest amount
+    of information regarding the symlink.
+    
+    
+ == A font with ligatures is recommended for the best and clearest visual
+    display.
+    
+    When running in the 'Windows Terminal', fancy formatting is supported.
+    This formatting uses colours and emojis to make the output even clearer
+    and easier to read/scan through.
+    
+    
+ == The cmdlets in this module have default aliases:
+        -------	        -----
+        Cmdlet	        Alias
+        -------         -----
+        New-Symlink     nsl
+        Get-Symlink     gsl
+        Set-Symlink     ssl
+        Remove-Symlink  rsl
+        Build-Symlink   bsl
+    
+    
+    
+CREATING A SYMLINK
+ == To create a new symlink, run:
+    
+        PS C:\> New-Symlink -Name "data" -Path "~\Documents\Data"
+                 -Target D:\Files
+    
+    This command will create a new symlink definition, named "data", and a
+    symbolic-link located in the user's document folder under a folder also
+    named "Data", pointing to a folder on the "D:\" drive.
+    
+    -Name
+        Specifies the name of the symlink to be created; must be unique.
+
+    
+    -Path
+        Specifies the path of the location of the symbolic-link item. If any
+        parent folders in this path don't exist, they will be created.
+    
+    -Target
+        Specifies the path of the target which the symbolic-link item points to.
+	    This also defines whether the symbolic-link points to a directory or
+        a file.
+    
+    OPTIONAL PARAMETERS
+    
+    -CreationCondition
+        Specifies a scriptblock to be used for this symlink. This scriptblock
+	    decides whether the symbolic-link item should be created on the
+        filesystem. For detailed help, see the "CREATION CONDITION SCRIPTBLOCK"
+        section in the help at: 'about_Symlink'.
+    
+    -DontCreateItem
+        Prevents the creation of the symbolic-link item on the filesystem.
+	    (The symlink definition will still be created).
+    
+    -Force
+		Forces this cmdlet to create an symlink that writes over an existing
+        one, and forces this cmdlet to create a symbolic-link item on the
+        filesystem even if the creation condition evaluates to false.
+        
+        Even using this parameter, if the filesystem denies access to the
+        necessary files, this cmdlet can fail.
+	
+	-WhatIf
+		Shows what would happen if the cmdlet runs. The cmdlet does not run.
+		
+	-Confirm
+		Prompts you for confirmation before running any state-altering actions
+		in this cmdlet.
+		
+	<CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters (https://go.microsoft.com/fwlink/?LinkID=113216).
+    
+    
+    
+RETRIEVING A SYMLINK
+ == To retrieve the details of a symlink, run:
+    
+        PS C:\> Get-Symlink -Name "data"
+    
+    This command will retrieve the details of the symlink named "data", and
+    print the details to the screen. The output of this cmdlet can be piped to
+    a number of other cmdlets in this module.
+    
+    -Names
+        Specifies the name(s) of the items to get.
+	 [!]This parameter will autocomplete to valid symlink names.
+    
+    OPTIONAL PARAMETERS
+    
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, OutBuffer, PipelineVariable, and OutVariable.
+        For more information, see about_CommonParameters
+        (https://go.microsoft.com/fwlink/?LinkID=113216).
+    
+    
+ == To retrieve the details of all symlinks, run:
+ 
+        PS C:\> Get-Symlink -All
+        
+    This command will retrieve the details of all symlinks, and print the
+    details to the screen.
+    
+    -All
+        Specifies to get all symlinks.
+    
+    OPTIONAL PARAMETERS
+    
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters (https://go.microsoft.com/fwlink/?LinkID=113216).
+    
+    
+    
+CHANGING THE PROPERTIES OF A SYMLINK
+ == To change the name of a symlink, run:
+    
+        PS C:\> Set-Symlink -Name "data" -Property "Name" -Value "WORK"
+    
+    This command will change the name of the symlink named "data", to the new
+    name of "WORK". From now on, there is no symlink named "data" anymore.
+    
+    -Name
+        Specifies the name of the symlink to be changed.
+	 [!]This parameter will autocompleted to valid names for a symlink.
+    
+    -Property
+        Specifies the name of the property to change.
+	 [!]This parameter will autocompleted to the following: "Name", "Path",
+	    "Target", "CreationCondition".
+    
+    -Value
+	    Specifies the new value of the property being changed.
+    
+    OPTIONAL PARAMETERS
+    
+    -WhatIf
+	    Shows what would happen if the cmdlet runs. The cmdlet does not run.
+	
+    -Confirm
+        Prompts you for confirmation before running any state-altering actions
+        in this cmdlet.
+    
+    -Force
+        Forces this cmdlet to change the name of a symlink even if it overwrites
+        an existing one, or forces this cmdlet to create a symbolic-link item
+        on the filesystem even if the creation condition evaluates to false.
+        
+        Even using this parameter, if the filesystem denies access to the
+        necessary files, this cmdlet can fail.
+    
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters (https://go.microsoft.com/fwlink/?LinkID=113216).
+    
+    
+ == To change any other properties of a symlink, run:
+    
+        PS C:\> Set-Symlink -Name "data" -Property <...> -Value <...>
+    
+    The new value will undergo the same checks and validations as when creating
+    a new symlink using the `New-Symlink` cmdlet.
+    
+    
+ [!]Changing the 'Path' property of a symlink, will result in the symbolic-link
+    item being deleted from its original location, and re-created at the new
+    location.
+    
+ [!]Changing the 'Target' property of a symlink, will result in the 
+    symbolic-link item being deleted and re-created in the same location, but
+    now pointing to the new target.
+    
+  [!]Changing the 'CreationCondition' will not change the current existence of
+    the symbolic-link item, even if now the expression would evaluate to false.
+    
+    
+    
+REMOVING A SYMLINK
+ == To delete a symlink, run:
+    
+        PS C:\> Remove-Symlink -Name "data"
+        
+    This command will delete a symlink definition, named "data", and delete the
+    symbolic-link item from the filesystem.
+    
+    -Names
+        Specifies the name(s) of the items to delete.
+	 [!]This parameter will autocomplete to valid symlink names.
+        
+    OPTIONAL PARAMETER
+	
+    -DontDeleteItem
+        Prevents the deletion of the symbolic-link item from the filesystem.
+	    (The symlink definition will still be deleted).
+    
+	-WhatIf
+		Shows what would happen if the cmdlet runs. The cmdlet does not run.
+		
+	-Confirm
+		Prompts you for confirmation before running any state-altering actions
+		in this cmdlet.
+		
+	<CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters (https://go.microsoft.com/fwlink/?LinkID=113216).
+    
+    
+    
+BUILDING/UPDATING SYMLINKS
+ == To create all symbolic-link items on the filesystem, run:
+    
+        PS C:\> Build-Symlink -All
+    
+    This command will go through all of the symlink definitions, and create 
+    the symbolic-link items on the filesystem, assuming the creation condition
+    for each is true.
+    
+    -All
+        Specifies to create all symlinks.
+    
+    OPTIONAL PARAMETERS
+    
+    -WhatIf
+	    Shows what would happen if the cmdlet runs. The cmdlet does not run.
+	
+    -Confirm
+        Prompts you for confirmation before running any state-altering actions
+        in this cmdlet.
+    
+    -Force
+	    Forces this cmdlet to create a symbolic-link item on the filesystem even
+        if the creation condition evaluates to false.
+        
+        Even using this parameter, if the filesystem denies access to the
+        necessary files, this cmdlet can fail.
+	
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters (https://go.microsoft.com/fwlink/?LinkID=113216).
+    
+    
+ == To create only certain symbolic-links on the filesystem, run:
+    
+        PS C:\> Build-Symlink -Names "data","files"
+    
+    This command will only go through the symlinks given in, and create the
+    items on the filesystem.
+    
+    -Names
+        Specifies the name(s) of the symlinks to create.
+	 [!]This parameter will autocomplete to valid symlink names.
+    
+    OPTIONAL PARAMETERS
+    
+    -WhatIf
+	    Shows what would happen if the cmdlet runs. The cmdlet does not run.
+	
+    -Confirm
+        Prompts you for confirmation before running any state-altering actions
+        in this cmdlet.
+    
+    -Force
+	    Forces this cmdlet to create a symbolic-link item on the filesystem even
+        if the creation condition evaluates to false.
+        
+        Even using this parameter, if the filesystem denies access to the
+        necessary files, this cmdlet can fail.
+        
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters (https://go.microsoft.com/fwlink/?LinkID=113216).
+        
+    
+ == This command can be used if you're given a database file, and want to
+    create the symbolic-link items for the first time.
+    
+ [!]This command can also be used to update existing items. Whilst the
+    `Set-Symlink` cmdlet will update the symbolic-link items on the filesystem,
+    changing an environment variable will not. If you change the value of an
+    environment variable, you can run this command to "re-build" all of the
+    symbolic-link items and either change their location or their target
+    (if either reference the changed variable).
+    
+    
+    
+CREATION CONDITION SCRIPTBLOCK
+ == When creating a new symlink, or by setting the property using the 
+    `Set-Symlink` cmdlet, you can define a "Creation Condition" scriptblock.
+    This scriptblock gets evaluated when the actual symbolic-link item is 
+    being created on the filesystem, and it determines whether it should or
+    should not be created.
+    
+    
+    For example, the scriptblock could check for the machine name, and only 
+    create the symlink on certain computers.
+    
+        The scriptblock would look like:
+        
+            if ($env:COMPUTERNAME -eq "specific-name"){
+                return $TRUE
+            }else{
+                return $FALSE
+            }
+        
+        Then when the `Build-Symlink` cmdlet is run, this scriptblock will be
+        evaluated and decide whether the creation should go through or not.
+        
+      [!]The scriptblock must return '$TRUE' or '$FALSE' values from all control
+        paths. This cannot be checked by the module, so the user **must** make
+        sure of this.
+    
+    
+    This allows the use of the same database file across multiple machines for
+    instance, even if the individual machines have slightly varying requirements
+    regarding which symlinks are actually needed to exist on the filesystem.
+    
+    
+    
+OTHER
+ == The module stores all data in '%APPDATA%\Powershell\Symlink'. It is advised
+    to **not** manually modify any files within this directory as it could
+    cause unintended consequences.
+    
+    
+    
+KEYWORDS
+    Symlink
+    Symbolic_Link
+    Management
+    File
+    Folder
+    

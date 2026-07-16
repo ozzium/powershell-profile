@@ -1,0 +1,1007 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+<Configuration>
+	<!-- General settings. -->
+	<DefaultSettings>
+		<!-- Shows a '#ERR' string when an error occurs it retrieving data. -->
+		<DisplayError/>
+		
+	</DefaultSettings>
+	
+	<!-- Selection Sets to simplify view declerations. -->
+	<SelectionSets>
+		<!-- Symlink Set -->
+		<SelectionSet>
+			<Name>Set.Symlink</Name>
+			<Types>
+				<TypeName>Symlink</TypeName>
+			</Types>
+		</SelectionSet>
+		
+	</SelectionSets>
+	
+	<!-- View definitions. -->
+	<ViewDefinitions>
+		<!-- symlink LIST -->
+		<View>
+			<Name>Symlink.List</Name>
+			<ViewSelectedBy>
+				<SelectionSetName>Set.Symlink</SelectionSetName>
+			</ViewSelectedBy>
+			
+			<ListControl>
+				<ListEntries>
+					
+					<!-- BASIC Formatting -->
+					<ListEntry>
+						<ListItems>
+							
+							<!-- The symlink name. -->
+							<ListItem>
+								<Label>Name</Label>
+								<ScriptBlock>
+									"`e[97;4m$($_.Name)`e[0m"
+								</ScriptBlock>
+							</ListItem>
+							
+							<!-- The symlink location. -->
+							<ListItem>
+								<Label>Path</Label>
+								<ScriptBlock>
+									$output = $_.FullPath()
+									$obj = $_
+									switch ($obj.GetSourceState())
+									{
+										"Existent"
+										{
+											$output += " `e[90m(Exists)`e[0m"
+										}
+										"Nonexistent"
+										{
+											$output += " `e[90m(Doesn't exist)`e[0m"
+										}
+										"CannotValidate"
+										{
+											$output += " `e[90m(Cannot be validated; could the path contain a non-present environment variable?)`e[0m"
+										}
+										"IncorrectTarget"
+										{
+											$output += " `e[90m(Exists, but the target doesn't match)`e[0m"
+										}
+										"UnknownTarget"
+										{
+											$output += " `e[90m(Exists, but the target cannot be determined if correct)`e[0m"
+										}
+									}
+									return $output
+								</ScriptBlock>
+							</ListItem>
+							
+							<!-- The symlink target. -->
+							<ListItem>
+								<Label>Target</Label>
+								<ScriptBlock>
+									$output = $_.FullTarget()
+									$obj = $_
+									switch ($obj.GetTargetState())
+									{
+										"Valid"
+										{
+											$output += " `e[90m(Exists)`e[0m"
+										}
+										"Invalid"
+										{
+											$output += " `e[90m(Cannot be validated; could the path contain a non-present environment variable?)`e[0m"
+										}
+									}
+									return $output
+								</ScriptBlock>
+							</ListItem>
+							
+							<!-- The symlink targets's state. -->
+							<ListItem>
+								<Label>State</Label>
+								<ScriptBlock>
+									$obj = $_
+									switch ($obj.GetSourceState())
+									{
+										"Existent"
+										{
+											if ($obj.ShouldExist())
+											{
+												return "`e[32mValid`e[0m"
+											}
+											else
+											{
+												return "`e[33;4mRequires Deletion`e[0m`e[33m!`e[0m"
+											}
+										}
+										"Nonexistent"
+										{
+											if ($obj.ShouldExist())
+											{
+												return "`e[31;4mRequires Creation`e[0m `e[31mX`e[0m"
+											}
+											else
+											{
+												return "`e[90mValid`e[0m"
+											}
+										}
+										"CannotValidate"
+										{
+											return "`e[31;4mUnknown`e[0m`e[31m?`e[0m"
+										}
+										"IncorrectTarget"
+										{
+											return "`e[36mRequires update`e[0m"
+										}
+										"UnknownTarget"
+										{
+											return "`e[33mUnknown`e[0m`e[33m!`e[0m"
+										}
+									}
+								</ScriptBlock>
+							</ListItem>
+							
+							<!-- The creation condition, only if there is one. -->
+							<!-- A non-existent condition should not be shown. -->
+							<ListItem>
+								<Label>Condition</Label>
+								<ItemSelectionCondition>
+									<ScriptBlock>
+										if ($null -ne $_._Condition)
+										{
+											return $true
+										}
+										else
+										{
+											return $false
+										}
+									</ScriptBlock>
+								</ItemSelectionCondition>
+								<ScriptBlock>
+									$str = $_._Condition.ToString().Split("`n") | Foreach-Object { "    $_`n" }
+									"{`n" + $str + "}"
+								</ScriptBlock>
+							</ListItem>
+							
+							<!-- The creation condition state, only if there is one. -->
+							<!-- A non-existent condition should not be shown. -->
+							<ListItem>
+								<Label>Evaluation</Label>
+								<ItemSelectionCondition>
+									<ScriptBlock>
+										if ($null -ne $_._Condition)
+										{
+											return $true
+										}
+										else
+										{
+											return $false
+										}
+									</ScriptBlock>
+								</ItemSelectionCondition>
+								<ScriptBlock>
+									if (Invoke-Command -Scriptblock $_._Condition)
+									{
+										return "`e[32mMet`e[0m"
+									}
+									else
+									{
+										return "`e[90mUnmet`e[0m"
+									}
+								</ScriptBlock>
+							</ListItem>
+							
+						</ListItems>
+					</ListEntry>
+					
+					<!-- FANCY Formatting -->
+					<ListEntry>
+						<EntrySelectedBy>
+							<SelectionCondition>
+								<SelectionSetName>Set.Symlink</SelectionSetName>
+								<ScriptBlock>
+									if ($null -ne $env:WT_SESSION)
+									{
+										return $true
+									}
+								</ScriptBlock>
+							</SelectionCondition>
+						</EntrySelectedBy>
+						
+						<ListItems>
+							
+							<!-- The symlink name. -->
+							<ListItem>
+								<Label>Name</Label>
+								<ScriptBlock>
+									"`e[97;4m$($_.Name)`e[0m"
+								</ScriptBlock>
+							</ListItem>
+							
+							<!-- The symlink location. -->
+							<ListItem>
+								<Label>Path</Label>
+								<ScriptBlock>
+									$output = $_.FullPath()
+									$obj = $_
+									switch ($obj.GetSourceState())
+									{
+										"Existent"
+										{
+											$output += " `e[90m(Exists)`e[0m"
+										}
+										"Nonexistent"
+										{
+											$output += " `e[90m(Doesn't exist)`e[0m"
+										}
+										"CannotValidate"
+										{
+											$output += " `e[90m(Cannot be validated; could the path contain a non-present environment variable?)`e[0m"
+										}
+										"IncorrectTarget"
+										{
+											$output += " `e[90m(Exists, but the target doesn't match)`e[0m"
+										}
+										"UnknownTarget"
+										{
+											$output += " `e[90m(Exists, but the target cannot be determined if correct)`e[0m"
+										}
+									}
+									return $output
+								</ScriptBlock>
+							</ListItem>
+							
+							<!-- The symlink target. -->
+							<ListItem>
+								<Label>Target</Label>
+								<ScriptBlock>
+									$output = $_.FullTarget()
+									$obj = $_
+									switch ($obj.GetTargetState())
+									{
+										"Valid"
+										{
+											$output += " `e[90m(Exists)`e[0m"
+										}
+										"Invalid"
+										{
+											$output += " `e[90m(Cannot be validated; could the path contain a non-present environment variable?)`e[0m"
+										}
+									}
+									return $output
+								</ScriptBlock>
+							</ListItem>
+							
+							<!-- The symlink targets's state. -->
+							<ListItem>
+								<Label>State</Label>
+								<ScriptBlock>
+									$obj = $_
+									switch ($obj.GetSourceState())
+									{
+										"Existent"
+										{
+											if ($obj.ShouldExist())
+											{
+												return "`e[32mValid`e[0m✔`u{fe0f}"
+											}
+											else
+											{
+												return "`e[33;21mRequires Deletion`e[0m⚠`u{fe0f}"
+											}
+										}
+										"Nonexistent"
+										{
+											if ($obj.ShouldExist())
+											{
+												return "`e[31;21mRequires Creation`e[0m❌"
+											}
+											else
+											{
+												return "`e[90mValid`e[0m✔`u{fe0f}"
+											}
+										}
+										"CannotValidate"
+										{
+											return "`e[31;21mUnknown`e[0m`e[31m❓`e[0m"
+										}
+										"IncorrectTarget"
+										{
+											return "`e[36mRequires update`e[0m🔄"
+										}
+										"UnknownTarget"
+										{
+											return "`e[33mUnknown`e[0m⚠`u{fe0f}"
+										}
+									}
+								</ScriptBlock>
+							</ListItem>
+							
+							<!-- The creation condition, only if there is one. -->
+							<!-- A non-existent condition should not be shown. -->
+							<ListItem>
+								<Label>Condition</Label>
+								<ItemSelectionCondition>
+									<ScriptBlock>
+										if ($null -ne $_._Condition)
+										{
+											return $true
+										}
+										else
+										{
+											return $false
+										}
+									</ScriptBlock>
+								</ItemSelectionCondition>
+								<ScriptBlock>
+									$str = $_._Condition.ToString().Split("`n") | Foreach-Object { "    $_`n" }
+									"{`n" + $str + "}"
+								</ScriptBlock>
+							</ListItem>
+							
+							<!-- The creation condition state, only if there is one. -->
+							<!-- A non-existent condition should not be shown. -->
+							<ListItem>
+								<Label>Evaluation</Label>
+								<ItemSelectionCondition>
+									<ScriptBlock>
+										if ($null -ne $_._Condition)
+										{
+											return $true
+										}
+										else
+										{
+											return $false
+										}
+									</ScriptBlock>
+								</ItemSelectionCondition>
+								<ScriptBlock>
+									if (Invoke-Command -Scriptblock $_._Condition)
+									{
+										return "`e[32mMet`e[0m✔`u{fe0f}"
+									}
+									else
+									{
+										return "`e[90mUnmet`e[0m✖`u{fe0f}"
+									}
+								</ScriptBlock>
+							</ListItem>
+							
+						</ListItems>
+					</ListEntry>
+					
+				</ListEntries>
+			</ListControl>
+		</View>
+		
+		<!-- symlink CUSTOM -->
+		<View>
+			<Name>Symlink.Custom</Name>
+			<ViewSelectedBy>
+				<SelectionSetName>Set.Symlink</SelectionSetName>
+			</ViewSelectedBy>
+			
+			<CustomControl>
+				<CustomEntries>
+					
+					<!-- BASIC Formatting -->
+					<CustomEntry>
+						<CustomItem>
+							<Frame>
+								<CustomItem>
+									<NewLine />
+									
+									<ExpressionBinding>
+										<ScriptBlock>
+											"class Symlink"
+										</ScriptBlock>
+									</ExpressionBinding>
+									
+									<NewLine />
+									<Text>{</Text>
+									<NewLine />
+									
+									<Frame>
+										<LeftIndent>4</LeftIndent>
+										<CustomItem>
+											
+											<!-- The name of the symlink. -->
+											<ExpressionBinding>
+												<ScriptBlock>
+													"Name = $($_.Name)"
+												</ScriptBlock>
+											</ExpressionBinding>
+											<NewLine />
+											
+											<!-- The path of the symlink. -->
+											<ExpressionBinding>
+												<ScriptBlock>
+													"Path = $($_._Path)"
+												</ScriptBlock>
+											</ExpressionBinding>
+											<NewLine />
+											
+											<!-- The target of the symlink. -->
+											<ExpressionBinding>
+												<ScriptBlock>
+													"Target = $($_._Target)"
+												</ScriptBlock>
+											</ExpressionBinding>
+											<NewLine />
+											
+											<!-- The condition of the symlink. -->
+											<ExpressionBinding>
+												<ScriptBlock>
+													if ($null -eq $_._Condition) {
+														"Condition = NULL"
+													}
+													else {
+														"Condition = $($_._Condition)"
+													}
+												</ScriptBlock>
+											</ExpressionBinding>
+											<NewLine />
+											
+											<!-- The ShortPath() of the symlink. -->
+											<ExpressionBinding>
+												<ScriptBlock>
+													"ShortPath() = $($_.ShortPath())"
+												</ScriptBlock>
+											</ExpressionBinding>
+											<NewLine />
+											
+											<!-- The FullPath() of the symlink. -->
+											<ExpressionBinding>
+												<ScriptBlock>
+													"FullPath() = $($_.FullPath())"
+												</ScriptBlock>
+											</ExpressionBinding>
+											<NewLine />
+											
+											<!-- The ShortTarget() of the symlink. -->
+											<ExpressionBinding>
+												<ScriptBlock>
+													"ShortTarget() = $($_.ShortTarget())"
+												</ScriptBlock>
+											</ExpressionBinding>
+											<NewLine />
+											
+											<!-- The FullTarget() of the symlink. -->
+											<ExpressionBinding>
+												<ScriptBlock>
+													"FullTarget() = $($_.FullTarget())"
+												</ScriptBlock>
+											</ExpressionBinding>
+											<NewLine />
+											
+											<!-- The GetSourceState() of the symlink. -->
+											<ExpressionBinding>
+												<ScriptBlock>
+													"SourceState() = $($_.GetSourceState())"
+												</ScriptBlock>
+											</ExpressionBinding>
+											<NewLine />
+											
+											<!-- The GetTargetState() of the symlink. -->
+											<ExpressionBinding>
+												<ScriptBlock>
+													"TargetState() = $($_.GetTargetState())"
+												</ScriptBlock>
+											</ExpressionBinding>
+											<NewLine />
+											
+											<!-- The Exists() of the symlink. -->
+											<ExpressionBinding>
+												<ScriptBlock>
+													"Exists() = $($_.Exists())"
+												</ScriptBlock>
+											</ExpressionBinding>
+											<NewLine />
+											
+											<!-- The ShouldExist() of the symlink. -->
+											<ExpressionBinding>
+												<ScriptBlock>
+													"ShouldExist() = $($_.ShouldExist())"
+												</ScriptBlock>
+											</ExpressionBinding>
+											<NewLine />
+											
+											<!-- The State() of the symlink. -->
+											<ExpressionBinding>
+												<ScriptBlock>
+													"State() = $($_.GetState())"
+												</ScriptBlock>
+											</ExpressionBinding>
+											<NewLine />
+											
+										</CustomItem>
+									</Frame>
+									
+									<Text>}</Text>
+									
+								</CustomItem>
+							</Frame>
+						</CustomItem>
+					</CustomEntry>
+					
+				</CustomEntries>
+			</CustomControl>
+		</View>
+		
+		<!-- symlink TABLE -->
+		<View>
+			<Name>Symlink.Table</Name>
+			<ViewSelectedBy>
+				<SelectionSetName>Set.Symlink</SelectionSetName>
+			</ViewSelectedBy>
+			
+			<TableControl>
+				<!-- The table headers. -->
+				<TableHeaders>
+					
+					<TableColumnHeader>
+						<Label>Name</Label>
+						<Width>25</Width>
+						<Alignment>Left</Alignment>
+					</TableColumnHeader>
+					
+					<TableColumnHeader>
+						<Label>Path</Label>
+						<Width>35</Width>
+						<Alignment>Left</Alignment>
+					</TableColumnHeader>
+					
+					<TableColumnHeader>
+						<Label>Target</Label>
+						<Width>35</Width>
+						<Alignment>Left</Alignment>
+					</TableColumnHeader>
+					
+					<TableColumnHeader>
+						<Label>Condition</Label>
+						<Width>10</Width>
+						<Alignment>Left</Alignment>
+					</TableColumnHeader>
+					
+					<TableColumnHeader>
+						<Label>Exists</Label>
+						<Width>7</Width>
+						<Alignment>Left</Alignment>
+					</TableColumnHeader>
+					
+				</TableHeaders>
+				
+				<!-- The table rows. -->
+				<TableRowEntries>
+					
+					<!-- BASIC Formatting -->
+					<TableRowEntry>
+						<TableColumnItems>
+							<!-- The symlink name. -->
+							<TableColumnItem>
+								<PropertyName>Name</PropertyName>
+								<Alignment>Left</Alignment>
+							</TableColumnItem>
+							
+							<!-- The symlink location. -->
+							<TableColumnItem>
+								<ScriptBlock>
+									$obj = $_
+									switch ($obj.GetSourceState())
+									{
+										"Existent"
+										{
+											if ($obj.ShouldExist())
+											{
+												return "$($obj.ShortPath())"
+											}
+											else
+											{
+												return "`e[33;4m$($obj.ShortPath())`e[0m X"
+											}
+										}
+										"NonExistent"
+										{
+											if ($obj.ShouldExist())
+											{
+												return "`e[31m$($obj.ShortPath())`e[0m"
+											}
+											else
+											{
+												return "`e[90m$($obj.ShortPath())`e[0m"
+											}
+										}
+										"CannotValidate"
+										{
+											return "`e[31m$($obj.ShortPath())`e[0m `e[31m‼`e[0m"
+										}
+										"IncorrectTarget"
+										{
+											return "`e[36m$($obj.ShortPath())`e[0m"
+										}
+										"UnknownTarget"
+										{
+											return "`e[33m$($obj.ShortPath()) ?`e[0m"
+										}
+									}
+								</ScriptBlock>
+								<Alignment>Left</Alignment>
+							</TableColumnItem>
+							
+							<!-- The symlink target. -->
+							<TableColumnItem>
+								<ScriptBlock>
+									$obj = $_
+									if (($obj.GetSourceState() -eq "NonExistent" -and $obj.ShouldExist() -eq $false) -or ($obj.GetSourceState() -eq "Existent" -and $obj.ShouldExist() -eq $false))
+									{
+										return "`e[90m$($obj.ShortTarget())`e[0m"
+									}
+									switch ($obj.GetTargetState())
+									{
+										"Valid"
+										{
+											return "$($obj.ShortTarget())"
+										}
+										"Invalid"
+										{
+											return "`e[31m$($obj.ShortTarget()) ?`e[0m"
+										}
+									}
+								</ScriptBlock>
+								<Alignment>Left</Alignment>
+							</TableColumnItem>
+							
+							<!-- Whether the symlink has a condition. -->
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($_._Condition)
+									{
+										if (Invoke-Command -Scriptblock $_._Condition)
+										{
+											return "`e[32mMet`e[0m"
+										}
+										else
+										{
+											return "`e[33mUnmet`e[0m"
+										}
+									}
+									else
+									{
+										return "`e[90mNone`e[0m"
+									}
+								</ScriptBlock>
+							</TableColumnItem>
+							
+							<!-- Whether the symlink exists or not. -->
+							<TableColumnItem>
+								<ScriptBlock>
+									$obj = $_
+									switch ($obj.GetSourceState())
+									{
+										"Existent"
+										{
+											if ($obj.ShouldExist())
+											{
+												return "`e[32mYes`e[0m"
+											}
+											else
+											{
+												return "`e[33;4mYes`e[0m"
+											}
+										}
+										"Nonexistent"
+										{
+											if ($obj.ShouldExist())
+											{
+												return "`e[31;4mNo`e[0m"
+											}
+											else
+											{
+												return "`e[90mNo`e[0m"
+											}
+										}
+										"CannotValidate"
+										{
+											return "`e[31m?`e[0m"
+										}
+										"IncorrectTarget"
+										{
+											return "`e[36mYes`e[0m"
+										}
+										"UnknownTarget"
+										{
+											return "`e[33mYes`e[0m"
+										}
+									}
+								</ScriptBlock>
+							</TableColumnItem>
+							
+						</TableColumnItems>
+					</TableRowEntry>
+					
+					<!-- FANCY Formatting -->
+					<TableRowEntry>
+						<EntrySelectedBy>
+							<SelectionCondition>
+								<SelectionSetName>Set.Symlink</SelectionSetName>
+								<ScriptBlock>
+									if ($env:WT_SESSION)
+									{
+										return $true
+									}
+								</ScriptBlock>
+							</SelectionCondition>
+						</EntrySelectedBy>
+						
+						<TableColumnItems>
+							<!-- The symlink name. -->
+							<TableColumnItem>
+								<PropertyName>Name</PropertyName>
+								<Alignment>Left</Alignment>
+							</TableColumnItem>
+							
+							<!-- The symlink location. -->
+							<TableColumnItem>
+								<ScriptBlock>
+									$obj = $_
+									switch ($obj.GetSourceState())
+									{
+										"Existent"
+										{
+											if ($obj.ShouldExist())
+											{
+												return "$($obj.ShortPath())"
+											}
+											else
+											{
+												return "`e[33;21m$($obj.ShortPath())`e[0m ✖`u{fe0f}"
+											}
+										}
+										"NonExistent"
+										{
+											if ($obj.ShouldExist())
+											{
+												return "`e[31m$($obj.ShortPath())`e[0m"
+											}
+											else
+											{
+												return "`e[90;9m$($obj.ShortPath())`e[0m"
+											}
+										}
+										"CannotValidate"
+										{
+											return "`e[31;9m$($obj.ShortPath())`e[0m `e[31m‼`e[0m"
+										}
+										"IncorrectTarget"
+										{
+											return "`e[36m$($obj.ShortPath())`e[0m 🔄"
+										}
+										"UnknownTarget"
+										{
+											return "`e[33m$($obj.ShortPath()) ?`u{fe0f}`e[0m"
+										}
+									}
+								</ScriptBlock>
+								<Alignment>Left</Alignment>
+							</TableColumnItem>
+							
+							<!-- The symlink target. -->
+							<TableColumnItem>
+								<ScriptBlock>
+									$obj = $_
+									if (($obj.GetSourceState() -eq "NonExistent" -and $obj.ShouldExist() -eq $false) -or ($obj.GetSourceState() -eq "Existent" -and $obj.ShouldExist() -eq $false))
+									{
+										return "`e[90m$($obj.ShortTarget())`e[0m"
+									}
+									switch ($obj.GetTargetState())
+									{
+										"Valid"
+										{
+											return "$($obj.ShortTarget())"
+										}
+										"Invalid"
+										{
+											return "`e[31m$($obj.ShortTarget()) ?`u{fe0f}`e[0m"
+										}
+									}
+								</ScriptBlock>
+								<Alignment>Left</Alignment>
+							</TableColumnItem>
+							
+							<!-- Whether the symlink has a condition. -->
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($_._Condition)
+									{
+										if (Invoke-Command -Scriptblock $_._Condition)
+										{
+											return "✔`u{fe0f}`e[32m(Met)`e[0m"
+										}
+										else
+										{
+											return "⚠`u{fe0f}`e[33m(Unmet)`e[0m"
+										}
+									}
+									else
+									{
+										return "✖`u{fe0f}"
+									}
+								</ScriptBlock>
+							</TableColumnItem>
+							
+							<!-- Whether the symlink exists or not. -->
+							<TableColumnItem>
+								<ScriptBlock>
+									$obj = $_
+									switch ($obj.GetSourceState())
+									{
+										"Existent"
+										{
+											if ($obj.ShouldExist())
+											{
+												return "✔`u{fe0f}`e[32m(Yes)`e[0m"
+											}
+											else
+											{
+												return "⚠`u{fe0f}`e[33;21m(Yes)`e[0m"
+											}
+										}
+										"Nonexistent"
+										{
+											if ($obj.ShouldExist())
+											{
+												return "❌`e[31;21m(No)`e[0m"
+											}
+											else
+											{
+												return "✖`u{fe0f}`e[90m(No)`e[0m"
+											}
+										}
+										"CannotValidate"
+										{
+											return "❓"
+										}
+										"IncorrectTarget"
+										{
+											return "🔄`e[36m(Yes)`e[0m"
+										}
+										"UnknownTarget"
+										{
+											return "⚠`u{fe0f}`e[33m(Yes)`e[0m"
+										}
+									}
+								</ScriptBlock>
+							</TableColumnItem>
+							
+						</TableColumnItems>
+					</TableRowEntry>
+					
+				</TableRowEntries>
+			</TableControl>
+		</View>
+		
+		<!-- symlink WIDE -->
+		<View>
+			<Name>Symlink.Wide</Name>
+			<ViewSelectedBy>
+				<SelectionSetName>Set.Symlink</SelectionSetName>
+			</ViewSelectedBy>
+			
+			<WideControl>
+				<WideEntries>
+					
+					<!-- BASIC Formatting -->
+					<WideEntry>
+						<!-- The symlink name. -->
+						<WideItem>
+							<ScriptBlock>
+								$name = $_.Name
+								$obj = $_
+								switch ($obj.GetSourceState())
+								{
+									"Existent"
+									{
+										if ($obj.ShouldExist())
+										{
+											return "`e[32m$name`e[0m"
+										}
+										else
+										{
+											return "`e[33;4m$name`e[0m"
+										}
+									}
+									"Nonexistent"
+									{
+										if ($obj.ShouldExist())
+										{
+											return "`e[31;4m$name`e[0m"
+										}
+										else
+										{
+											return "`e[90m$name`e[0m"
+										}
+									}
+									"CannotValidate"
+									{
+										return "`e[31;4m$name`e[0m"
+									}
+									"IncorrectTarget"
+									{
+										return "`e[36m$name`e[0m"
+									}
+									"UnknownTarget"
+									{
+										return "`e[33m$name`e[0m"
+									}
+								}
+							</ScriptBlock>
+						</WideItem>
+					</WideEntry>
+					
+					<!-- FANCY Formatting -->
+					<WideEntry>
+						<EntrySelectedBy>
+							<SelectionCondition>
+								<SelectionSetName>Set.Symlink</SelectionSetName>
+								<ScriptBlock>
+									if ($env:WT_SESSION) {
+										return $true
+									}
+								</ScriptBlock>
+							</SelectionCondition>
+						</EntrySelectedBy>
+						
+						<!-- The symlink name. -->
+						<WideItem>
+							<ScriptBlock>
+								$name = $_.Name
+								$obj = $_
+								switch ($obj.GetSourceState())
+								{
+									"Existent"
+									{
+										if ($obj.ShouldExist())
+										{
+											return "`e[32m$name`e[0m✔`u{fe0f}"
+										}
+										else
+										{
+											return "`e[33;21m$name`e[0m⚠`u{fe0f}"
+										}
+									}
+									"Nonexistent"
+									{
+										if ($obj.ShouldExist())
+										{
+											return "`e[31;21m$name`e[0m❌"
+										}
+										else
+										{
+											return "`e[90m$name`e[0m✖`u{fe0f}"
+										}
+									}
+									"CannotValidate"
+									{
+										return "`e[31;21m$name`e[0m`e[31m?`u{fe0f}`e[0m"
+									}
+									"IncorrectTarget"
+									{
+										return "`e[36m$name`e[0m🔄"
+									}
+									"UnknownTarget"
+									{
+										return "`e[33m$name`e[0m⚠`u{fe0f}"
+									}
+								}
+							</ScriptBlock>
+						</WideItem>
+					</WideEntry>
+					
+				</WideEntries>
+			</WideControl>
+		</View>
+		
+	</ViewDefinitions>
+	
+</Configuration>
