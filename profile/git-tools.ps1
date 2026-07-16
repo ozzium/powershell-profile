@@ -20,22 +20,31 @@ function Get-RavenRepoRoot {
     return $null
 }
 
-function Invoke-RavenGit {
+function global:Invoke-RavenGit {
     param(
         [Parameter(Mandatory)]
         [string[]]$Args
     )
 
     $repo = Get-RavenRepoRoot
-    if (-not $repo) {
-        Write-Warning "Raven repo not found."
-        return $false
+
+    if (-not $repo -or -not (Test-Path $repo)) {
+        Write-Warning "Git repo not found."
+        return
+    }
+
+    if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+        Write-Warning "Git is not installed or not available in PATH."
+        return
     }
 
     Push-Location $repo
+
     try {
         & git @Args
-        return ($LASTEXITCODE -eq 0)
+    }
+    catch {
+        Write-Warning "Git command failed: $($_.Exception.Message)"
     }
     finally {
         Pop-Location
@@ -196,31 +205,9 @@ function global:Show-RavenGitMenu {
             }
 
             "9" {
-    try {
-        if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-            Write-Warning "Git is not installed or not available in PATH."
-            Read-Host "Press Enter to continue..."
-            continue
+                Invoke-RavenGit @("log", "--oneline", "--graph", "--decorate", "-n", "15")
+                Wait-RavenGit
         }
-
-        $insideRepo = git rev-parse --is-inside-work-tree 2>$null
-
-        if ($LASTEXITCODE -ne 0 -or $insideRepo -ne "true") {
-            Write-Warning "This folder is not inside a Git repository."
-            Read-Host "Press Enter to continue..."
-            continue
-        }
-
-        git --no-pager log --oneline --decorate --graph -n 20
-
-        Read-Host "Press Enter to continue..."
-    }
-    catch {
-        Write-Warning "Git log failed: $($_.Exception.Message)"
-        Read-Host "Press Enter to continue..."
-    }
-}
-
             "10" {
                 if (Get-Command lazygit -ErrorAction SilentlyContinue) {
                     $repo = Get-RavenRepoRoot
