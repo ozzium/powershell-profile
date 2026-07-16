@@ -42,8 +42,9 @@ function Invoke-RavenGit {
     }
 }
 
-function Wait-RavenGit {
-    [void](Read-Host "Press Enter to continue...")
+function global:Wait-RavenGit {
+    Write-Host ""
+    Read-Host "Press Enter to continue..."
 }
 
 function Show-RavenGitStatus {
