@@ -515,7 +515,7 @@ foreach ($fn in @(
     }
 }
 
-Write-Host "✔ Raven Core Loaded" -ForegroundColor DarkMagenta
+# Write-Host "✔ Raven Core Loaded" -ForegroundColor DarkMagenta
 
 # --- Ensure `raven` exists (failsafe) ---
 if (-not (Get-Command raven -ErrorAction SilentlyContinue)) {
