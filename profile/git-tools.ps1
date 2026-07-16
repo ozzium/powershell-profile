@@ -169,7 +169,10 @@ function global:Show-RavenGitMenu {
         $choice = Read-Host "Choose"
 
         switch ($choice) {
-            "1" { Show-RavenGitStatus }
+            "1" {
+                Invoke-RavenGit @("status")
+                Wait-RavenGit
+            }
 
             "2" { Update-RavenLocalProfile }
 
