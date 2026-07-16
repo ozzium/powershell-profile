@@ -17,6 +17,15 @@ function global:Get-RavenRepoRoot {
 $repoRoot = Get-RavenRepoRoot
 $profileRoot = Join-Path $repoRoot "profile"
 
+# Raven root globals/env vars expected by profile modules
+$global:RavenRepoRoot = $repoRoot
+$global:RavenProfileRoot = $profileRoot
+
+$env:RAVEN_REPO_ROOT = $repoRoot
+
+# Legacy Raven modules expect this to be the repo root, not the /profile folder.
+$env:RAVEN_PROFILE_ROOT = $repoRoot
+
 if (-not (Test-Path $profileRoot)) {
     Write-Warning "Raven profile folder not found: $profileRoot"
     return

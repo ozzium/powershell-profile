@@ -27,7 +27,22 @@ function global:Show-RavenMenuHeader {
         "default"
     }
 
-    $repo = Split-Path $env:RAVEN_PROFILE_ROOT -Leaf
+    $root = $env:RAVEN_PROFILE_ROOT
+
+if (-not $root -and $global:RavenProfileRoot) {
+    $root = $global:RavenProfileRoot
+}
+
+if (-not $root -and (Get-Command Get-RavenRepoRoot -ErrorAction SilentlyContinue)) {
+    $root = Join-Path (Get-RavenRepoRoot) "profile"
+}
+
+$repo = if ($root) {
+    Split-Path $root -Leaf
+}
+else {
+    "profile"
+}
 
     Write-Host "╭──────────────────────────────────────────────╮" -ForegroundColor DarkMagenta
     Write-Host "│ 🦇 Raven Console                             │" -ForegroundColor Magenta
