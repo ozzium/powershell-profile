@@ -195,9 +195,30 @@ function global:Show-RavenGitMenu {
             }
 
             "9" {
-                Invoke-RavenGit @("log","--oneline","--graph","--decorate","-n","15")
-                Wait-RavenGit
-            }
+    try {
+        if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+            Write-Warning "Git is not installed or not available in PATH."
+            Read-Host "Press Enter to continue..."
+            continue
+        }
+
+        $insideRepo = git rev-parse --is-inside-work-tree 2>$null
+
+        if ($LASTEXITCODE -ne 0 -or $insideRepo -ne "true") {
+            Write-Warning "This folder is not inside a Git repository."
+            Read-Host "Press Enter to continue..."
+            continue
+        }
+
+        git --no-pager log --oneline --decorate --graph -n 20
+
+        Read-Host "Press Enter to continue..."
+    }
+    catch {
+        Write-Warning "Git log failed: $($_.Exception.Message)"
+        Read-Host "Press Enter to continue..."
+    }
+}
 
             "10" {
                 if (Get-Command lazygit -ErrorAction SilentlyContinue) {
