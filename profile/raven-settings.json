@@ -1,4 +1,4 @@
 {
-  "theme": "powerlevel10k_classic",
-  "fastMode": true
+  "theme": "paradox",
+  "fastMode": false
 }
