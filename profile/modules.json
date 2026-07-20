@@ -71,7 +71,7 @@
   },
   {
     "Name": "GitAliases",
-    "Enabled": false,
+    "Enabled": true,
     "InstallIfMissing": false
   },
   {
@@ -81,6 +81,101 @@
   },
   {
     "Name": "Dism",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "WriteAscii",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "SmbShare",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSWriteHTML",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "syntax-highlighting",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "TroubleshootingPack",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSTui",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "Tree",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "AsciiText",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "ColoredText",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "FontUtilities",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "fscps.ascii",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "gsudoModule",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "ImagePlayground",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "Markdown",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "NerdFonts",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "Pester",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "posh-git",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "psAsciiArt",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSTalk",
     "Enabled": true,
     "InstallIfMissing": false
   }
