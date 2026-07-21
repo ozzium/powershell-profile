@@ -1,4 +1,4 @@
 {
-  "theme": "dracula",
-  "fastMode": false
+  "theme": "iterm2",
+  "fastMode": true
 }
