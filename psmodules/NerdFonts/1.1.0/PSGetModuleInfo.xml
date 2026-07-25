@@ -1,0 +1,184 @@
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
+  <Obj RefId="0">
+    <TN RefId="0">
+      <T>Microsoft.PowerShell.Commands.PSRepositoryItemInfo</T>
+      <T>System.Management.Automation.PSCustomObject</T>
+      <T>System.Object</T>
+    </TN>
+    <MS>
+      <S N="Name">NerdFonts</S>
+      <Version N="Version">1.1.0</Version>
+      <S N="Type">Module</S>
+      <S N="Description">A PowerShell module to download and install fonts from NerdFonts.</S>
+      <S N="Author">PSModule</S>
+      <S N="CompanyName">PSModule.io</S>
+      <S N="Copyright">(c) 2026 PSModule. All rights reserved.</S>
+      <DT N="PublishedDate">2026-05-20T17:33:14-04:00</DT>
+      <Obj N="InstalledDate" RefId="1">
+        <DT>2026-07-04T11:29:28.0888093-04:00</DT>
+        <MS>
+          <Obj N="DisplayHint" RefId="2">
+            <TN RefId="1">
+              <T>Microsoft.PowerShell.Commands.DisplayHintType</T>
+              <T>System.Enum</T>
+              <T>System.ValueType</T>
+              <T>System.Object</T>
+            </TN>
+            <ToString>DateTime</ToString>
+            <I32>2</I32>
+          </Obj>
+        </MS>
+      </Obj>
+      <Nil N="UpdatedDate" />
+      <URI N="LicenseUri">https://github.com/PSModule/NerdFonts/blob/main/LICENSE</URI>
+      <URI N="ProjectUri">https://github.com/PSModule/NerdFonts</URI>
+      <URI N="IconUri">https://raw.githubusercontent.com/PSModule/NerdFonts/main/icon/icon.png</URI>
+      <Obj N="Tags" RefId="3">
+        <TN RefId="2">
+          <T>System.Object[]</T>
+          <T>System.Array</T>
+          <T>System.Object</T>
+        </TN>
+        <LST>
+          <S>fonts</S>
+          <S>Linux</S>
+          <S>MacOS</S>
+          <S>module</S>
+          <S>nerdfonts</S>
+          <S>powershell</S>
+          <S>powershell-module</S>
+          <S>PSEdition_Core</S>
+          <S>PSEdition_Desktop</S>
+          <S>Windows</S>
+          <S>PSModule</S>
+        </LST>
+      </Obj>
+      <Obj N="Includes" RefId="4">
+        <TN RefId="3">
+          <T>System.Collections.Hashtable</T>
+          <T>System.Object</T>
+        </TN>
+        <DCT>
+          <En>
+            <S N="Key">DscResource</S>
+            <Obj N="Value" RefId="5">
+              <TNRef RefId="2" />
+              <LST />
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">RoleCapability</S>
+            <Ref N="Value" RefId="5" />
+          </En>
+          <En>
+            <S N="Key">Cmdlet</S>
+            <Ref N="Value" RefId="5" />
+          </En>
+          <En>
+            <S N="Key">Function</S>
+            <Obj N="Value" RefId="6">
+              <TNRef RefId="2" />
+              <LST>
+                <S>Get-NerdFont</S>
+                <S>Install-NerdFont</S>
+              </LST>
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">Workflow</S>
+            <Ref N="Value" RefId="5" />
+          </En>
+          <En>
+            <S N="Key">Command</S>
+            <Obj N="Value" RefId="7">
+              <TNRef RefId="2" />
+              <LST>
+                <S>Get-NerdFont</S>
+                <S>Install-NerdFont</S>
+              </LST>
+            </Obj>
+          </En>
+        </DCT>
+      </Obj>
+      <Nil N="PowerShellGetFormatVersion" />
+      <Nil N="ReleaseNotes" />
+      <Obj N="Dependencies" RefId="8">
+        <TNRef RefId="2" />
+        <LST>
+          <Obj RefId="9">
+            <TN RefId="4">
+              <T>System.Collections.Specialized.OrderedDictionary</T>
+              <T>System.Object</T>
+            </TN>
+            <DCT>
+              <En>
+                <S N="Key">Name</S>
+                <S N="Value">Fonts</S>
+              </En>
+              <En>
+                <S N="Key">RequiredVersion</S>
+                <S N="Value">1.1.21</S>
+              </En>
+              <En>
+                <S N="Key">CanonicalId</S>
+                <S N="Value">nuget:Fonts/[1.1.21]</S>
+              </En>
+            </DCT>
+          </Obj>
+          <Obj RefId="10">
+            <TNRef RefId="4" />
+            <DCT>
+              <En>
+                <S N="Key">Name</S>
+                <S N="Value">Admin</S>
+              </En>
+              <En>
+                <S N="Key">RequiredVersion</S>
+                <S N="Value">1.1.6</S>
+              </En>
+              <En>
+                <S N="Key">CanonicalId</S>
+                <S N="Value">nuget:Admin/[1.1.6]</S>
+              </En>
+            </DCT>
+          </Obj>
+        </LST>
+      </Obj>
+      <S N="RepositorySourceLocation">https://www.powershellgallery.com/api/v2</S>
+      <S N="Repository">PSGallery</S>
+      <S N="PackageManagementProvider">NuGet</S>
+      <Obj N="AdditionalMetadata" RefId="11">
+        <TN RefId="5">
+          <T>System.Management.Automation.PSCustomObject</T>
+          <T>System.Object</T>
+        </TN>
+        <MS>
+          <S N="copyright">(c) 2026 PSModule. All rights reserved.</S>
+          <S N="description">A PowerShell module to download and install fonts from NerdFonts.</S>
+          <S N="requireLicenseAcceptance">False</S>
+          <S N="isLatestVersion">True</S>
+          <S N="isAbsoluteLatestVersion">True</S>
+          <S N="versionDownloadCount">3739</S>
+          <S N="downloadCount">91674</S>
+          <S N="packageSize">8111</S>
+          <S N="published">5/20/2026 5:33:14 PM -04:00</S>
+          <S N="created">5/20/2026 5:33:14 PM -04:00</S>
+          <S N="lastUpdated">7/4/2026 3:00:01 PM -04:00</S>
+          <S N="tags">fonts Linux MacOS module nerdfonts powershell powershell-module PSEdition_Core PSEdition_Desktop Windows PSModule PSFunction_Get-NerdFont PSCommand_Get-NerdFont PSFunction_Install-NerdFont PSCommand_Install-NerdFont PSIncludes_Function</S>
+          <S N="developmentDependency">False</S>
+          <S N="updated">2026-07-04T15:00:01Z</S>
+          <S N="NormalizedVersion">1.1.0</S>
+          <S N="Authors">PSModule</S>
+          <S N="IsPrerelease">false</S>
+          <S N="ItemType">Module</S>
+          <S N="FileList">NerdFonts.nuspec|NerdFonts.psm1|FontsData.json|NerdFonts.psd1</S>
+          <S N="GUID">1bddb1d8-04d4-4fac-8b91-3fde3385c699</S>
+          <S N="PowerShellVersion">5.1</S>
+          <S N="ProcessorArchitecture">None</S>
+          <S N="CompanyName">PSModule</S>
+        </MS>
+      </Obj>
+      <S N="InstalledLocation">C:\Users\ozz\Documents\PowerShell\Modules\NerdFonts\1.1.0</S>
+    </MS>
+  </Obj>
+</Objs>

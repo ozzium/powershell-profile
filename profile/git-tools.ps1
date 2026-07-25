@@ -20,30 +20,40 @@ function Get-RavenRepoRoot {
     return $null
 }
 
-function Invoke-RavenGit {
+function global:Invoke-RavenGit {
     param(
         [Parameter(Mandatory)]
         [string[]]$Args
     )
 
     $repo = Get-RavenRepoRoot
-    if (-not $repo) {
-        Write-Warning "Raven repo not found."
-        return $false
+
+    if (-not $repo -or -not (Test-Path $repo)) {
+        Write-Warning "Git repo not found."
+        return
+    }
+
+    if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+        Write-Warning "Git is not installed or not available in PATH."
+        return
     }
 
     Push-Location $repo
+
     try {
         & git @Args
-        return ($LASTEXITCODE -eq 0)
+    }
+    catch {
+        Write-Warning "Git command failed: $($_.Exception.Message)"
     }
     finally {
         Pop-Location
     }
 }
 
-function Wait-RavenGit {
-    [void](Read-Host "Press Enter to continue...")
+function global:Wait-RavenGit {
+    Write-Host ""
+    Read-Host "Press Enter to continue..."
 }
 
 function Show-RavenGitStatus {
@@ -159,7 +169,10 @@ function global:Show-RavenGitMenu {
         $choice = Read-Host "Choose"
 
         switch ($choice) {
-            "1" { Show-RavenGitStatus }
+            "1" {
+                Invoke-RavenGit @("status")
+                Wait-RavenGit
+            }
 
             "2" { Update-RavenLocalProfile }
 
@@ -195,10 +208,9 @@ function global:Show-RavenGitMenu {
             }
 
             "9" {
-                Invoke-RavenGit @("log","--oneline","--graph","--decorate","-n","15")
+                Invoke-RavenGit @("log", "--oneline", "--graph", "--decorate", "-n", "15")
                 Wait-RavenGit
-            }
-
+        }
             "10" {
                 if (Get-Command lazygit -ErrorAction SilentlyContinue) {
                     $repo = Get-RavenRepoRoot

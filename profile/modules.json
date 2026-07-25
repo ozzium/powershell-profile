@@ -1,42 +1,5 @@
-[
-  {
-    "Name": "Terminal-Icons",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "PSReadLine",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "z",
-    "Enabled": true,
-    "InstallIfMissing": true
-  },
-  {
-    "Name": "PowerShellGet",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "Symlink",
-    "Enabled": true,
-    "InstallIfMissing": true
-  },
-  {
-    "Name": "OnePowerShellProfile",
-    "Enabled": true,
-    "InstallIfMissing": true
-  },
-  {
-    "Name": "AsciiTreeScaffolder",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "PackageManagement",
-    "Enabled": true,
-    "InstallIfMissing": false
-  }
-]
+{
+  "Name": "Terminal-Icons",
+  "Enabled": true,
+  "InstallIfMissing": false
+}

@@ -17,6 +17,15 @@ function global:Get-RavenRepoRoot {
 $repoRoot = Get-RavenRepoRoot
 $profileRoot = Join-Path $repoRoot "profile"
 
+# Raven root globals/env vars expected by profile modules
+$global:RavenRepoRoot = $repoRoot
+$global:RavenProfileRoot = $profileRoot
+
+$env:RAVEN_REPO_ROOT = $repoRoot
+
+# Legacy Raven modules expect this to be the repo root, not the /profile folder.
+$env:RAVEN_PROFILE_ROOT = $repoRoot
+
 if (-not (Test-Path $profileRoot)) {
     Write-Warning "Raven profile folder not found: $profileRoot"
     return
@@ -25,14 +34,8 @@ if (-not (Test-Path $profileRoot)) {
 $files = @(
     "config.ps1"
     "appearance.ps1"
-    "editors.ps1"
     "features.ps1"
     "raven.ps1"
-    "dashboard.ps1"
-    "git-tools.ps1"
-    "menu.ps1"
-    "module-manager.ps1"
-    "help.ps1"
     "init.ps1"
 )
 
@@ -84,30 +87,69 @@ try {
 }
 catch {}
 
-function global:raven-loadtime {
-    Write-Host "Raven file timings:" -ForegroundColor Cyan
+function global:Load-RavenFullMenu {
+    if ($global:RavenFullMenuLoaded) {
+        return
+    }
 
-    $global:RavenLoadTimings |
-        Sort-Object Ms -Descending |
-        Format-Table File, Ms -AutoSize
+    $repoRoot = $global:RavenRepoRoot
 
-    Write-Host ""
-    Write-Host "Loop overhead timings:" -ForegroundColor Cyan
+    if (-not $repoRoot) {
+        $repoRoot = $env:RAVEN_REPO_ROOT
+    }
 
-    $global:RavenLoopOverheadTimings |
-        Sort-Object OverheadMs -Descending |
-        Format-Table File, SourceMs, WholeItemMs, OverheadMs -AutoSize
+    if (-not $repoRoot) {
+        $repoRoot = $env:RAVEN_PROFILE_ROOT
+    }
 
-    Write-Host ""
+    if (-not $repoRoot) {
+        Write-Warning "Raven Full Menu: repo root not found."
+        return
+    }
 
-    $sum = ($global:RavenLoadTimings | Measure-Object Ms -Sum).Sum
+    $profileRoot = Join-Path $repoRoot "profile"
 
-    Write-Host "File timing sum: $sum ms" -ForegroundColor DarkGray
-    Write-Host "File loop total: $global:RavenFileLoopTotalMs ms" -ForegroundColor Yellow
-    Write-Host "Loader total: $global:RavenLoaderTotalMs ms" -ForegroundColor Yellow
+    if (-not (Test-Path $profileRoot)) {
+        Write-Warning "Raven Full Menu: profile folder not found: $profileRoot"
+        return
+    }
+
+    $menuFiles = @(
+    "editors.ps1"
+    "dashboard.ps1"
+    "git-tools.ps1"
+    "module-manager.ps1"
+    "help.ps1"
+    "menu.ps1"
+)
+
+    foreach ($file in $menuFiles) {
+        $path = Join-Path $profileRoot $file
+
+        if (Test-Path $path) {
+            try {
+                . $path
+            }
+            catch {
+                Write-Warning "Failed to lazy-load $file`: $($_.Exception.Message)"
+            }
+        }
+    }
+
+    $global:RavenFullMenuLoaded = $true
 }
 
-$global:RavenLoaderStopwatch.Stop()
-$global:RavenLoaderTotalMs = $global:RavenLoaderStopwatch.ElapsedMilliseconds
+function global:profile-menu {
+    Remove-Item Function:\profile-menu -Force -ErrorAction SilentlyContinue
+
+    Load-RavenFullMenu
+
+    if (Get-Command profile-menu -CommandType Function -ErrorAction SilentlyContinue) {
+        profile-menu
+        return
+    }
+
+    Write-Warning "Raven menu files loaded, but the real profile-menu function was not found."
+}
 
 Write-Host "✔ Raven Core Loaded" -ForegroundColor Green

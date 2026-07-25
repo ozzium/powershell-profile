@@ -27,7 +27,22 @@ function global:Show-RavenMenuHeader {
         "default"
     }
 
-    $repo = Split-Path $env:RAVEN_PROFILE_ROOT -Leaf
+    $root = $env:RAVEN_PROFILE_ROOT
+
+if (-not $root -and $global:RavenProfileRoot) {
+    $root = $global:RavenProfileRoot
+}
+
+if (-not $root -and (Get-Command Get-RavenRepoRoot -ErrorAction SilentlyContinue)) {
+    $root = Join-Path (Get-RavenRepoRoot) "profile"
+}
+
+$repo = if ($root) {
+    Split-Path $root -Leaf
+}
+else {
+    "profile"
+}
 
     Write-Host "╭──────────────────────────────────────────────╮" -ForegroundColor DarkMagenta
     Write-Host "│ 🦇 Raven Console                             │" -ForegroundColor Magenta
@@ -39,7 +54,7 @@ function global:Show-RavenMenuHeader {
     Write-Host ""
 }
 
-function Invoke-RavenSelfRepair {
+function global:Invoke-RavenSelfRepair {
     [CmdletBinding()]
     param(
         [switch]$VerboseReport
@@ -158,43 +173,114 @@ if (-not (Test-Path $root)) {
 }
 
 function global:profile-menu {
+    while ($true) {
+        Clear-Host
 
-    $ExitMenu = $false
-
-    while (-not $ExitMenu) {
-
-        Show-RavenMenuHeader
-
-        Write-Host "$NeonCyan 1$NeonReset • Switch Theme"
-        Write-Host "$NeonCyan 2$NeonReset • Toggle Fast Mode"
-        Write-Host "$NeonCyan 3$NeonReset • Edit Profile Files"
-        Write-Host "$NeonCyan 4$NeonReset • Backup Profile"
-        Write-Host "$NeonCyan 5$NeonReset • Git & GitHub Tools"
-        Write-Host "$NeonCyan 6$NeonReset • Self-Repair (Reload Modules)"
-        Write-Host "$NeonCyan 7$NeonReset • Module Manager"
-        Write-Host "$NeonCyan 8$NeonReset • Exit"
-		
-		$choice = Read-Host "Choose an option"
-
-        switch ($choice) {
-
-            "1" { Switch-RavenTheme }
-            "2" { Toggle-RavenFastMode }
-            "3" { Edit-ProfileFiles }
-            "4" { Profile-Backup }
-            "5" { Show-RavenGitMenu }
-            "6" { Invoke-RavenSelfRepair }
-            "7" { Show-RavenModuleMenu }
-            "8" { $ExitMenu = $true; break }
-
-            default {
-                Write-Host "Invalid option!" -ForegroundColor Red
-            }
+        if (Get-Command Show-RavenMenuHeader -ErrorAction SilentlyContinue) {
+            Show-RavenMenuHeader
+        }
+        else {
+            Write-Host "RAVEN PROFILE MENU" -ForegroundColor Cyan
         }
 
+        Write-Host ""
+        Write-Host "1 • Switch Theme" -ForegroundColor Cyan
+        Write-Host "2 • Toggle Fast Mode" -ForegroundColor Cyan
+        Write-Host "3 • Edit Profile Files" -ForegroundColor Cyan
+        Write-Host "4 • Backup Profile" -ForegroundColor Cyan
+        Write-Host "5 • Git & GitHub Tools" -ForegroundColor Cyan
+        Write-Host "6 • Self-Repair (Reload Modules)" -ForegroundColor Cyan
+        Write-Host "7 • Module Manager" -ForegroundColor Cyan
+        Write-Host "8 • Exit" -ForegroundColor Cyan
+        Write-Host ""
+
+        $choice = Read-Host "Choose an option"
+
+        switch ($choice) {
+            "1" {
+                if (Get-Command Switch-RavenTheme -ErrorAction SilentlyContinue) {
+                    Switch-RavenTheme
+                }
+                elseif (Get-Command Show-ThemeMenu -ErrorAction SilentlyContinue) {
+                    Show-ThemeMenu
+                }
+                else {
+                    Write-Warning "Theme switcher not found."
+                    Read-Host "Press Enter to continue..."
+                }
+            }
+
+            "2" {
+                if (Get-Command Toggle-RavenFastMode -ErrorAction SilentlyContinue) {
+                    Toggle-RavenFastMode
+                }
+                else {
+                    Write-Warning "Fast Mode toggle not found."
+                    Read-Host "Press Enter to continue..."
+                }
+            }
+
+            "3" {
+                if (Get-Command Edit-ProfileFiles -ErrorAction SilentlyContinue) {
+                    Edit-ProfileFiles
+                }
+                else {
+                    Write-Warning "Profile file editor not found."
+                    Read-Host "Press Enter to continue..."
+                }
+            }
+
+            "4" {
+                if (Get-Command Profile-Backup -ErrorAction SilentlyContinue) {
+                    Profile-Backup
+                }
+                else {
+                    Write-Warning "Profile backup function not found."
+                    Read-Host "Press Enter to continue..."
+                }
+            }
+
+            "5" {
+                if (Get-Command Show-RavenGitMenu -ErrorAction SilentlyContinue) {
+                    Show-RavenGitMenu
+                }
+                else {
+                    Write-Warning "Git tools menu not found."
+                    Read-Host "Press Enter to continue..."
+                }
+            }
+
+            "6" {
+                if (Get-Command Invoke-RavenSelfRepair -ErrorAction SilentlyContinue) {
+                    Invoke-RavenSelfRepair
+                }
+                else {
+                    Write-Warning "Self-Repair function not found."
+                    Read-Host "Press Enter to continue..."
+                }
+            }
+
+            "7" {
+                if (Get-Command Show-RavenModuleMenu -ErrorAction SilentlyContinue) {
+                    Show-RavenModuleMenu
+                }
+                else {
+                    Write-Warning "Module Manager not found."
+                    Read-Host "Press Enter to continue..."
+                }
+            }
+
+            "8" {
+                return
+            }
+
+            default {
+                Write-Warning "Invalid option."
+                Read-Host "Press Enter to continue..."
+            }
+        }
     }
 }
-
 # =============== SUBMENUS =======================================================
 
 function global:Toggle-RavenFastMode {
