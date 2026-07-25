@@ -33,5 +33,10 @@
     "Name": "AsciiTreeScaffolder",
     "Enabled": true,
     "InstallIfMissing": false
+  },
+  {
+    "Name": "PackageManagement",
+    "Enabled": true,
+    "InstallIfMissing": false
   }
 ]
