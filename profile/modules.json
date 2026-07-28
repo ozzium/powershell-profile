@@ -1,5 +1,27 @@
-{
-  "Name": "Terminal-Icons",
-  "Enabled": true,
-  "InstallIfMissing": false
-}
+[
+  {
+    "Name": "Terminal-Icons",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "AsciiTreeScaffolder",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PowerShellGet",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "posh-git",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSReadLine",
+    "Enabled": true,
+    "InstallIfMissing": false
+  }
+]

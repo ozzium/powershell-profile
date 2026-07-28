@@ -1,0 +1,152 @@
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
+  <Obj RefId="0">
+    <TN RefId="0">
+      <T>Microsoft.PowerShell.Commands.PSRepositoryItemInfo</T>
+      <T>System.Management.Automation.PSCustomObject</T>
+      <T>System.Object</T>
+    </TN>
+    <MS>
+      <S N="Name">FontUtilities</S>
+      <Version N="Version">0.1.39</Version>
+      <S N="Type">Module</S>
+      <S N="Description">A powershell module to simplify the work with fonts</S>
+      <S N="Author">bus1hero</S>
+      <S N="CompanyName">bus1hero</S>
+      <S N="Copyright">(c) bus1hero. All rights reserved.</S>
+      <DT N="PublishedDate">2022-03-04T17:27:36-05:00</DT>
+      <Obj N="InstalledDate" RefId="1">
+        <DT>2026-01-22T15:35:09.8512865-05:00</DT>
+        <MS>
+          <Obj N="DisplayHint" RefId="2">
+            <TN RefId="1">
+              <T>Deserialized.Microsoft.PowerShell.Commands.DisplayHintType</T>
+              <T>Deserialized.System.Enum</T>
+              <T>Deserialized.System.ValueType</T>
+              <T>Deserialized.System.Object</T>
+            </TN>
+            <ToString>DateTime</ToString>
+            <I32>2</I32>
+          </Obj>
+        </MS>
+      </Obj>
+      <Obj N="UpdatedDate" RefId="3">
+        <DT>2026-07-20T02:05:57.0642756-04:00</DT>
+        <MS>
+          <Obj N="DisplayHint" RefId="4">
+            <TN RefId="2">
+              <T>Microsoft.PowerShell.Commands.DisplayHintType</T>
+              <T>System.Enum</T>
+              <T>System.ValueType</T>
+              <T>System.Object</T>
+            </TN>
+            <ToString>DateTime</ToString>
+            <I32>2</I32>
+          </Obj>
+        </MS>
+      </Obj>
+      <Nil N="LicenseUri" />
+      <URI N="ProjectUri">https://github.com/BusHero/FontUtilities</URI>
+      <Nil N="IconUri" />
+      <Obj N="Tags" RefId="5">
+        <TN RefId="3">
+          <T>System.Object[]</T>
+          <T>System.Array</T>
+          <T>System.Object</T>
+        </TN>
+        <LST>
+          <S>PSModule</S>
+        </LST>
+      </Obj>
+      <Obj N="Includes" RefId="6">
+        <TN RefId="4">
+          <T>System.Collections.Hashtable</T>
+          <T>System.Object</T>
+        </TN>
+        <DCT>
+          <En>
+            <S N="Key">Cmdlet</S>
+            <Obj N="Value" RefId="7">
+              <TNRef RefId="3" />
+              <LST />
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">Command</S>
+            <Obj N="Value" RefId="8">
+              <TNRef RefId="3" />
+              <LST>
+                <S>Add-FontFamily</S>
+                <S>Get-FontFamily</S>
+                <S>Remove-FontFamily</S>
+                <S>Install-Font</S>
+              </LST>
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">DscResource</S>
+            <Ref N="Value" RefId="7" />
+          </En>
+          <En>
+            <S N="Key">Workflow</S>
+            <Ref N="Value" RefId="7" />
+          </En>
+          <En>
+            <S N="Key">RoleCapability</S>
+            <Ref N="Value" RefId="7" />
+          </En>
+          <En>
+            <S N="Key">Function</S>
+            <Obj N="Value" RefId="9">
+              <TNRef RefId="3" />
+              <LST>
+                <S>Add-FontFamily</S>
+                <S>Get-FontFamily</S>
+                <S>Remove-FontFamily</S>
+                <S>Install-Font</S>
+              </LST>
+            </Obj>
+          </En>
+        </DCT>
+      </Obj>
+      <Nil N="PowerShellGetFormatVersion" />
+      <Nil N="ReleaseNotes" />
+      <Obj N="Dependencies" RefId="10">
+        <TNRef RefId="3" />
+        <LST />
+      </Obj>
+      <S N="RepositorySourceLocation">https://www.powershellgallery.com/api/v2</S>
+      <S N="Repository">PSGallery</S>
+      <S N="PackageManagementProvider">NuGet</S>
+      <Obj N="AdditionalMetadata" RefId="11">
+        <TN RefId="5">
+          <T>System.Management.Automation.PSCustomObject</T>
+          <T>System.Object</T>
+        </TN>
+        <MS>
+          <S N="copyright">(c) bus1hero. All rights reserved.</S>
+          <S N="description">A powershell module to simplify the work with fonts</S>
+          <S N="requireLicenseAcceptance">False</S>
+          <S N="isLatestVersion">True</S>
+          <S N="isAbsoluteLatestVersion">True</S>
+          <S N="versionDownloadCount">858</S>
+          <S N="downloadCount">936</S>
+          <S N="packageSize">5455</S>
+          <S N="published">3/4/2022 5:27:36 PM -05:00</S>
+          <S N="created">3/4/2022 5:27:36 PM -05:00</S>
+          <S N="lastUpdated">7/18/2026 8:00:01 AM -04:00</S>
+          <S N="tags">PSModule PSFunction_Add-FontFamily PSCommand_Add-FontFamily PSFunction_Get-FontFamily PSCommand_Get-FontFamily PSFunction_Remove-FontFamily PSCommand_Remove-FontFamily PSFunction_Install-Font PSCommand_Install-Font PSIncludes_Function</S>
+          <S N="developmentDependency">False</S>
+          <S N="updated">2026-07-18T08:00:01Z</S>
+          <S N="NormalizedVersion">0.1.39</S>
+          <S N="Authors">bus1hero</S>
+          <S N="IsPrerelease">false</S>
+          <S N="ItemType">Module</S>
+          <S N="FileList">FontUtilities.nuspec|fonts.json|FontUtilities.psd1|FontUtilities.psm1</S>
+          <S N="GUID">be8c16d6-0015-4d3e-aacb-a636943ed27a</S>
+          <S N="CompanyName">Unknown</S>
+        </MS>
+      </Obj>
+      <S N="InstalledLocation">C:\Users\ozzium\Documents\PowerShell\Modules\FontUtilities\0.1.39</S>
+    </MS>
+  </Obj>
+</Objs>
