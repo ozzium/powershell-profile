@@ -1,5 +1,162 @@
-{
-  "Name": "Terminal-Icons",
-  "Enabled": true,
-  "InstallIfMissing": false
-}
+[
+  {
+    "Name": "Terminal-Icons",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "Admin",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "z",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "WriteAscii",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "Symlink",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "alias-tips",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "AsciiText",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "AsciiTreeScaffolder",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "Dism",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "CredentialManager",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "posh-git",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "ExtendedHistory",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "Fonts",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "FontUtilities",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "fscps.ascii",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "GitAliases",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "gsudoModule",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "ImagePlayground",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "Markdown",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "NerdFonts",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "OnePowerShellProfile",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "Poshify",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PowerShellGet",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "psAsciiArt",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSReadLine",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSTalk",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSTree",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSTui",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSWriteHTML",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "syntax-highlighting",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "Tree",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSFzf",
+    "Enabled": true,
+    "InstallIfMissing": true
+  }
+]
