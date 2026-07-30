@@ -1,5 +1,5 @@
 # Raven Profile Bootstrap (Doctor v2)
-. "C:\Users\ozz\Documents\GitHub\powershell-profile\bootstrap\loader.ps1"
+. "C:\Users\ozzium\Documents\GitHub\powershell-profile\bootstrap\loader.ps1"
 
 Set-Alias npp "C:\Program Files\Notepad++\notepad++.exe"
 Set-Alias np4 "C:\mytools\Notepad4_HD\Notepad4.exe"
@@ -32,3 +32,25 @@ function GitAliases {
 	Import-Module GitAliases -Force -ErrorAction Stop
 	Write-Host "GitAliases loaded." -ForegroundColor Green
 	}
+	function psfunc {
+    $template = @'
+function Get-Something {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$Param1
+    )
+    process {
+        try {
+            # Your code here
+            Write-Output 'Success'
+        }
+        catch {
+            Write-Error $_.Exception.Message
+        }
+    }
+}
+'@
+    $template | Set-Clipboard
+    Write-Host "Success! The PowerShell template has been copied to your clipboard. Just hit Ctrl+V to paste it." -ForegroundColor Green
+}

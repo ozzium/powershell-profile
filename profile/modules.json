@@ -5,14 +5,9 @@
     "InstallIfMissing": false
   },
   {
-    "Name": "PSReadLine",
+    "Name": "AsciiTreeScaffolder",
     "Enabled": true,
     "InstallIfMissing": false
-  },
-  {
-    "Name": "z",
-    "Enabled": true,
-    "InstallIfMissing": true
   },
   {
     "Name": "PowerShellGet",
@@ -20,67 +15,12 @@
     "InstallIfMissing": false
   },
   {
-    "Name": "Symlink",
-    "Enabled": true,
-    "InstallIfMissing": true
-  },
-  {
-    "Name": "OnePowerShellProfile",
-    "Enabled": true,
-    "InstallIfMissing": true
-  },
-  {
-    "Name": "AsciiTreeScaffolder",
+    "Name": "posh-git",
     "Enabled": true,
     "InstallIfMissing": false
   },
   {
-    "Name": "WindowsSearch",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "Fonts",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "HgsClient",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "alias-tips",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "Poshify",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "Admin",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "ExtendedHistory",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "GitAliases",
-    "Enabled": false,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "PackageManagement",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "Dism",
+    "Name": "PSReadLine",
     "Enabled": true,
     "InstallIfMissing": false
   }

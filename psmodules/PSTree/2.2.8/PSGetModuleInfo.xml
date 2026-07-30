@@ -1,0 +1,148 @@
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
+  <Obj RefId="0">
+    <TN RefId="0">
+      <T>Microsoft.PowerShell.Commands.PSRepositoryItemInfo</T>
+      <T>System.Management.Automation.PSCustomObject</T>
+      <T>System.Object</T>
+    </TN>
+    <MS>
+      <S N="Name">PSTree</S>
+      <Version N="Version">2.2.8</Version>
+      <S N="Type">Module</S>
+      <S N="Description">Tree-like cmdlets for file system and registry exploration!</S>
+      <S N="Author">Santiago Squarzon</S>
+      <S N="CompanyName">santisq</S>
+      <S N="Copyright">(c) Santiago Squarzon. All rights reserved.</S>
+      <DT N="PublishedDate">2025-09-25T21:31:10-04:00</DT>
+      <Obj N="InstalledDate" RefId="1">
+        <DT>2026-01-22T06:01:58.766082-05:00</DT>
+        <MS>
+          <Obj N="DisplayHint" RefId="2">
+            <TN RefId="1">
+              <T>Microsoft.PowerShell.Commands.DisplayHintType</T>
+              <T>System.Enum</T>
+              <T>System.ValueType</T>
+              <T>System.Object</T>
+            </TN>
+            <ToString>DateTime</ToString>
+            <I32>2</I32>
+          </Obj>
+        </MS>
+      </Obj>
+      <Nil N="UpdatedDate" />
+      <URI N="LicenseUri">https://www.github.com/santisq/PSTree/blob/main/LICENSE</URI>
+      <URI N="ProjectUri">https://www.github.com/santisq/PSTree</URI>
+      <Nil N="IconUri" />
+      <Obj N="Tags" RefId="3">
+        <TN RefId="2">
+          <T>System.Object[]</T>
+          <T>System.Array</T>
+          <T>System.Object</T>
+        </TN>
+        <LST>
+          <S>hierarchy</S>
+          <S>tree</S>
+          <S>powershell</S>
+          <S>csharp</S>
+          <S>recursion</S>
+          <S>tree-structure</S>
+          <S>filesystem</S>
+          <S>registry</S>
+          <S>navigation</S>
+          <S>visualization</S>
+          <S>system-administration</S>
+          <S>PSModule</S>
+        </LST>
+      </Obj>
+      <Obj N="Includes" RefId="4">
+        <TN RefId="3">
+          <T>System.Collections.Hashtable</T>
+          <T>System.Object</T>
+        </TN>
+        <DCT>
+          <En>
+            <S N="Key">Cmdlet</S>
+            <Obj N="Value" RefId="5">
+              <TNRef RefId="2" />
+              <LST>
+                <S>Get-PSTree</S>
+                <S>Get-PSTreeStyle</S>
+                <S>Get-PSTreeRegistry</S>
+              </LST>
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">DscResource</S>
+            <Obj N="Value" RefId="6">
+              <TNRef RefId="2" />
+              <LST />
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">Command</S>
+            <Obj N="Value" RefId="7">
+              <TNRef RefId="2" />
+              <LST>
+                <S>Get-PSTree</S>
+                <S>Get-PSTreeStyle</S>
+                <S>Get-PSTreeRegistry</S>
+              </LST>
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">RoleCapability</S>
+            <Ref N="Value" RefId="6" />
+          </En>
+          <En>
+            <S N="Key">Workflow</S>
+            <Ref N="Value" RefId="6" />
+          </En>
+          <En>
+            <S N="Key">Function</S>
+            <Ref N="Value" RefId="6" />
+          </En>
+        </DCT>
+      </Obj>
+      <Nil N="PowerShellGetFormatVersion" />
+      <Nil N="ReleaseNotes" />
+      <Obj N="Dependencies" RefId="8">
+        <TNRef RefId="2" />
+        <LST />
+      </Obj>
+      <S N="RepositorySourceLocation">https://www.powershellgallery.com/api/v2</S>
+      <S N="Repository">PSGallery</S>
+      <S N="PackageManagementProvider">NuGet</S>
+      <Obj N="AdditionalMetadata" RefId="9">
+        <TN RefId="4">
+          <T>System.Management.Automation.PSCustomObject</T>
+          <T>System.Object</T>
+        </TN>
+        <MS>
+          <S N="copyright">(c) Santiago Squarzon. All rights reserved.</S>
+          <S N="description">Tree-like cmdlets for file system and registry exploration!</S>
+          <S N="requireLicenseAcceptance">False</S>
+          <S N="isLatestVersion">True</S>
+          <S N="isAbsoluteLatestVersion">True</S>
+          <S N="versionDownloadCount">3525</S>
+          <S N="downloadCount">73237</S>
+          <S N="packageSize">85539</S>
+          <S N="published">9/25/2025 9:31:10 PM -04:00</S>
+          <S N="created">9/25/2025 9:31:10 PM -04:00</S>
+          <S N="lastUpdated">1/22/2026 10:50:05 AM -05:00</S>
+          <S N="tags">hierarchy tree powershell csharp recursion tree-structure filesystem registry navigation visualization system-administration PSModule PSCmdlet_Get-PSTree PSCommand_Get-PSTree PSCmdlet_Get-PSTreeStyle PSCommand_Get-PSTreeStyle PSCmdlet_Get-PSTreeRegistry PSCommand_Get-PSTreeRegistry PSIncludes_Cmdlet</S>
+          <S N="developmentDependency">False</S>
+          <S N="updated">2026-01-22T10:50:05Z</S>
+          <S N="NormalizedVersion">2.2.8</S>
+          <S N="Authors">Santiago Squarzon</S>
+          <S N="IsPrerelease">false</S>
+          <S N="ItemType">Module</S>
+          <S N="FileList">PSTree.nuspec|bin\net472\PSTree.dll|bin\net8.0\PSTree.deps.json|bin\net8.0\PSTree.pdb|PSTree.Format.ps1xml|bin\net472\PSTree.pdb|bin\net8.0\PSTree.dll|en-US\PSTree.dll-Help.xml|PSTree.psd1</S>
+          <S N="GUID">53958545-5919-4760-b662-2bd7a97448bf</S>
+          <S N="PowerShellVersion">5.1</S>
+          <S N="CompanyName">Unknown</S>
+        </MS>
+      </Obj>
+      <S N="InstalledLocation">C:\Users\Ozzium\Documents\PowerShell\Modules\PSTree\2.2.8</S>
+    </MS>
+  </Obj>
+</Objs>

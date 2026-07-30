@@ -1,0 +1,174 @@
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
+  <Obj RefId="0">
+    <TN RefId="0">
+      <T>Microsoft.PowerShell.Commands.PSRepositoryItemInfo</T>
+      <T>System.Management.Automation.PSCustomObject</T>
+      <T>System.Object</T>
+    </TN>
+    <MS>
+      <S N="Name">fscps.ascii</S>
+      <Version N="Version">1.0.18</Version>
+      <S N="Type">Module</S>
+      <S N="Description">ASCII Art tools</S>
+      <S N="Author">Oleksandr Nikolaiev (@onikolaiev)</S>
+      <S N="CompanyName">remixod</S>
+      <S N="Copyright">2025 (c) Oleksandr Nikolaiev. All rights reserved.</S>
+      <DT N="PublishedDate">2025-10-06T09:25:30-04:00</DT>
+      <Obj N="InstalledDate" RefId="1">
+        <DT>2026-01-25T02:17:09.962628-05:00</DT>
+        <MS>
+          <Obj N="DisplayHint" RefId="2">
+            <TN RefId="1">
+              <T>Deserialized.Microsoft.PowerShell.Commands.DisplayHintType</T>
+              <T>Deserialized.System.Enum</T>
+              <T>Deserialized.System.ValueType</T>
+              <T>Deserialized.System.Object</T>
+            </TN>
+            <ToString>DateTime</ToString>
+            <I32>2</I32>
+          </Obj>
+        </MS>
+      </Obj>
+      <Obj N="UpdatedDate" RefId="3">
+        <DT>2026-07-20T02:07:02.270453-04:00</DT>
+        <MS>
+          <Obj N="DisplayHint" RefId="4">
+            <TN RefId="2">
+              <T>Microsoft.PowerShell.Commands.DisplayHintType</T>
+              <T>System.Enum</T>
+              <T>System.ValueType</T>
+              <T>System.Object</T>
+            </TN>
+            <ToString>DateTime</ToString>
+            <I32>2</I32>
+          </Obj>
+        </MS>
+      </Obj>
+      <URI N="LicenseUri">https://opensource.org/license/mit</URI>
+      <URI N="ProjectUri">https://github.com/fscpscollaborative/fscps.ascii</URI>
+      <URI N="IconUri">https://raw.githubusercontent.com/fscpscollaborative/fscps.ascii/master/images/fscps-ascii-logo.png</URI>
+      <Obj N="Tags" RefId="5">
+        <TN RefId="3">
+          <T>System.Object[]</T>
+          <T>System.Array</T>
+          <T>System.Object</T>
+        </TN>
+        <LST>
+          <S>d365fsc</S>
+          <S>Dynamics365</S>
+          <S>D365</S>
+          <S>Dynamics365FO</S>
+          <S>fscps</S>
+          <S>ascii</S>
+          <S>PSModule</S>
+        </LST>
+      </Obj>
+      <Obj N="Includes" RefId="6">
+        <TN RefId="4">
+          <T>System.Collections.Hashtable</T>
+          <T>System.Object</T>
+        </TN>
+        <DCT>
+          <En>
+            <S N="Key">Cmdlet</S>
+            <Obj N="Value" RefId="7">
+              <TNRef RefId="3" />
+              <LST />
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">Command</S>
+            <Obj N="Value" RefId="8">
+              <TNRef RefId="3" />
+              <LST>
+                <S>Convert-FSCPSTextToAscii</S>
+              </LST>
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">DscResource</S>
+            <Ref N="Value" RefId="7" />
+          </En>
+          <En>
+            <S N="Key">Workflow</S>
+            <Ref N="Value" RefId="7" />
+          </En>
+          <En>
+            <S N="Key">RoleCapability</S>
+            <Ref N="Value" RefId="7" />
+          </En>
+          <En>
+            <S N="Key">Function</S>
+            <Obj N="Value" RefId="9">
+              <TNRef RefId="3" />
+              <LST>
+                <S>Convert-FSCPSTextToAscii</S>
+              </LST>
+            </Obj>
+          </En>
+        </DCT>
+      </Obj>
+      <Nil N="PowerShellGetFormatVersion" />
+      <Nil N="ReleaseNotes" />
+      <Obj N="Dependencies" RefId="10">
+        <TNRef RefId="3" />
+        <LST>
+          <Obj RefId="11">
+            <TN RefId="5">
+              <T>System.Collections.Specialized.OrderedDictionary</T>
+              <T>System.Object</T>
+            </TN>
+            <DCT>
+              <En>
+                <S N="Key">Name</S>
+                <S N="Value">PSFramework</S>
+              </En>
+              <En>
+                <S N="Key">MinimumVersion</S>
+                <S N="Value">1.12.346</S>
+              </En>
+              <En>
+                <S N="Key">CanonicalId</S>
+                <S N="Value">nuget:PSFramework/1.12.346</S>
+              </En>
+            </DCT>
+          </Obj>
+        </LST>
+      </Obj>
+      <S N="RepositorySourceLocation">https://www.powershellgallery.com/api/v2</S>
+      <S N="Repository">PSGallery</S>
+      <S N="PackageManagementProvider">NuGet</S>
+      <Obj N="AdditionalMetadata" RefId="12">
+        <TN RefId="6">
+          <T>System.Management.Automation.PSCustomObject</T>
+          <T>System.Object</T>
+        </TN>
+        <MS>
+          <S N="copyright">2025 (c) Oleksandr Nikolaiev. All rights reserved.</S>
+          <S N="description">ASCII Art tools</S>
+          <S N="requireLicenseAcceptance">False</S>
+          <S N="isLatestVersion">True</S>
+          <S N="isAbsoluteLatestVersion">True</S>
+          <S N="versionDownloadCount">270662</S>
+          <S N="downloadCount">412588</S>
+          <S N="packageSize">633976</S>
+          <S N="published">10/6/2025 9:25:30 AM -04:00</S>
+          <S N="created">10/6/2025 9:25:30 AM -04:00</S>
+          <S N="lastUpdated">7/20/2026 6:00:01 AM -04:00</S>
+          <S N="tags">d365fsc Dynamics365 D365 Dynamics365FO fscps ascii PSModule PSFunction_Convert-FSCPSTextToAscii PSCommand_Convert-FSCPSTextToAscii PSIncludes_Function</S>
+          <S N="developmentDependency">False</S>
+          <S N="updated">2026-07-20T06:00:01Z</S>
+          <S N="NormalizedVersion">1.0.18</S>
+          <S N="Authors">Oleksandr Nikolaiev (@onikolaiev)</S>
+          <S N="IsPrerelease">false</S>
+          <S N="ItemType">Module</S>
+          <S N="FileList">fscps.ascii.nuspec|internal\misc\Fonts\Horizontal Left.flf|internal\misc\Fonts\Shaded Blocky.flf|commands.ps1|internal\misc\Fonts\Big Money-sw.flf|internal\misc\Fonts\Horizontal Right.flf|internal\misc\Fonts\Shadow.flf|internal\misc\Fonts\Big.flf|internal\misc\Fonts\ICL-1900.flf|internal\misc\Fonts\Shimrod.flf|fscps.ascii.psd1|internal\misc\Fonts\Bigfig.flf|internal\misc\Fonts\Impossible.flf|internal\misc\Fonts\Short.flf|fscps.ascii.psm1|internal\misc\Fonts\Binary.flf|internal\misc\Fonts\Invita.flf|internal\misc\Fonts\SL Script.flf|LICENSE|internal\misc\Fonts\Block.flf|internal\misc\Fonts\Isometric1.flf|internal\misc\Fonts\Slant Relief.flf|resourcesAfter.ps1|internal\misc\Fonts\Blocks.flf|internal\misc\Fonts\Isometric2.flf|internal\misc\Fonts\Slant.flf|resourcesBefore.ps1|internal\misc\Fonts\Bloody.flf|internal\misc\Fonts\Isometric3.flf|internal\misc\Fonts\Slide.flf|en-us\about_Deployable_Packages.help.txt|internal\misc\Fonts\BlurVision ASCII.flf|internal\misc\Fonts\Isometric4.flf|internal\misc\Fonts\Small Caps.flf|en-us\about_fscps.tools.help.txt|internal\misc\Fonts\Bolger.flf|internal\misc\Fonts\Italic.flf|internal\misc\Fonts\Small Isometric1.flf|en-us\strings.psd1|internal\misc\Fonts\Braced.flf|internal\misc\Fonts\Ivrit.flf|internal\misc\Fonts\Small Keyboard.flf|functions\convert-fscpstexttoascii.ps1|internal\misc\Fonts\Bright.flf|internal\misc\Fonts\Jacky.flf|internal\misc\Fonts\Small Poison.flf|functions\readme.md|internal\misc\Fonts\Broadway KB.flf|internal\misc\Fonts\Jazmine.flf|internal\misc\Fonts\Small Script.flf|internal\configurations\configuration.ps1|internal\misc\Fonts\Broadway.flf|internal\misc\Fonts\Jerusalem.flf|internal\misc\Fonts\Small Shadow.flf|internal\configurations\readme.md|internal\misc\Fonts\Bubble.flf|internal\misc\Fonts\JS Block Letters.flf|internal\misc\Fonts\Small Slant.flf|internal\functions\break-word.ps1|internal\misc\Fonts\Bulbhead.flf|internal\misc\Fonts\JS Bracket Letters.flf|internal\misc\Fonts\Small Tengwar.flf|internal\functions\can-verticalsmush.ps1|internal\misc\Fonts\Caligraphy.flf|internal\misc\Fonts\JS Capital Curves.flf|internal\misc\Fonts\Small.flf|internal\functions\generate-figtextlines.ps1|internal\misc\Fonts\Caligraphy2.flf|internal\misc\Fonts\JS Cursive.flf|internal\misc\Fonts\Soft.flf|internal\functions\generate-text.ps1|internal\misc\Fonts\Calvin S.flf|internal\misc\Fonts\JS Stick Letters.flf|internal\misc\Fonts\Speed.flf|internal\functions\get-bordersymbol.ps1|internal\misc\Fonts\Cards.flf|internal\misc\Fonts\Katakana.flf|internal\misc\Fonts\Spliff.flf|internal\functions\get-figlineswight.ps1|internal\misc\Fonts\Catwalk.flf|internal\misc\Fonts\Kban.flf|internal\misc\Fonts\Stacey.flf|internal\functions\get-fontmetadata.ps1|internal\misc\Fonts\Chiseled.flf|internal\misc\Fonts\Keyboard.flf|internal\misc\Fonts\Stampate.flf|internal\functions\get-horizontalfittingrules.ps1|internal\misc\Fonts\Chunky.flf|internal\misc\Fonts\Knob.flf|internal\misc\Fonts\Stampatello.flf|internal\functions\get-horizontalsmushlenght.ps1|internal\misc\Fonts\Coinstak.flf|internal\misc\Fonts\Konto Slant.flf|internal\misc\Fonts\Standard.flf|internal\functions\get-smushingrules.ps1|internal\misc\Fonts\Cola.flf|internal\misc\Fonts\Konto.flf|internal\misc\Fonts\Star Strips.flf|internal\functions\get-verticalfittingrules.ps1|internal\misc\Fonts\Colossal.flf|internal\misc\Fonts\Larry 3D 2.flf|internal\misc\Fonts\Star Wars.flf|internal\functions\get-verticalsmushdist.ps1|internal\misc\Fonts\Computer.flf|internal\misc\Fonts\Larry 3D.flf|internal\misc\Fonts\Stellar.flf|internal\functions\horizontal-smush.ps1|internal\misc\Fonts\Contessa.flf|internal\misc\Fonts\LCD.flf|internal\misc\Fonts\Stforek.flf|internal\functions\hrule1-smush.ps1|internal\misc\Fonts\Contrast.flf|internal\misc\Fonts\Lean.flf|internal\misc\Fonts\Stick Letters.flf|internal\functions\hrule2-smush.ps1|internal\misc\Fonts\Cosmike.flf|internal\misc\Fonts\Letters.flf|internal\misc\Fonts\Stop.flf|internal\functions\hrule3-smush.ps1|internal\misc\Fonts\Cosmike2.flf|internal\misc\Fonts\Lil Devil.flf|internal\misc\Fonts\Straight.flf|internal\functions\hrule4-smush.ps1|internal\misc\Fonts\Crawford.flf|internal\misc\Fonts\Line Blocks.flf|internal\misc\Fonts\Stronger Than All.flf|internal\functions\hrule5-smush.ps1|internal\misc\Fonts\Crawford2.flf|internal\misc\Fonts\Linux.flf|internal\misc\Fonts\Sub-Zero.flf|internal\functions\hrule6-smush.ps1|internal\misc\Fonts\Crazy.flf|internal\misc\Fonts\Lockergnome.flf|internal\misc\Fonts\Swamp Land.flf|internal\functions\invoke-timesignal.ps1|internal\misc\Fonts\Cricket.flf|internal\misc\Fonts\Madrid.flf|internal\misc\Fonts\Swan.flf|internal\functions\join-figarray.ps1|internal\misc\Fonts\Cursive.flf|internal\misc\Fonts\Marquee.flf|internal\misc\Fonts\Sweet.flf|internal\functions\load-font.ps1|internal\misc\Fonts\Cyberlarge.flf|internal\misc\Fonts\Maxfour.flf|internal\misc\Fonts\Tanja.flf|internal\functions\new-figchar.ps1|internal\misc\Fonts\Cybermedium.flf|internal\misc\Fonts\Merlin1.flf|internal\misc\Fonts\Tengwar.flf|internal\functions\pad-lines.ps1|internal\misc\Fonts\Cybersmall.flf|internal\misc\Fonts\Merlin2.flf|internal\misc\Fonts\Term.flf|internal\functions\parse-font.ps1|internal\misc\Fonts\Cygnet.flf|internal\misc\Fonts\Mike.flf|internal\misc\Fonts\Test1.flf|internal\functions\readme.md|internal\misc\Fonts\DANC4.flf|internal\misc\Fonts\Mini.flf|internal\misc\Fonts\The Edge.flf|internal\functions\rework-fontopts.ps1|internal\misc\Fonts\Dancing Font.flf|internal\misc\Fonts\Mirror.flf|internal\misc\Fonts\Thick.flf|internal\functions\set-defaults.ps1|internal\misc\Fonts\Decimal.flf|internal\misc\Fonts\Mnemonic.flf|internal\misc\Fonts\Thin.flf|internal\functions\smush-verticalfiglines.ps1|internal\misc\Fonts\Def Leppard.flf|internal\misc\Fonts\Modular.flf|internal\misc\Fonts\THIS.flf|internal\functions\text-sync.ps1|internal\misc\Fonts\Delta Corps Priest 1.flf|internal\misc\Fonts\Morse.flf|internal\misc\Fonts\Thorned.flf|internal\functions\uni-smush.ps1|internal\misc\Fonts\DiamFont.flf|internal\misc\Fonts\Morse2.flf|internal\misc\Fonts\Three Point.flf|internal\functions\vertical-smush.ps1|internal\misc\Fonts\Diamond.flf|internal\misc\Fonts\Moscow.flf|internal\misc\Fonts\Ticks Slant.flf|internal\functions\vertically-smushlines.ps1|internal\misc\Fonts\Diet Cola.flf|internal\misc\Fonts\Mshebrew210.flf|internal\misc\Fonts\Ticks.flf|internal\functions\vrule1-smush.ps1|internal\misc\Fonts\Digital.flf|internal\misc\Fonts\Muzzle.flf|internal\misc\Fonts\Tiles.flf|internal\functions\vrule2-smush.ps1|internal\misc\Fonts\Doh.flf|internal\misc\Fonts\Nancyj-Fancy.flf|internal\misc\Fonts\Tinker-Toy.flf|internal\functions\vrule3-smush.ps1|internal\misc\Fonts\Doom.flf|internal\misc\Fonts\Nancyj-Improved.flf|internal\misc\Fonts\Tombstone.flf|internal\functions\vrule4-smush.ps1|internal\misc\Fonts\DOS Rebel.flf|internal\misc\Fonts\Nancyj-Underlined.flf|internal\misc\Fonts\Train.flf|internal\functions\vrule5-smush.ps1|internal\misc\Fonts\Dot Matrix.flf|internal\misc\Fonts\Nancyj.flf|internal\misc\Fonts\Trek.flf|internal\misc\Fonts\1Row.flf|internal\misc\Fonts\Double Shorts.flf|internal\misc\Fonts\Nipples.flf|internal\misc\Fonts\Tsalagi.flf|internal\misc\Fonts\3-D.flf|internal\misc\Fonts\Double.flf|internal\misc\Fonts\NScript.flf|internal\misc\Fonts\Tubular.flf|internal\misc\Fonts\3D Diagonal.flf|internal\misc\Fonts\Dr Pepper.flf|internal\misc\Fonts\NT Greek.flf|internal\misc\Fonts\Twisted.flf|internal\misc\Fonts\3D-ASCII.flf|internal\misc\Fonts\DWhistled.flf|internal\misc\Fonts\NV Script.flf|internal\misc\Fonts\Two Point.flf|internal\misc\Fonts\3x5.flf|internal\misc\Fonts\Efti Chess.flf|internal\misc\Fonts\O8.flf|internal\misc\Fonts\Univers.flf|internal\misc\Fonts\4Max.flf|internal\misc\Fonts\Efti Font.flf|internal\misc\Fonts\Octal.flf|internal\misc\Fonts\USA Flag.flf|internal\misc\Fonts\5 Line Oblique.flf|internal\misc\Fonts\Efti Italic.flf|internal\misc\Fonts\Ogre.flf|internal\misc\Fonts\Varsity.flf|internal\misc\Fonts\Acrobatic.flf|internal\misc\Fonts\Efti Piti.flf|internal\misc\Fonts\Old Banner.flf|internal\misc\Fonts\Wavy.flf|internal\misc\Fonts\Alligator.flf|internal\misc\Fonts\Efti Robot.flf|internal\misc\Fonts\OS2.flf|internal\misc\Fonts\Weird.flf|internal\misc\Fonts\Alligator2.flf|internal\misc\Fonts\Efti Wall.flf|internal\misc\Fonts\Pagga.flf|internal\misc\Fonts\Wet Letter.flf|internal\misc\Fonts\Alpha.flf|internal\misc\Fonts\Efti Water.flf|internal\misc\Fonts\Patorjk's Cheese.flf|internal\misc\Fonts\Whimsy.flf|internal\misc\Fonts\Alphabet.flf|internal\misc\Fonts\Electronic.flf|internal\misc\Fonts\Patorjk-HeX.flf|internal\scriptblocks\scriptblocks.ps1|internal\misc\Fonts\AMC 3 Line.flf|internal\misc\Fonts\Elite.flf|internal\misc\Fonts\Pawp.flf|internal\scripts\enums.ps1|internal\misc\Fonts\AMC 3 Liv1.flf|internal\misc\Fonts\Epic.flf|internal\misc\Fonts\Peaks Slant.flf|internal\scripts\helpers.ps1|internal\misc\Fonts\AMC AAA01.flf|internal\misc\Fonts\Fender.flf|internal\misc\Fonts\Peaks.flf|internal\scripts\license.ps1|internal\misc\Fonts\AMC Neko.flf|internal\misc\Fonts\Filter.flf|internal\misc\Fonts\Pebbles.flf|internal\scripts\load-dotnet-assemblies.ps1|internal\misc\Fonts\AMC Razor.flf|internal\misc\Fonts\Fire Font-k.flf|internal\misc\Fonts\Pepper.flf|internal\scripts\postimport.ps1|internal\misc\Fonts\AMC Razor2.flf|internal\misc\Fonts\Fire Font-s.flf|internal\misc\Fonts\Poison.flf|internal\scripts\preimport.ps1|internal\misc\Fonts\AMC Slash.flf|internal\misc\Fonts\Flipped.flf|internal\misc\Fonts\Puffy.flf|internal\scripts\readme.md|internal\misc\Fonts\AMC Slider.flf|internal\misc\Fonts\Flower Power.flf|internal\misc\Fonts\Puzzle.flf|internal\scripts\strings.ps1|internal\misc\Fonts\AMC Thin.flf|internal\misc\Fonts\Four Tops.flf|internal\misc\Fonts\Pyramid.flf|internal\scripts\variables.ps1|internal\misc\Fonts\AMC Tubes.flf|internal\misc\Fonts\Fraktur.flf|internal\misc\Fonts\Rammstein.flf|internal\tepp\assignment.ps1|internal\misc\Fonts\AMC Untitled.flf|internal\misc\Fonts\Fun Face.flf|internal\misc\Fonts\Rectangles.flf|internal\tepp\example.tepp.ps1|internal\misc\Fonts\ANSI Regular.flf|internal\misc\Fonts\Fun Faces.flf|internal\misc\Fonts\Red Phoenix.flf|internal\tepp\readme.md|internal\misc\Fonts\ANSI Shadow.flf|internal\misc\Fonts\Fuzzy.flf|internal\misc\Fonts\Relief.flf|tests\pester-PSScriptAnalyzer.ps1|internal\misc\Fonts\Arrows.flf|internal\misc\Fonts\Georgi16.flf|internal\misc\Fonts\Relief2.flf|tests\pester.ps1|internal\misc\Fonts\ASCII New Roman.flf|internal\misc\Fonts\Georgia11.flf|internal\misc\Fonts\Reverse.flf|tests\readme.md|internal\misc\Fonts\Avatar.flf|internal\misc\Fonts\Ghost.flf|internal\misc\Fonts\Roman.flf|tests\functions\Convert-FSCPSTextToAscii.Tests.ps1|internal\misc\Fonts\B1FF.flf|internal\misc\Fonts\Ghoulish.flf|internal\misc\Fonts\Rot13.flf|tests\functions\readme.md|internal\misc\Fonts\Banner.flf|internal\misc\Fonts\Glenyn.flf|internal\misc\Fonts\Rotated.flf|tests\general\FileIntegrity.Exceptions.ps1|internal\misc\Fonts\Banner3-D.flf|internal\misc\Fonts\Goofy.flf|internal\misc\Fonts\Rounded.flf|tests\general\FileIntegrity.Tests.ps1|internal\misc\Fonts\Banner3.flf|internal\misc\Fonts\Gothic.flf|internal\misc\Fonts\Rowan Cap.flf|tests\general\Help.Example.Parameters.Tests.ps1|internal\misc\Fonts\Banner4.flf|internal\misc\Fonts\Graceful.flf|internal\misc\Fonts\Rozzo.flf|tests\general\Help.Exceptions.ps1|internal\misc\Fonts\Barbwire.flf|internal\misc\Fonts\Gradient.flf|internal\misc\Fonts\RubiFont.flf|tests\general\Help.Tests.ps1|internal\misc\Fonts\Basic.flf|internal\misc\Fonts\Graffiti.flf|internal\misc\Fonts\Runic.flf|tests\general\Manifest.Tests.ps1|internal\misc\Fonts\Bear.flf|internal\misc\Fonts\Greek.flf|internal\misc\Fonts\Runyc.flf|tests\general\PSScriptAnalyzer.Tests.ps1|internal\misc\Fonts\Bell.flf|internal\misc\Fonts\Heart Left.flf|internal\misc\Fonts\S Blood.flf|tests\__general\Help.Example.Tests.ps1|internal\misc\Fonts\Benjamin.flf|internal\misc\Fonts\Heart Right.flf|internal\misc\Fonts\Santa Clara.flf|xml\fscps.ascii.Format.ps1xml|internal\misc\Fonts\Big Chief.flf|internal\misc\Fonts\Henry 3D.flf|internal\misc\Fonts\Script.flf|xml\fscps.ascii.Types.ps1xml|internal\misc\Fonts\Big Money-ne.flf|internal\misc\Fonts\Hex.flf|internal\misc\Fonts\Serifcap.flf|xml\readme.md|internal\misc\Fonts\Big Money-nw.flf|internal\misc\Fonts\Hieroglyphs.flf|internal\misc\Fonts\Big Money-se.flf|internal\misc\Fonts\Hollywood.flf</S>
+          <S N="GUID">1dda8cec-ccbd-48e0-9591-daf7f8b5adb3</S>
+          <S N="PowerShellVersion">5.0</S>
+          <S N="CompanyName">Oleksandr Nikolaiev (@onikolaiev)</S>
+        </MS>
+      </Obj>
+      <S N="InstalledLocation">C:\Users\ozzium\Documents\PowerShell\Modules\fscps.ascii\1.0.18</S>
+    </MS>
+  </Obj>
+</Objs>
