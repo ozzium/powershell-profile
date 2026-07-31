@@ -1,8 +1,4 @@
 {
-<<<<<<< HEAD
   "theme": "paradox",
-=======
-  "theme": "marcduiker",
->>>>>>> d3df4cab2d7093ca1290f7c718f0141633e5c4d0
-  "fastMode": true
+  "fastMode": false
 }
