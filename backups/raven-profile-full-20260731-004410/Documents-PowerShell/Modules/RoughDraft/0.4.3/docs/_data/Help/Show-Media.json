@@ -1,0 +1,52 @@
+{
+  "Synopsis": "Shows media",
+  "Description": "Shows media, using FFPlay",
+  "Parameters": [
+    {
+      "Name": null,
+      "Type": null,
+      "Description": "",
+      "Required": false,
+      "Position": 0,
+      "Aliases": null,
+      "DefaultValue": null,
+      "Globbing": false,
+      "PipelineInput": null,
+      "variableLength": false
+    }
+  ],
+  "Notes": [
+    null
+  ],
+  "CommandType": "Function",
+  "Component": [
+    null
+  ],
+  "Inputs": [
+    null
+  ],
+  "Outputs": [
+    "System.Nullable",
+    "System.Management.Automation.Job"
+  ],
+  "Links": [
+    null
+  ],
+  "Examples": [
+    {
+      "Title": "EXAMPLE 1",
+      "Markdown": "",
+      "Code": "Show-Media -InputPath $home\\Music\\ASong.mp3"
+    },
+    {
+      "Title": "EXAMPLE 2",
+      "Markdown": "",
+      "Code": "Show-Media -InputPath $home\\Videos\\AMovie.mp4 -Fullscreen"
+    },
+    {
+      "Title": "EXAMPLE 3",
+      "Markdown": "",
+      "Code": "$cameraName = \"NexiGo N60 FHD Webcam\" # Replace with your own camera, use Get-FFMpeg -ListCaptureDevice\n$ShowSplat = [Ordered]@{\n    DirectShow = $true\n    VideoDevice = $CameraName\n    Mirror = $true\n    TimeMix = 5\n    EdgeDetect = $true\n    DrawText = $true\n    DrawTextFontSize = 24            \n    DrawTextFontColor = 'white'\n    DrawTextShadowColor = 'black'\n    DrawTextBorderWidth = 2\n    DrawTextBorderColor = 'black'\n    DrawTextCenter = $true\n}\n$showText = @(foreach ($kv in $showSplat.GetEnumerator()) {\n    if ($kv.Value -is [bool]) {\n        \"-$($kv.Key)\"\n    } else {\n        \"-$($kv.Key) '$($kv.Value)'\"\n    }\n}) -join [Environment]::Newline\n$showSplat.DrawTextText = $showText\nShow-Media @showSplat -Fullscreen -Verbose"
+    }
+  ]
+}

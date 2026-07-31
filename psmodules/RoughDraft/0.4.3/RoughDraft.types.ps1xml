@@ -1,0 +1,1165 @@
+<!-- Generated with EZOut 2.0.6: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
+<Types>
+  <Type>
+    <Name>RoughDraft.Media</Name>
+    <Members>
+      <AliasProperty>
+        <Name>FilePath</Name>
+        <ReferencedMemberName>InputPath</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptProperty>
+        <Name>Album</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Album Metadata
+.DESCRIPTION
+    Gets the Album Metadata, if present.
+#&gt;
+param()
+return $this.'.Metadata'.Album
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Album Metadata
+.DESCRIPTION
+    Changes the Album metadata for a media file (persistently, if possible)
+#&gt;
+param()
+$propertyToSet = @{Album="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.Album = $propertyToSet.album
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>AlbumArtist</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Album Artist Metadata
+.DESCRIPTION
+    Gets the Album Artist Metadata, if present.
+#&gt;
+param()
+return $(
+    if ($this.'.Metadata'.AlbumArtist) {
+        $this.'.Metadata'.AlbumArtist
+    } elseif ($this.'.Metadata'.album_artist) {
+        $this.'.Metadata'.album_artist
+    }
+)
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Album Artist Metadata
+.DESCRIPTION
+    Changes the Album Artist metadata for a media file (persistently, if possible)
+#&gt;
+param()
+$propertyToSet = @{album_artist="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.AlbumArtist = $propertyToSet.album_artist
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Artist</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Artist Metadata
+.DESCRIPTION
+    Gets the Artist Metadata, if present.
+#&gt;
+param()
+return $(
+    if ($this.'.Metadata'.Artist) {
+        $this.'.Metadata'.Artist
+    } else { $null }
+)
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Artist Metadata
+.DESCRIPTION
+    Changes the Artist metadata for a media file (persistently, if possible)
+#&gt;
+param()
+$propertyToSet = @{artist="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.AlbumArtist = $propertyToSet.artist
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>AspectRatio</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a Video or Image Aspect Ratio
+.DESCRIPTION
+    Gets the aspect ratio of the first video or image stream.
+#&gt;
+foreach ($streamInfo in $this.Streams) {
+    if ($streamInfo.codec_type -ne 'video') { continue }
+    if ($streamInfo.display_aspect_ratio) {
+        return $streamInfo.display_aspect_ratio
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>AudioBitrate</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Audio Bitrate
+.DESCRIPTION
+    Gets an Audio's Bitrate, if the information is available in any Audio stream.
+#&gt;
+foreach ($streamInfo in $this.Streams) {
+    if ($streamInfo.codec_type -ne 'audio') { continue }
+    if ($streamInfo.bit_rate) {
+        return ($streamInfo.bit_rate -as [int])
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>BPM</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets BPM Metadata
+.DESCRIPTION
+    Gets the BPM Metadata, if present.
+#&gt;
+param()
+if ($this.'.Metadata'.BPM) {
+    return ($this.'.Metadata'.BPM -as [double])
+} elseif ($this.'.Metadata'.TBPM) {
+    return ($this.'.Metadata'.TBPM -as [double])
+}
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the BPM Metadata
+.DESCRIPTION
+    Changes the BPM metadata for a media file (persistently, if possible)
+.NOTES
+    BPM is stored within the ID3 tag `TBPM`.
+#&gt;
+param()
+$propertyToSet = @{TBPM="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.BPM = $propertyToSet.TBPM
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Comment</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Comment Metadata
+.DESCRIPTION
+    Gets the Comment Metadata, if present.
+#&gt;
+param()
+return $this.'.Metadata'.Comment
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Comment Metadata
+.DESCRIPTION
+    Changes the Comment metadata for a media file (persistently, if possible)
+#&gt;
+param()
+$propertyToSet = @{comment="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.Comment = $propertyToSet.comment
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Composer</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Composer Metadata
+.DESCRIPTION
+    Gets the Composer Metadata, if present.
+#&gt;
+param()
+return $this.'.Metadata'.Composer -split '[\;\\/]'
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Composer Metadata
+.DESCRIPTION
+    Changes the Composer metadata for a media file (persistently, if possible)
+#&gt;
+param()
+$propertyToSet = @{composer=$args -join '/'}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.Composer = $propertyToSet.Composer
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Copyright</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Copyright Metadata
+.DESCRIPTION
+    Gets the Copyright Metadata, if present.
+#&gt;
+param()
+return $this.'.Metadata'.Copyright
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Copyright Metadata
+.DESCRIPTION
+    Changes the Copyright metadata for a media file (persistently, if possible)
+#&gt;
+param()
+$propertyToSet = @{copyright="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.Copyright = $propertyToSet.copyright
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>CreationTime</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Creation Time Metadata
+.DESCRIPTION
+    Gets the Creation Time Metadata, if present.
+#&gt;
+param()
+if ($this.'.Metadata'.CreationTime) {
+    return ($this.'.Metadata'.CreationTime -as [DateTime])
+} elseif ($this.'.Metadata'.creation_time) {
+    return ($this.'.Metadata'.creation_time -as [DateTime])
+}
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Creation Time Metadata
+.DESCRIPTION
+    Changes the Creation Time metadata for a media file (persistently, if possible)
+#&gt;
+param()
+
+$dateTimeArgs = [DateTime]$($args[0])
+$datePortion = @($dateTimeArgs.ToString('s') -split '-', 2)[0]
+$propertyToSet = @{creation_time="$datePortion"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.CreationTime = $propertyToSet.creation_time
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Date</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Date Metadata
+.DESCRIPTION
+    Gets the Date Metadata, if present.
+#&gt;
+param()
+$dateInfo = 
+    if ($this.'.Metadata'.date) {
+        $this.'.Metadata'.date
+    } elseif ($this.'.Metadata'.year) {
+        $this.'.Metadata'.year
+    }
+
+if ($dateInfo -match '^\d{4}$') {
+    return ([datetime]::ParseExact($dateInfo, "yyyy", $null))
+} elseif ($dateInfo -as [DateTime]) {
+    return ($dateInfo -as [DateTime])
+}
+
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Date Metadata
+.DESCRIPTION
+    Changes the Date metadata for a media file (persistently, if possible)
+#&gt;
+param(
+[ValidateScript({
+    if ($_ -match '^\d{4}$') {
+        return $true
+    } elseif ($_ -is [DateTime]) {
+        return $true
+    } else {
+        throw "Year must be a 4-digit number or a DateTime object"
+    }
+})]
+[PSObject]
+$Date
+)
+
+
+$propertyToSet = [Ordered]@{date="$Date"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+if ($Date -is [DateTime]) {
+    $propertyToSet.date = $Date.ToString('yyyy-MM-dd')
+    if (-not $this.'.Metadata'.year) {
+        $propertyToSet.year = $Date.Year        
+        $this.'.Metadata'.year = $propertyToSet.year
+    }
+}
+
+$this.'.Metadata'.date = $propertyToSet.date
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Description</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Description Metadata
+.DESCRIPTION
+    Gets the Description Metadata, if present.
+#&gt;
+param()
+if ($this.'.Metadata'.Description) {
+    return $this.'.Metadata'.Description
+} elseif ($this.'.Metadata'.desc) {
+    return $this.'.Metadata'.desc
+}
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Description Metadata
+.DESCRIPTION
+    Changes the Description metadata for a media file (persistently, if possible)
+#&gt;
+param()
+$propertyToSet = @{desc="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.Description = $propertyToSet.desc
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Disc</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Disc Metadata
+.DESCRIPTION
+    Gets the Disc Metadata, if present.
+#&gt;
+param()
+if ($this.'.Metadata'.disc) {
+    return $this.'.Metadata'.disc
+}
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Disc Metadata
+.DESCRIPTION
+    Changes the Disc metadata for a media file (persistently, if possible)
+#&gt;
+param()
+$propertyToSet = @{disc="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.Disc = $propertyToSet.disc
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>EpisodeId</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets EpisodeID Metadata
+.DESCRIPTION
+    Gets the EpisodeID Metadata, if present.
+#&gt;
+param()
+if ($this.'.Metadata'.EpisodeID) {
+    return $this.'.Metadata'.EpisodeID
+} elseif ($this.'.Metadata'.episode_id) {
+    return $this.'.Metadata'.episode_id
+}
+
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the EpisodeID Metadata
+.DESCRIPTION
+    Changes the EpisodeID metadata for a media file (persistently, if possible)
+.NOTES
+    EpisodeID is stored within the ID3 tag `TVEN`.
+#&gt;
+param()
+$propertyToSet = @{"episode_id"="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.EpisodeID = $propertyToSet.episode_id
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>FileName</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a media file name
+.DESCRIPTION
+    Gets the name of a media file
+#&gt;
+$this.InputPath | Split-Path -Leaf
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Genre</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Genre Metadata
+.DESCRIPTION
+    Gets the Genre Metadata, if present.
+#&gt;
+param()
+return $this.'.Metadata'.genre
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Genre Metadata
+.DESCRIPTION
+    Changes the Genre metadata for a media file (persistently, if possible)
+#&gt;
+param()
+$unrolledArgs = $args | . { process { $_ } }
+$propertyToSet = @{genre=$unrolledArgs -join ' ; '}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.genre = $propertyToSet.genre
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Grouping</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Grouping Metadata
+.DESCRIPTION
+    Gets the Grouping Metadata, if present.
+#&gt;
+param()
+return @($this.'.Metadata'.Grouping -split '[\;/]') -as [string[]]
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Grouping Metadata
+.DESCRIPTION
+    Changes the Grouping metadata for a media file (persistently, if possible)
+#&gt;
+param()
+
+$propertyToSet = @{grouping=$args -join '/'}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.Grouping = $propertyToSet.grouping
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>InitialKey</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets InitialKey Metadata
+.DESCRIPTION
+    Gets the InitialKey Metadata, if present.
+#&gt;
+param()
+if ($this.'.Metadata'.InitialKey) {
+    return ($this.'.Metadata'.InitialKey)
+} elseif ($this.'.Metadata'.TKEY) {
+    return ($this.'.Metadata'.TKEY)
+}
+
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the InitialKey Metadata
+.DESCRIPTION
+    Changes the InitialKey metadata for a media file (persistently, if possible)
+.NOTES
+    InitialKey is stored within the ID3 tag `TKEY`.
+#&gt;
+param()
+$propertyToSet = @{TKEY="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.InitialKey = $propertyToSet.TKEY
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Location</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Location Metadata
+.DESCRIPTION
+    Gets the Location Metadata, if present.
+#&gt;
+param()
+return $this.'.Metadata'.location
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Location Metadata
+.DESCRIPTION
+    Changes the Location metadata for a media file (persistently, if possible)
+
+    Location should be a pair of coordinates (without space), followed by a slash.
+
+    Location _can_ include additional coordinates or a description, followed by an additional slash.
+#&gt;
+param()
+$unrolledArgs = $args | . { process { $_ } }
+
+$propertyToSet = @{location=$args}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.location = $propertyToSet.location
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Lyric</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets InitialKey Metadata
+.DESCRIPTION
+    Gets the InitialKey Metadata, if present.
+#&gt;
+param()
+
+# If we already have lyrics
+if ($this.'.Metadata'.Lyrics) {
+    # return them
+    return ($this.'.Metadata'.Lyrics)
+}
+# Otherwise, if lyrics exist for the current UI culture
+elseif ($this.'.Metadata'."lyrics-$([cultureinfo]::CurrentUICulture.ThreeLetterISOLanguageName)")
+{
+    # return them
+    return ($this.'.Metadata'."lyrics-$([cultureinfo]::CurrentUICulture.ThreeLetterISOLanguageName)")
+} 
+# Otherwise, if English lyrics exist
+elseif ($this.'.Metadata'.'lyrics-eng') 
+{
+    # return them.
+    return $this.'.Metadata'.'lyrics-eng'
+}
+
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Lyric Metadata
+.DESCRIPTION
+    Changes the Lyric metadata for a media file (persistently, if possible)
+.NOTES
+    Lyric is stored within a localized ID3 tag `lyrics-locale` (for example `lyrics-eng`).
+#&gt;
+param()
+$lyricCulture = [cultureinfo]::CurrentUICulture
+$lyricLines = @(foreach ($arg in $args) {
+    if ($arg -is [cultureinfo]) {
+        $lyricCulture = $arg
+    } 
+    elseif ($arg -as [cultureinfo]) {
+        $lyricCulture = $arg -as [cultureinfo]
+    }
+    else {
+        "$arg"
+    }
+})
+
+$lyricProperty = "lyrics-$($lyricCulture.ThreeLetterISOLanguageName)"
+$propertyToSet = @{"lyrics-$($lyricCulture.ThreeLetterISOLanguageName)"=$lyricLines -join [Environment]::NewLine}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.Lyrics = $propertyToSet.TKEY
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>MediaType</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the Media Type
+.DESCRIPTION
+    Gets the Media Type of a file discovered by Get-Media.
+.NOTES
+    Getting the Media Type also decorates the object as that media type, so that extended Audio, Video, and Image functionality are available.
+.EXAMPLE
+    Get-Media -InputPath .\a.mp4 |
+        Select-Object -ExpandProperty MediaType
+#&gt;
+param()
+$allCodecTypes = $this.CodecTypes -join ' '
+$thisMediaType = 
+    if ($allCodecTypes -eq 'audio') {
+        'Audio'
+    }
+    elseif ($allCodecTypes -match '^video') {
+        if ($this.Duration -and $this.Duration.TotalMilliseconds -gt 50) {
+            'Video'
+        } else {
+            'Image'
+        }    
+    }
+if ($this.pstypenames -notcontains "RoughDraft.$thisMediaType") {
+    $this.pstypenames.add("RoughDraft.$thisMediaType")
+}
+
+$thisMediaType
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Mood</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Mood Metadata
+.DESCRIPTION
+    Gets the Mood Metadata, if present.
+#&gt;
+param()
+if ($this.'.Metadata'.Mood) {
+    return ($this.'.Metadata'.Mood)
+} elseif ($this.'.Metadata'.'WM/MOOD') {
+    return ($this.'.Metadata'.'WM/MOOD')
+} elseif ($this.'.Metadata'.'id3v2_priv.WM/MOOD') {
+    return ($this.'.Metadata'.'id3v2_priv.WM/MOOD')
+}
+
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Mood Metadata
+.DESCRIPTION
+    Changes the Mood metadata for a media file (persistently, if possible)
+.NOTES
+    Mood is stored within the ID3 tag `WM/MOOD`.
+#&gt;
+param()
+$propertyToSet = @{"id3v2_priv.WM/MOOD"="$args";mood="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.Mood = $propertyToSet."id3v2_priv.WM/MOOD"
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Network</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Network Metadata
+.DESCRIPTION
+    Gets the Network Metadata, if present.
+#&gt;
+param()
+if ($this.'.Metadata'.Network) {
+    return ($this.'.Metadata'.Network)
+} elseif ($this.'.Metadata'.tvnn) {
+    return ($this.'.Metadata'.tvnn)
+}
+
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Network Metadata
+.DESCRIPTION
+    Changes the Network metadata for a media file (persistently, if possible)
+.NOTES
+    Network is stored within the ID3 tag `tvnn`.
+#&gt;
+param()
+$propertyToSet = @{network="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.Network = $propertyToSet.tvnn
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>PixelFormat</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a Video or Image PixelFormat
+.DESCRIPTION
+    Gets the pixel format the first video or image stream.
+#&gt;
+foreach ($streamInfo in $this.Streams) {
+    if ($streamInfo.codec_type -ne 'video') { continue }
+    if ($streamInfo.pix_fmt) {
+        return $streamInfo.pix_fmt
+    }
+}
+
+
+
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Producer</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Producer Metadata
+.DESCRIPTION
+    Gets the Producer Metadata, if present.
+#&gt;
+param()
+return $this.'.Metadata'.Producer
+
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Producer Metadata
+.DESCRIPTION
+    Changes the Producer metadata for a media file (persistently, if possible)
+#&gt;
+param()
+$propertyToSet = @{producer=$args -join '/'}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.Producer = $propertyToSet.producer
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Publisher</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Publisher Metadata
+.DESCRIPTION
+    Gets the Publisher Metadata, if present.
+#&gt;
+param()
+return $this.'.Metadata'.Publisher
+
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Publisher Metadata
+.DESCRIPTION
+    Changes the Publisher metadata for a media file (persistently, if possible)
+#&gt;
+param()
+$propertyToSet = @{"WM/Publisher"="$args";TPUB="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.Publisher = $propertyToSet."WM/Publisher"
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Show</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Show Metadata
+.DESCRIPTION
+    Gets the Show Metadata, if present.
+#&gt;
+param()
+if ($this.'.Metadata'.Show) {
+    return ($this.'.Metadata'.Show)
+} elseif ($this.'.Metadata'.TVSH) {
+    return ($this.'.Metadata'.TVSH)
+}
+
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Show Metadata
+.DESCRIPTION
+    Changes the Show metadata for a media file (persistently, if possible)
+.NOTES
+    Show is stored within the ID3 tag `TVSH`.
+#&gt;
+param()
+$propertyToSet = @{TVSH="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.Show = $propertyToSet.TVSH
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Subtitle</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Subtitle Metadata
+.DESCRIPTION
+    Gets the Subtitle Metadata, if present.
+.NOTES
+    This refers to the Subtitle of a file, not the Subtitles for a file.
+#&gt;
+param()
+if ($this.'.Metadata'.Subtitle) {
+    return ($this.'.Metadata'.Subtitle)
+} elseif ($this.'.Metadata'.TIT3) {
+    return ($this.'.Metadata'.TIT3)
+}
+
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Subtitle Metadata
+.DESCRIPTION
+    Changes the Subtitle metadata for a media file (persistently, if possible)
+.NOTES
+    Subtitle is stored within the ID3 tag `TIT3`.
+
+    This refers to the subtitle of a file, not the subtitles _for_ a file.
+#&gt;
+param()
+$propertyToSet = @{TIT3="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.Show = $propertyToSet.TIT3
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Synopsis</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Synopsis Metadata
+.DESCRIPTION
+    Gets the Synopsis Metadata, if present.
+#&gt;
+param()
+if ($this.'.Metadata'.Synopsis) {
+    return ($this.'.Metadata'.Synopsis)
+} elseif ($this.'.Metadata'.ldes) {
+    return ($this.'.Metadata'.ldes)
+}
+
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Synopsis Metadata
+.DESCRIPTION
+    Changes the Synopsis metadata for a media file (persistently, if possible)
+.NOTES
+    Synopsis is stored within the ID3 tag `ldes`.
+#&gt;
+param()
+$propertyToSet = @{ldes="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.Synopsis = $propertyToSet.ldes
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Title</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Title Metadata
+.DESCRIPTION
+    Gets the Title Metadata, if present.
+#&gt;
+param()
+return $this.'.Metadata'.Title
+
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Title Metadata
+.DESCRIPTION
+    Changes the Title metadata for a media file (persistently, if possible)
+#&gt;
+param()
+$propertyToSet = @{title="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.title = $propertyToSet.title
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Track</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Track Metadata
+.DESCRIPTION
+    Gets the Track Metadata, if present.
+#&gt;
+param()
+$trackAsInt = $this.'.Metadata'.Track -as [int]
+if ($trackAsInt -gt 0) {
+    return $trackAsInt
+}
+
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Track Metadata
+.DESCRIPTION
+    Changes the Track metadata for a media file (persistently, if possible)
+#&gt;
+param()
+$propertyToSet = @{track="$args"}
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+$this.'.Metadata'.Track = $propertyToSet.track
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>VideoBitrate</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a Video's Bitrate
+.DESCRIPTION
+    Gets a Video's Bitrate, if the information is available in any Video stream.
+#&gt;
+foreach ($streamInfo in $this.Streams) {
+    if ($streamInfo.codec_type -ne 'video') { continue }
+    if ($streamInfo.bit_rate) {
+        return ($streamInfo.bit_rate -as [int])
+    }
+}
+
+
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Year</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Year Metadata
+.DESCRIPTION
+    Gets the Year Metadata, if present.
+#&gt;
+param()
+$yearInfo = if ($this.'.Metadata'.Year) {
+    $this.'.Metadata'.Year
+} elseif ($this.'.Metadata'.date) {
+    $this.'.Metadata'.date
+}
+
+if ($yearInfo -match '^\d{4}$') {
+    return ($yearInfo -as [int])
+} elseif ($yearInfo -as [DateTime]) {
+    return ([int]($yearInfo -as [datetime]).Year)
+}
+
+
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the Year Metadata
+.DESCRIPTION
+    Changes the Year metadata for a media file (persistently, if possible)
+#&gt;
+param(
+[ValidateScript({
+    if ($_ -match '^\d{4}$') {
+        return $true
+    } elseif ($_ -is [DateTime]) {
+        return $true
+    } else {
+        throw "Year must be a 4-digit number or a DateTime object"
+    }
+})]
+[PSObject]
+$Year
+)
+
+
+$propertyToSet = [Ordered]@{year=$year}
+if ($year -is [DateTime]) {
+    $propertyToSet.year = $year.Year    
+}
+# $yearPortion = @($datePortion -split '-')[0]
+
+if (-not $this.'.Metadata') {
+    $this.'.Metadata' = [Ordered]@{}
+}
+
+if (-not $this.'.Metadata'.date) {
+    $propertyToSet.date = $propertyToSet.year
+    if ($year -is [DateTime]) {
+        $propertyToSet.date = $year.ToString('yyyy-MM-dd')
+    }
+    $this.'.Metadata'.date = $propertyToSet.date    
+}
+
+$this.'.Metadata'.Year = $propertyToSet.year
+Set-Media -InputPath $this.InputPath -Property $propertyToSet
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+</Types>

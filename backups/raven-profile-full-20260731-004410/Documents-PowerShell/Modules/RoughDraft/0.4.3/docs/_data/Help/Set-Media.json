@@ -1,0 +1,46 @@
+{
+  "Synopsis": "Sets media metadata",
+  "Description": "Sets media metadata, using ffmpeg",
+  "Parameters": [
+    {
+      "Name": null,
+      "Type": null,
+      "Description": "",
+      "Required": false,
+      "Position": 0,
+      "Aliases": null,
+      "DefaultValue": null,
+      "Globbing": false,
+      "PipelineInput": null,
+      "variableLength": false
+    }
+  ],
+  "Notes": [
+    null
+  ],
+  "CommandType": "Function",
+  "Component": [
+    null
+  ],
+  "Inputs": [
+    null
+  ],
+  "Outputs": [
+    "System.Nullable"
+  ],
+  "Links": [
+    null
+  ],
+  "Examples": [
+    {
+      "Title": "EXAMPLE 1",
+      "Markdown": "",
+      "Code": "Set-Media -InputPath $home\\Music\\ASong.mp3 -Property @{\n    Title = \"A Song\"\n    Artist = \"An Artist\"\n    Lyrics = \"Some lyrics\"\n}"
+    },
+    {
+      "Title": "EXAMPLE 2",
+      "Markdown": "",
+      "Code": "Set-Media -InputPath $home\\Music\\ASong.mp3 -AlbumArt $home\\Music\\Cover.jpg"
+    }
+  ]
+}

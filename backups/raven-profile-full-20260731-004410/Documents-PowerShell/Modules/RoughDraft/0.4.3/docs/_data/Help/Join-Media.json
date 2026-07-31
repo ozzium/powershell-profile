@@ -1,0 +1,37 @@
+{
+  "Synopsis": "Joins media files",
+  "Description": "Joins multiple media files together into a single file.",
+  "Parameters": [
+    {
+      "Name": null,
+      "Type": null,
+      "Description": "",
+      "Required": false,
+      "Position": 0,
+      "Aliases": null,
+      "DefaultValue": null,
+      "Globbing": false,
+      "PipelineInput": null,
+      "variableLength": false
+    }
+  ],
+  "Notes": [
+    "Join-Media has a variety of uses:\n\n* Creating a Time Lapse or Stop Motion from a series of images\n* Mixing audio into an existing video file\n* Joining multiple videos or audio files into a single long file"
+  ],
+  "CommandType": "Function",
+  "Component": [
+    null
+  ],
+  "Inputs": [
+    null
+  ],
+  "Outputs": [
+    "System.IO.FileInfo"
+  ],
+  "Links": [
+    null,
+    null,
+    null
+  ],
+  "Examples": []
+}

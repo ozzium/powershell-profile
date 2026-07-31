@@ -1,0 +1,156 @@
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
+  <Obj RefId="0">
+    <TN RefId="0">
+      <T>Microsoft.PowerShell.Commands.PSRepositoryItemInfo</T>
+      <T>System.Management.Automation.PSCustomObject</T>
+      <T>System.Object</T>
+    </TN>
+    <MS>
+      <S N="Name">RoughDraft</S>
+      <Version N="Version">0.4.3</Version>
+      <S N="Type">Module</S>
+      <S N="Description">A Fun PowerShell Module for Multimedia</S>
+      <S N="Author">James Brundage</S>
+      <S N="CompanyName">Start-Automating</S>
+      <S N="Copyright">2011-2026 Start-Automating</S>
+      <DT N="PublishedDate">2026-05-15T21:54:11-04:00</DT>
+      <Obj N="InstalledDate" RefId="1">
+        <DT>2026-07-28T23:21:45.4144388-04:00</DT>
+        <MS>
+          <Obj N="DisplayHint" RefId="2">
+            <TN RefId="1">
+              <T>Deserialized.Microsoft.PowerShell.Commands.DisplayHintType</T>
+              <T>Deserialized.System.Enum</T>
+              <T>Deserialized.System.ValueType</T>
+              <T>Deserialized.System.Object</T>
+            </TN>
+            <ToString>DateTime</ToString>
+            <I32>2</I32>
+          </Obj>
+        </MS>
+      </Obj>
+      <Obj N="UpdatedDate" RefId="3">
+        <DT>2026-07-30T17:11:21.4037516-04:00</DT>
+        <MS>
+          <Obj N="DisplayHint" RefId="4">
+            <TN RefId="2">
+              <T>Microsoft.PowerShell.Commands.DisplayHintType</T>
+              <T>System.Enum</T>
+              <T>System.ValueType</T>
+              <T>System.Object</T>
+            </TN>
+            <ToString>DateTime</ToString>
+            <I32>2</I32>
+          </Obj>
+        </MS>
+      </Obj>
+      <URI N="LicenseUri">https://github.com/StartAutomating/RoughDraft/blob/main/LICENSE</URI>
+      <URI N="ProjectUri">https://github.com/StartAutomating/RoughDraft</URI>
+      <URI N="IconUri">https://github.com/StartAutomating/RoughDraft/blob/main/Assets/RoughDraft.png</URI>
+      <Obj N="Tags" RefId="5">
+        <TN RefId="3">
+          <T>System.Object[]</T>
+          <T>System.Array</T>
+          <T>System.Object</T>
+        </TN>
+        <LST>
+          <S>Media</S>
+          <S>Multimedia</S>
+          <S>Audio</S>
+          <S>Video</S>
+          <S>FFMpeg</S>
+          <S>mp3</S>
+          <S>mp4</S>
+          <S>jpg</S>
+          <S>png</S>
+          <S>PSModule</S>
+        </LST>
+      </Obj>
+      <Obj N="Includes" RefId="6">
+        <TN RefId="4">
+          <T>System.Collections.Hashtable</T>
+          <T>System.Object</T>
+        </TN>
+        <DCT>
+          <En>
+            <S N="Key">RoleCapability</S>
+            <Obj N="Value" RefId="7">
+              <TNRef RefId="3" />
+              <LST />
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">Command</S>
+            <Obj N="Value" RefId="8">
+              <TNRef RefId="3" />
+              <LST>
+                <S>Get-RoughDraftExtension</S>
+              </LST>
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">Cmdlet</S>
+            <Ref N="Value" RefId="7" />
+          </En>
+          <En>
+            <S N="Key">Function</S>
+            <Obj N="Value" RefId="9">
+              <TNRef RefId="3" />
+              <LST>
+                <S>Get-RoughDraftExtension</S>
+              </LST>
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">DscResource</S>
+            <Ref N="Value" RefId="7" />
+          </En>
+          <En>
+            <S N="Key">Workflow</S>
+            <Ref N="Value" RefId="7" />
+          </En>
+        </DCT>
+      </Obj>
+      <Nil N="PowerShellGetFormatVersion" />
+      <S N="ReleaseNotes">## 0.4.3_x000A__x000A_* Fixing Rate Extension (#327)_x000A_* Adding -TargetTime to Rate extension (#328)_x000A_* Adding RGBAShift Extension (#329)_x000A__x000A_---_x000A__x000A_Additional Changes in [CHANGELOG](https://github.com/StartAutomating/RoughDraft/blob/main/CHANGELOG.md)</S>
+      <Obj N="Dependencies" RefId="10">
+        <TNRef RefId="3" />
+        <LST />
+      </Obj>
+      <S N="RepositorySourceLocation">https://www.powershellgallery.com/api/v2</S>
+      <S N="Repository">PSGallery</S>
+      <S N="PackageManagementProvider">NuGet</S>
+      <Obj N="AdditionalMetadata" RefId="11">
+        <TN RefId="5">
+          <T>System.Management.Automation.PSCustomObject</T>
+          <T>System.Object</T>
+        </TN>
+        <MS>
+          <S N="copyright">2011-2026 Start-Automating</S>
+          <S N="description">A Fun PowerShell Module for Multimedia</S>
+          <S N="requireLicenseAcceptance">False</S>
+          <S N="releaseNotes">## 0.4.3_x000A__x000A_* Fixing Rate Extension (#327)_x000A_* Adding -TargetTime to Rate extension (#328)_x000A_* Adding RGBAShift Extension (#329)_x000A__x000A_---_x000A__x000A_Additional Changes in [CHANGELOG](https://github.com/StartAutomating/RoughDraft/blob/main/CHANGELOG.md)</S>
+          <S N="isLatestVersion">True</S>
+          <S N="isAbsoluteLatestVersion">True</S>
+          <S N="versionDownloadCount">81</S>
+          <S N="downloadCount">10483</S>
+          <S N="packageSize">476920</S>
+          <S N="published">5/15/2026 9:54:11 PM -04:00</S>
+          <S N="created">5/15/2026 9:54:11 PM -04:00</S>
+          <S N="lastUpdated">7/30/2026 7:20:10 PM -04:00</S>
+          <S N="tags">Media Multimedia Audio Video FFMpeg mp3 mp4 jpg png PSModule PSFunction_Get-RoughDraftExtension PSCommand_Get-RoughDraftExtension PSIncludes_Function</S>
+          <S N="developmentDependency">False</S>
+          <S N="updated">2026-07-30T19:20:10Z</S>
+          <S N="NormalizedVersion">0.4.3</S>
+          <S N="Authors">James Brundage</S>
+          <S N="IsPrerelease">false</S>
+          <S N="ItemType">Module</S>
+          <S N="FileList">RoughDraft.nuspec|Assets\RoughDraft.svg|Build\GitHub\Actions\RoughDraftAction.ps1|Build\GitHub\Jobs\BuildRoughDraft.psd1|Build\GitHub\Jobs\MakeRoughDraft.psd1|Build\GitHub\Steps\PublishTestResults.psd1|Build\GitHub\Steps\UseRoughDraftAction.psd1|Build\RoughDraft.GitHubAction.PSDevOps.ps1|Build\RoughDraft.GitHubWorkflow.psdevops.ps1|Build\RoughDraft.PSSVG.ps1|Build\RoughDraft.Piecemeal.ps1|Build\RoughDraft.ezout.ps1|CHANGELOG.md|CODE_OF_CONDUCT.md|CONTRIBUTING.md|Commands\Get-FFMpeg.ps1|Commands\Get-FFPlay.ps1|Commands\Get-FFProbe.ps1|Commands\Get-RoughDraftExtension.ps1|Commands\Media\Convert-Media.ps1|Commands\Media\Edit-Media.ps1|Commands\Media\Get-Media.ps1|Commands\Media\Join-Media.ps1|Commands\Media\New-Media.ps1|Commands\Media\Receive-Media.ps1|Commands\Media\Repair-Media.ps1|Commands\Media\Send-Media.ps1|Commands\Media\Set-Media.ps1|Commands\Media\Show-Media.ps1|Commands\Media\Split-Media.ps1|Commands\RoughDraft\Dismount-RoughDraft.ps1|Commands\RoughDraft\Mount-RoughDraft.ps1|Commands\Use-FFMpeg.ps1|Commands\Use-FFPlay.ps1|Commands\Use-FFProbe.ps1|Container.init.ps1|Container.start.ps1|Container.stop.ps1|Dockerfile|Examples\TestSources.RoughDraft.ps1|Extension\AlbumArt.RoughDraft.Extension.ps1|Extension\AmplifyPixel.RoughDraft.Extension.ps1|Extension\AudioCrusher.RoughDraft.Extension.ps1|Extension\AudioExpression.RoughDraft.Extension.ps1|Extension\AudioFrequencyExpression.RoughDraft.Extension.ps1|Extension\AudioGain.RoughDraft.Extension.ps1|Extension\BilateralSmooth.RoughDraft.Extension.ps1|Extension\BlackDetect.RoughDraft.Extension.ps1|Extension\BlackFrame.rd.Extension.ps1|Extension\BlendFrame.RoughDraft.Extension.ps1|Extension\BlendVideo.RoughDraft.Extension.ps1|Extension\Blur.RoughDraft.Extension.ps1|Extension\CaptureDevice.rd.ext.ps1|Extension\Chorus.RoughDraft.Extension.ps1|Extension\ChromaHold.RoughDraft.Extension.ps1|Extension\Codecs.rd.ext.ps1|Extension\ColorContrast.RoughDraft.Extension.ps1|Extension\ColorCurve.RoughDraft.Extension.ps1|Extension\ColorExpression.RoughDraft.Extension.ps1|Extension\ColorHold.RoughDraft.Extension.ps1|Extension\ColorScope.RoughDraft.Extension.ps1|Extension\ColorSource.RoughDraft.Extension.ps1|Extension\Colorize.RoughDraft.Extension.ps1|Extension\Convolve.RoughDraft.Extension.ps1|Extension\Crop.RoughDraft.Extension.ps1|Extension\CropDetect.RoughDraft.ext.ps1|Extension\CrossFade.RoughDraft.Extension.ps1|Extension\DataScope.RoughDraft.Extension.ps1|Extension\Deconvolve.RoughDraft.Extension.ps1|Extension\DirectShow.RoughDraft.Extension.ps1|Extension\DrawSubtitle.RoughDraft.Extension.ps1|Extension\DrawText.RoughDraft.Extension.ps1|Extension\Echo.RoughDraft.Extension.ps1|Extension\EdgeDetect.RoughDraft.Extension.ps1|Extension\Emboss.RoughDraft.Extension.ps1|Extension\Erosion.RoughDraft.Extension.ps1|Extension\Exposure.RoughDraft.Extension.ps1|Extension\ExtractSubtitle.RoughDraft.Extension.ps1|Extension\FadeIn.rd.ext.ps1|Extension\FillBorder.RoughDraft.Extension.ps1|Extension\FilterInput.rd.ext.ps1|Extension\FiniteEqualizer.RoughDraft.Extension.ps1|Extension\FixPlaylistPath.RoughDraft.Extension.ps1|Extension\Flanger.RoughDraft.Extension.ps1|Extension\FlipHorizontal.RoughDraft.Extension.ps1|Extension\FlipVertical.RoughDraft.Extension.ps1|Extension\FrameBuffer.RoughDraft.Extension.ps1|Extension\FrameStep.RoughDraft.Extension.ps1|Extension\GdiGrab.RoughDraft.Extension.ps1|Extension\GifPalette.RoughDraft.Extension.ps1|Extension\Histogram.RoughDraft.Extension.ps1|Extension\HistogramEqualizer.RoughDraft.Extension.ps1|Extension\Hue.RoughDraft.Extension.ps1|Extension\Hysteresis.RoughDraft.Extension.ps1|Extension\LagFun.RoughDraft.Extension.ps1|Extension\Life.rd.ext.ps1|Extension\LimitPixel.RoughDraft.Extension.ps1|Extension\ListFilters.rd.ext.ps1|Extension\ListProtocols.rd.ext.ps1|Extension\Mandelbrot.rd.ext.ps1|Extension\MedianPixel.RoughDraft.Extension.ps1|Extension\Mirror.RoughDraft.Extension.ps1|Extension\MixAudio.RoughDraft.Extension.ps1|Extension\MixVideo.RoughDraft.Extension.ps1|Extension\Monochrome.RoughDraft.Extension.ps1|Extension\NoAudio.RoughDraft.Extension.ps1|Extension\NoLogo.RoughDraft.Extension.ps1|Extension\OffsetAudio.RoughDraft.Extension.ps1|Extension\OffsetVideo.RoughDraft.Extension.ps1|Extension\Overlay.RoughDraft.Extension.ps1|Extension\Phaser.RoughDraft.Extension.ps1|Extension\PitchFactor.RoughDraft.Extension.ps1|Extension\Pixelate.RoughDraft.Extension.ps1|Extension\Playlist.RoughDraft.Extension.ps1|Extension\PseudoColor.RoughDraft.Extension.ps1|Extension\Pulsator.RoughDraft.Extension.ps1|Extension\README.md|Extension\README.ps1.md|Extension\RGBAShift.RoughDraft.Extension.ps1|Extension\RandomizeFrame.RoughDraft.Extension.ps1|Extension\Rate.rd.ext.ps1|Extension\Resize.RoughDraft.Extension.ps1|Extension\ReverseAudio.RoughDraft.Extension.ps1|Extension\ReverseVideo.RoughDraft.Extension.ps1|Extension\Rotate.RoughDraft.Extension.ps1|Extension\Scale.RoughDraft.Extension.ps1|Extension\ScrollVideo.RoughDraft.Extension.ps1|Extension\SelectiveColor.RoughDraft.Extension.ps1|Extension\Sepia.RoughDraft.ext.ps1|Extension\ShowFrequency.RoughDraft.Extension.ps1|Extension\ShowScale.RoughDraft.Extension.ps1|Extension\ShowSpectrum.RoughDraft.Extension.ps1|Extension\ShowVectorScope.RoughDraft.Extension.ps1|Extension\ShowVolume.RoughDraft.Extension.ps1|Extension\ShowWaveform.RoughDraft.Extension.ps1|Extension\ShuffleFrames.RoughDraft.Extension.ps1|Extension\ShufflePixels.RoughDraft.Extension.ps1|Extension\ShufflePlanes.RoughDraft.Extension.ps1|Extension\Sierpinski.rd.ext.ps1|Extension\SilenceDetect.RoughDraft.Extension.ps1|Extension\SilenceRemove.RoughDraft.Extension.ps1|Extension\Sine.RoughDraft.Extension.ps1|Extension\Skew.RoughDraft.Extension.ps1|Extension\SplitEqually.RoughDraft.Extension.ps1|Extension\SubFrequencyCut.RoughDraft.Extension.ps1|Extension\Subtitler.RoughDraft.Extension.ps1|Extension\SuperEqualizer.RoughDraft.Extension.ps1|Extension\SuperFrequencyCut.RoughDraft.Extension.ps1|Extension\SwapRect.RoughDraft.Extension.ps1|Extension\Tempo.RoughDraft.Extension.ps1|Extension\TestSource.RoughDraft.Extension.ps1|Extension\Tile.RoughDraft.Extension.ps1|Extension\TimeMix.RoughDraft.Extension.ps1|Extension\Tremolo.RoughDraft.Extension.ps1|Extension\Vibrance.RoughDraft.Extension.ps1|Extension\Vibrato.RoughDraft.Extension.ps1|Extension\VideoExpression.RoughDraft.Extension.ps1|Extension\VideoForLinux.RoughDraft.Extension.ps1|Extension\Vignette.rd.ext.ps1|Extension\VolumeLevel.RoughDraft.Extension.ps1|Extension\Watermark.RoughDraft.ext.ps1|Extension\XBR.RoughDraft.Extension.ps1|Extension\YouTubeDL.RoughDraft.Extension.ps1|Extension\ZoomPan.RoughDraft.Extension.ps1|Get-RoughDraftExtension.ps1|LICENSE|Microservice.ps1|Parts\ConvertBlackFrame.ps1|Parts\StartRoughDraftJob.ps1|README.md|README.ps1.md|RegEx\FFMpeg\Configuration.regex.source.ps1|RegEx\FFMpeg\Configuration.regex.txt|RegEx\FFMpeg\Input.regex.source.ps1|RegEx\FFMpeg\Input.regex.txt|RegEx\FFMpeg\Metadata.regex.source.ps1|RegEx\FFMpeg\Metadata.regex.txt|RegEx\FFMpeg\Output.regex.source.ps1|RegEx\FFMpeg\Output.regex.txt|RegEx\FFMpeg\Progress.regex.source.ps1|RegEx\FFMpeg\Progress.regex.txt|RegEx\FFMpeg\Stream.regex.source.ps1|RegEx\FFMpeg\Stream.regex.txt|RoughDraft.HelpOut.ps1|RoughDraft.Irregular.ps1|RoughDraft.format.ps1xml|RoughDraft.ps.psm1|RoughDraft.psd1|RoughDraft.psm1|RoughDraft.tests.ps1|RoughDraft.types.ps1xml|RoughDraftExtensions.md|SECURITY.md|Types\RoughDraft.Extension.format.ps1|Types\RoughDraft.FFMpeg.Codec.format.ps1|Types\RoughDraft.FFMpeg.Filter.format.ps1|Types\RoughDraft.FFMpeg.FilterInput.format.ps1|Types\RoughDraft.Media\Alias.psd1|Types\RoughDraft.Media\RoughDraft.Media.format.ps1|Types\RoughDraft.Media\get_Album.ps1|Types\RoughDraft.Media\get_AlbumArtist.ps1|Types\RoughDraft.Media\get_Artist.ps1|Types\RoughDraft.Media\get_AspectRatio.ps1|Types\RoughDraft.Media\get_AudioBitrate.ps1|Types\RoughDraft.Media\get_BPM.ps1|Types\RoughDraft.Media\get_Comment.ps1|Types\RoughDraft.Media\get_Composer.ps1|Types\RoughDraft.Media\get_Copyright.ps1|Types\RoughDraft.Media\get_CreationTime.ps1|Types\RoughDraft.Media\get_Date.ps1|Types\RoughDraft.Media\get_Description.ps1|Types\RoughDraft.Media\get_Disc.ps1|Types\RoughDraft.Media\get_EpisodeId.ps1|Types\RoughDraft.Media\get_FileName.ps1|Types\RoughDraft.Media\get_Genre.ps1|Types\RoughDraft.Media\get_Grouping.ps1|Types\RoughDraft.Media\get_InitialKey.ps1|Types\RoughDraft.Media\get_Location.ps1|Types\RoughDraft.Media\get_Lyric.ps1|Types\RoughDraft.Media\get_MediaType.ps1|Types\RoughDraft.Media\get_Mood.ps1|Types\RoughDraft.Media\get_Network.ps1|Types\RoughDraft.Media\get_PixelFormat.ps1|Types\RoughDraft.Media\get_Producer.ps1|Types\RoughDraft.Media\get_Publisher.ps1|Types\RoughDraft.Media\get_Show.ps1|Types\RoughDraft.Media\get_Subtitle.ps1|Types\RoughDraft.Media\get_Synopsis.ps1|Types\RoughDraft.Media\get_Title.ps1|Types\RoughDraft.Media\get_Track.ps1|Types\RoughDraft.Media\get_VideoBitrate.ps1|Types\RoughDraft.Media\get_Year.ps1|Types\RoughDraft.Media\set_Album.ps1|Types\RoughDraft.Media\set_AlbumArtist.ps1|Types\RoughDraft.Media\set_Artist.ps1|Types\RoughDraft.Media\set_BPM.ps1|Types\RoughDraft.Media\set_Comment.ps1|Types\RoughDraft.Media\set_Composer.ps1|Types\RoughDraft.Media\set_Copyright.ps1|Types\RoughDraft.Media\set_CreationTime.ps1|Types\RoughDraft.Media\set_Date.ps1|Types\RoughDraft.Media\set_Description.ps1|Types\RoughDraft.Media\set_Disc.ps1|Types\RoughDraft.Media\set_EpisodeId.ps1|Types\RoughDraft.Media\set_Genre.ps1|Types\RoughDraft.Media\set_Grouping.ps1|Types\RoughDraft.Media\set_InitialKey.ps1|Types\RoughDraft.Media\set_Location.ps1|Types\RoughDraft.Media\set_Lyric.ps1|Types\RoughDraft.Media\set_Mood.ps1|Types\RoughDraft.Media\set_Network.ps1|Types\RoughDraft.Media\set_Producer.ps1|Types\RoughDraft.Media\set_Publisher.ps1|Types\RoughDraft.Media\set_Show.ps1|Types\RoughDraft.Media\set_Subtitle.ps1|Types\RoughDraft.Media\set_Synopsis.ps1|Types\RoughDraft.Media\set_Title.ps1|Types\RoughDraft.Media\set_Track.ps1|Types\RoughDraft.Media\set_Year.ps1|action.yml|docs\2021-12-01.md|docs\2021-12-02.md|docs\2021-12-06.md|docs\2021-12-08.md|docs\2021-12-09.md|docs\2021-12.md|docs\2021.md|docs\2022-01-10.md|docs\2022-01-31.md|docs\2022-01.md|docs\2022-02-23.md|docs\2022-02-25.md|docs\2022-02.md|docs\2022-03-06.md|docs\2022-03-27.md|docs\2022-03.md|docs\2022-04-05.md|docs\2022-04-13.md|docs\2022-04-24.md|docs\2022-04.md|docs\2022-05-27.md|docs\2022-05.md|docs\2022-10-05.md|docs\2022-10-17.md|docs\2022-10-24.md|docs\2022-10.md|docs\2022.md|docs\2023-01-04.md|docs\2023-01-12.md|docs\2023-01.md|docs\2023-02-18.md|docs\2023-02.md|docs\2023-07-09.md|docs\2023-07.md|docs\2023.md|docs\2025-07-19.md|docs\2025-07.md|docs\2025.md|docs\2026-05-10.md|docs\2026-05.md|docs\2026.md|docs\AlbumArt-Extension.md|docs\AmplifyPixel-Extension.md|docs\Assets\RoughDraft.svg|docs\AudioCrusher-Extension.md|docs\AudioExpression-Extension.md|docs\AudioFrequencyExpression-Extension.md|docs\AudioGain-Extension.md|docs\BilateralSmooth-Extension.md|docs\BlackDetect-Extension.md|docs\BlackFrame-Extension.md|docs\BlendFrame-Extension.md|docs\BlendVideo-Extension.md|docs\Blur-Extension.md|docs\CHANGELOG.md|docs\CNAME|docs\CODE_OF_CONDUCT.md|docs\CONTRIBUTING.md|docs\CaptureDevice-Extension.md|docs\Chorus-Extension.md|docs\ChromaHold-Extension.md|docs\Codecs-Extension.md|docs\ColorContrast-Extension.md|docs\ColorCurve-Extension.md|docs\ColorExpression-Extension.md|docs\ColorHold-Extension.md|docs\ColorScope-Extension.md|docs\ColorSource-Extension.md|docs\Colorize-Extension.md|docs\Convert-Media.md|docs\ConvertTo-Gif.md|docs\ConvertTo-WaveForm.md|docs\Convolve-Extension.md|docs\Crop-Extension.md|docs\CropDetect-Extension.md|docs\CrossFade-Extension.md|docs\DataScope-Extension.md|docs\Deconvolve-Extension.md|docs\DirectShow-Extension.md|docs\Dismount-RoughDraft.md|docs\DrawSubtitle-Extension.md|docs\DrawText-Extension.md|docs\Echo-Extension.md|docs\EdgeDetect-Extension.md|docs\Edit-Media.md|docs\Emboss-Extension.md|docs\Erosion-Extension.md|docs\Exposure-Extension.md|docs\ExtractSubtitle-Extension.md|docs\FadeIn-Extension.md|docs\FillBorder-Extension.md|docs\FilterInput-Extension.md|docs\FiniteEqualizer-Extension.md|docs\FixPlaylistPath-Extension.md|docs\Flanger-Extension.md|docs\FlipHorizontal-Extension.md|docs\FlipVertical-Extension.md|docs\FrameBuffer-Extension.md|docs\FrameStep-Extension.md|docs\GdiGrab-Extension.md|docs\Get-FFMpeg.md|docs\Get-FFPlay.md|docs\Get-FFProbe.md|docs\Get-Media.md|docs\Get-RoughDraftExtension.md|docs\Get-RoughDraftExtension.ps1.md|docs\GifPalette-Extension.md|docs\Histogram-Extension.md|docs\HistogramEqualizer-Extension.md|docs\Hue-Extension.md|docs\Hysteresis-Extension.md|docs\Join-Media.md|docs\LagFun-Extension.md|docs\Life-Extension.md|docs\LimitPixel-Extension.md|docs\ListFilters-Extension.md|docs\ListProtocols-Extension.md|docs\Mandelbrot-Extension.md|docs\MedianPixel-Extension.md|docs\Mirror-Extension.md|docs\MixAudio-Extension.md|docs\MixVideo-Extension.md|docs\Monochrome-Extension.md|docs\Mount-RoughDraft.md|docs\New-Media.md|docs\NoAudio-Extension.md|docs\NoLogo-Extension.md|docs\OffsetAudio-Extension.md|docs\OffsetVideo-Extension.md|docs\Overlay-Extension.md|docs\Phaser-Extension.md|docs\PitchFactor-Extension.md|docs\Pixelate-Extension.md|docs\Playlist-Extension.md|docs\PseudoColor-Extension.md|docs\Pulsator-Extension.md|docs\README.md|docs\RGBAShift-Extension.md|docs\RandomizeFrame-Extension.md|docs\Rate-Extension.md|docs\Receive-Media.md|docs\Repair-Media.md|docs\Resize-Extension.md|docs\ReverseAudio-Extension.md|docs\ReverseVideo-Extension.md|docs\Rotate-Extension.md|docs\RoughDraft.Extension.format.md|docs\RoughDraft.Extension.format.ps1.md|docs\RoughDraft\Media\README.md|docs\RoughDraft\Media\get_Album.md|docs\RoughDraft\Media\get_AlbumArtist.md|docs\RoughDraft\Media\get_Artist.md|docs\RoughDraft\Media\get_AspectRatio.md|docs\RoughDraft\Media\get_AudioBitrate.md|docs\RoughDraft\Media\get_BPM.md|docs\RoughDraft\Media\get_Comment.md|docs\RoughDraft\Media\get_Composer.md|docs\RoughDraft\Media\get_Copyright.md|docs\RoughDraft\Media\get_CreationTime.md|docs\RoughDraft\Media\get_Date.md|docs\RoughDraft\Media\get_Description.md|docs\RoughDraft\Media\get_Disc.md|docs\RoughDraft\Media\get_EpisodeId.md|docs\RoughDraft\Media\get_FileName.md|docs\RoughDraft\Media\get_Genre.md|docs\RoughDraft\Media\get_Grouping.md|docs\RoughDraft\Media\get_InitialKey.md|docs\RoughDraft\Media\get_Location.md|docs\RoughDraft\Media\get_Lyric.md|docs\RoughDraft\Media\get_MediaType.md|docs\RoughDraft\Media\get_Mood.md|docs\RoughDraft\Media\get_Network.md|docs\RoughDraft\Media\get_PixelFormat.md|docs\RoughDraft\Media\get_Producer.md|docs\RoughDraft\Media\get_Publisher.md|docs\RoughDraft\Media\get_Show.md|docs\RoughDraft\Media\get_Subtitle.md|docs\RoughDraft\Media\get_Synopsis.md|docs\RoughDraft\Media\get_Title.md|docs\RoughDraft\Media\get_Track.md|docs\RoughDraft\Media\get_VideoBitrate.md|docs\RoughDraft\Media\get_Year.md|docs\RoughDraft\Media\set_Album.md|docs\RoughDraft\Media\set_AlbumArtist.md|docs\RoughDraft\Media\set_Artist.md|docs\RoughDraft\Media\set_BPM.md|docs\RoughDraft\Media\set_Comment.md|docs\RoughDraft\Media\set_Composer.md|docs\RoughDraft\Media\set_Copyright.md|docs\RoughDraft\Media\set_CreationTime.md|docs\RoughDraft\Media\set_Date.md|docs\RoughDraft\Media\set_Description.md|docs\RoughDraft\Media\set_Disc.md|docs\RoughDraft\Media\set_EpisodeId.md|docs\RoughDraft\Media\set_Genre.md|docs\RoughDraft\Media\set_Grouping.md|docs\RoughDraft\Media\set_InitialKey.md|docs\RoughDraft\Media\set_Location.md|docs\RoughDraft\Media\set_Lyric.md|docs\RoughDraft\Media\set_Mood.md|docs\RoughDraft\Media\set_Network.md|docs\RoughDraft\Media\set_Producer.md|docs\RoughDraft\Media\set_Publisher.md|docs\RoughDraft\Media\set_Show.md|docs\RoughDraft\Media\set_Subtitle.md|docs\RoughDraft\Media\set_Synopsis.md|docs\RoughDraft\Media\set_Title.md|docs\RoughDraft\Media\set_Track.md|docs\RoughDraft\Media\set_Year.md|docs\RoughDraftExtensions.md|docs\SECURITY.md|docs\Scale-Extension.md|docs\ScrollVideo-Extension.md|docs\SelectiveColor-Extension.md|docs\Send-Media.md|docs\Sepia-Extension.md|docs\Set-Media.md|docs\Show-Media.md|docs\ShowFrequency-Extension.md|docs\ShowScale-Extension.md|docs\ShowSpectrum-Extension.md|docs\ShowVectorScope-Extension.md|docs\ShowVolume-Extension.md|docs\ShowWaveform-Extension.md|docs\ShuffleFrames-Extension.md|docs\ShufflePixels-Extension.md|docs\ShufflePlanes-Extension.md|docs\Sierpinski-Extension.md|docs\SilenceDetect-Extension.md|docs\SilenceRemove-Extension.md|docs\Sine-Extension.md|docs\Skew-Extension.md|docs\Split-Media.md|docs\SplitEqually-Extension.md|docs\SubFrequencyCut-Extension.md|docs\Subtitler-Extension.md|docs\SuperEqualizer-Extension.md|docs\SuperFrequencyCut-Extension.md|docs\SwapRect-Extension.md|docs\Tempo-Extension.md|docs\TestSource-Extension.md|docs\Tile-Extension.md|docs\TimeMix-Extension.md|docs\Tremolo-Extension.md|docs\Use-FFMpeg.md|docs\Use-FFPlay.md|docs\Use-FFProbe.md|docs\Vibrance-Extension.md|docs\Vibrato-Extension.md|docs\VideoExpression-Extension.md|docs\VideoForLinux-Extension.md|docs\Vignette-Extension.md|docs\VolumeLevel-Extension.md|docs\Watermark-Extension.md|docs\WriteExtensions.md.RoughDraft.md|docs\WriteExtensions.md.RoughDraft.ps1.md|docs\XBR-Extension.md|docs\YouTubeDL-Extension.md|docs\ZoomPan-Extension.md|docs\_config.yml|docs\_data\Help\Convert-Media.json|docs\_data\Help\ConvertTo-Gif.json|docs\_data\Help\Dismount-RoughDraft.json|docs\_data\Help\Edit-Media.json|docs\_data\Help\Get-FFMpeg.json|docs\_data\Help\Get-FFPlay.json|docs\_data\Help\Get-FFProbe.json|docs\_data\Help\Get-Media.json|docs\_data\Help\Get-RoughDraftExtension.json|docs\_data\Help\Join-Media.json|docs\_data\Help\Mount-RoughDraft.json|docs\_data\Help\New-Media.json|docs\_data\Help\Receive-Media.json|docs\_data\Help\Repair-Media.json|docs\_data\Help\Send-Media.json|docs\_data\Help\Set-Media.json|docs\_data\Help\Show-Media.json|docs\_data\Help\Split-Media.json|docs\_data\Help\Use-FFMpeg.json|docs\_data\Help\Use-FFPlay.json|docs\_data\Help\Use-FFProbe.json|docs\_data\Help\ffmpeg.json|docs\_data\Help\ffplay.json|docs\_data\Help\ffprobe.json|docs\_layouts\base.html|docs\_layouts\default.html|docs\_layouts\home.html|docs\_layouts\page.html|docs\_layouts\post.html|docs\_posts\2021-12-01-RoughDraft-0.2.md|docs\_posts\2021-12-02-RoughDraft-0.2.1.md|docs\_posts\2021-12-06-RoughDraft-0.2.2.md|docs\_posts\2021-12-08-RoughDraft-0.2.3.md|docs\_posts\2021-12-09-RoughDraft-0.2.4.md|docs\_posts\2022-01-10-RoughDraft-0.2.5.md|docs\_posts\2022-01-31-RoughDraft-0.2.6.md|docs\_posts\2022-02-23-RoughDraft-0.2.7.md|docs\_posts\2022-02-25-RoughDraft-0.2.8.md|docs\_posts\2022-03-06-RoughDraft-0.2.9.md|docs\_posts\2022-03-27-RoughDraft-0.3.md|docs\_posts\2022-04-05-RoughDraft-0.3.1.md|docs\_posts\2022-04-13-RoughDraft-0.3.2.md|docs\_posts\2022-04-24-RoughDraft-0.3.3.md|docs\_posts\2022-05-27-RoughDraft-0.3.4.md|docs\_posts\2022-10-05-RoughDraft-0.3.5.md|docs\_posts\2022-10-17-RoughDraft-0.3.6.md|docs\_posts\2022-10-24-RoughDraft-0.3.7.md|docs\_posts\2023-01-04-RoughDraft-0.3.8.md|docs\_posts\2023-01-12-RoughDraft-0.3.9.md|docs\_posts\2023-02-18-RoughDraft-0.3.10.md|docs\_posts\2023-07-09-RoughDraft-0.4.md|docs\_posts\2025-07-19-RoughDraft-0.4.1.md|docs\_posts\2026-05-10-RoughDraft-0.4.2.md|docs\ffmpeg.md|docs\ffplay.md|docs\ffprobe.md|docs\rss.xml|en-us\about_RoughDraft.help.txt</S>
+          <S N="GUID">c192ebbf-57a3-493e-bc82-da7553038794</S>
+          <S N="CompanyName">Start-Automating</S>
+        </MS>
+      </Obj>
+      <S N="InstalledLocation">H:\Ozzium\Documents\PowerShell\Modules\RoughDraft\0.4.3</S>
+    </MS>
+  </Obj>
+</Objs>

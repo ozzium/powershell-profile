@@ -1,0 +1,5 @@
+{
+  "name": "Notepad++",
+  "command": "notepad++",
+  "launchMode": "command"
+}

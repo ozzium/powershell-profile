@@ -1,0 +1,46 @@
+{
+  "Synopsis": "Receives Media from an Input",
+  "Description": "Receives media from inputs.",
+  "Parameters": [
+    {
+      "Name": null,
+      "Type": null,
+      "Description": "",
+      "Required": false,
+      "Position": 0,
+      "Aliases": null,
+      "DefaultValue": null,
+      "Globbing": false,
+      "PipelineInput": null,
+      "variableLength": false
+    }
+  ],
+  "Notes": [
+    "Stopping a script that is receiving media with CTRL+C may prevent certain filetypes from being finalized.\n\nFor best results, use a filetype designed for streaming, such as .wav for audio or .mpg for video.\n\nAlternatively, if you run Receive-Media -AsJob, stopping the job will normally allow FFMpeg to finalize."
+  ],
+  "CommandType": "Function",
+  "Component": [
+    null
+  ],
+  "Inputs": [
+    null
+  ],
+  "Outputs": [
+    null
+  ],
+  "Links": [
+    null
+  ],
+  "Examples": [
+    {
+      "Title": "EXAMPLE 1",
+      "Markdown": "",
+      "Code": "Receive-Media -DirectShow -VideoDevice \"OBS Virtual Camera\" -OutputPath .\\Desktop.mpg"
+    },
+    {
+      "Title": "EXAMPLE 2",
+      "Markdown": "",
+      "Code": "Receive-Media -DirectShow -VideoDevice \"OBS Virtual Camera\" -OutputPath .\\Desktop.mkv -AsJob"
+    }
+  ]
+}

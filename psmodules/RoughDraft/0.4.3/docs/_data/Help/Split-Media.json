@@ -1,0 +1,44 @@
+{
+  "Synopsis": "Splits media",
+  "Description": "Splits media files",
+  "Parameters": [
+    {
+      "Name": null,
+      "Type": null,
+      "Description": "",
+      "Required": false,
+      "Position": 0,
+      "Aliases": null,
+      "DefaultValue": null,
+      "Globbing": false,
+      "PipelineInput": null,
+      "variableLength": false
+    }
+  ],
+  "Notes": [
+    null
+  ],
+  "CommandType": "Function",
+  "Component": [
+    null
+  ],
+  "Inputs": [
+    null
+  ],
+  "Outputs": [
+    "System.IO.FileInfo",
+    "System.Management.Automation.Job"
+  ],
+  "Links": [
+    null,
+    null,
+    null
+  ],
+  "Examples": [
+    {
+      "Title": "EXAMPLE 1",
+      "Markdown": "Pick out the first five seconds of a song",
+      "Code": "Split-Media -InputPath $home\\Music\\ASong.mp3 -Start 00:00:00 -End 00:00:05"
+    }
+  ]
+}

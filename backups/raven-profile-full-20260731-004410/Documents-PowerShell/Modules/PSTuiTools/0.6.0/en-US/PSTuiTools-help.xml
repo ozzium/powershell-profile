@@ -1,0 +1,1189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<helpItems schema="maml" xmlns="http://msh">
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-PSTuiTools</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>PSTuiTools</command:noun>
+      <maml:description>
+        <maml:para>Get sample TUI tools.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Get the sample TUI tools from the PSTuiTools module.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-PSTuiTools</maml:name>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>psTuiTool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-PSTuiTools
+
+   Module: PSTuiTools [v0.6.0]
+
+Name                 Alias         Synopsis
+----                 -----         --------
+Get-PSTuiTools                     Get sample TUI tools.
+Get-TuiCredential    tuicred       Prompt for credentials in a TUI.
+Invoke-HelloWorld    HelloWorld    Run a "Hello World" demo.
+Invoke-ProcessPeeker ProcessPeeker A TUI process viewer.
+Invoke-PSTuiTools    PSTuiTools    Show module commands in a TUI
+Invoke-ServiceInfo   ServiceInfo   A TUI for displaying service information.
+Invoke-SystemStatus  TuiStatus     Run a system status TUI monitor.
+Invoke-TuiColorDemo  TuiColorDemo  Run the TUI color demo.
+Invoke-TuiGraphDemo  tuiGraph      Run a demo TUI graph.
+Invoke-TuiMp3        tuimp3        Launch a TUI MP3 player.
+Invoke-TuiTemplate   TuiTemplate   Run the TUI template script.
+Invoke-TuiTreeDemo   tuiTree       Run a TreeView demo TUI.
+Save-TuiAssembly                   Download Terminal.GUI and NStack assemblies.</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/a41bfd</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Invoke-PSTuiTools</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-TuiCredential</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>TuiCredential</command:noun>
+      <maml:description>
+        <maml:para>Prompt for credentials in a TUI.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>This is an alternative to Get-Credential that prompts for credentials in a TUI. Click the Show button to toggle the password in plaintext in the TUI. The output of this command will be a PSCredential object.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-TuiCredential</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>Username</maml:name>
+          <maml:description>
+            <maml:para>Enter the username in the format &lt;machine&gt;|&lt;domain&gt;\username</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Username</maml:name>
+        <maml:description>
+          <maml:para>Enter the username in the format &lt;machine&gt;|&lt;domain&gt;\username</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PSCredential</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>This command has an alias of tuicred.</maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; $cred = Get-TuiCredential</dev:code>
+        <dev:remarks>
+          <maml:para>This will prompt for credentials in a TUI.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; $cred = Get-TuiCredential company\artd</dev:code>
+        <dev:remarks>
+          <maml:para>Prompt for credentials for the user company\artd.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/0f96c5</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-Credential</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Invoke-HelloWorld</command:name>
+      <command:verb>Invoke</command:verb>
+      <command:noun>HelloWorld</command:noun>
+      <maml:description>
+        <maml:para>Run a "Hello World" demo.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Every project like this needs a Hello World example. This is a simple TUI that displays a label and a button. When the button is clicked, the label text will change. It will revert to the original text after 5 seconds.</maml:para>
+      <maml:para>This function has an alias of HelloWorld.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Invoke-HelloWorld</maml:name>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; HelloWorld</dev:code>
+        <dev:remarks>
+          <maml:para>Launch the TUI using its alias.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/dcd55e</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Invoke-ProcessPeeker</command:name>
+      <command:verb>Invoke</command:verb>
+      <command:noun>ProcessPeeker</command:noun>
+      <maml:description>
+        <maml:para>A TUI process viewer.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Launch a TUI that can be used to display process information. Select a process from the left-hand list to display process details in the right-hand pane.</maml:para>
+      <maml:para>This command has an alias of ProcessPeeker.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Invoke-ProcessPeeker</maml:name>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Invoke-ProcessPeeker</dev:code>
+        <dev:remarks>
+          <maml:para>This command has an alias of ProcessPeeker.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/9590c0</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Invoke-PSTuiTools</command:name>
+      <command:verb>Invoke</command:verb>
+      <command:noun>PSTuiTools</command:noun>
+      <maml:description>
+        <maml:para>Show module commands in a TUI</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>This is a TUI version of Get-PSTuiTools. It shows the module commands in a TUI. You can scroll through the list of commands and the help description. You can also press Enter on a selected command to run it. When the command finishes, this TUI will be re-displayed.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Invoke-PSTuiTools</maml:name>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>This command has an alias of pstuitools.</maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Invoke-PSTuiTools</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/defc27</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-PSTuiTools</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Invoke-ServiceInfo</command:name>
+      <command:verb>Invoke</command:verb>
+      <command:noun>ServiceInfo</command:noun>
+      <maml:description>
+        <maml:para>A TUI for displaying service information.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Use this TUI to display information about services on the local or a remote computer. The TUI uses PowerShell remoting over WsMan to retrieve the service information and supports alternate credentials.</maml:para>
+      <maml:para>This command has an alias of ServiceInfo.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Invoke-ServiceInfo</maml:name>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Invoke-ServiceInfo</dev:code>
+        <dev:remarks>
+          <maml:para>Click Get Info to retrieve the service information from the specified computer. You can also filter on the service status. Click Get Info after changing the filter to retrieve the updated service information.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/cc0520</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Invoke-SystemStatus</command:name>
+      <command:verb>Invoke</command:verb>
+      <command:noun>SystemStatus</command:noun>
+      <maml:description>
+        <maml:para>Run a system status TUI monitor.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>This function will launch a system status monitor TUI. Enter a computer name and alternate credentials if necessary. Click the Refresh button or the Alt+R shortcut to manually refresh information.</maml:para>
+      <maml:para>You can also set an automatic refresh interval. Click the Timer button to stop and start. If you change the computer, you should stop the timer first. Restart it after changing the computer name.</maml:para>
+      <maml:para>Use the Quit button or Alt+Q to exit.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Invoke-SystemStatus</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="CN">
+          <maml:name>Computername</maml:name>
+          <maml:description>
+            <maml:para>The name of the computer to monitor. You must have admin rights.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>$env:Computername</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="RunAs">
+          <maml:name>Credential</maml:name>
+          <maml:description>
+            <maml:para>Alternate credentials for a remote computer.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <dev:type>
+            <maml:name>PSCredential</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="color">
+          <maml:name>WindowColor</maml:name>
+          <maml:description>
+            <maml:para>Specify the window foreground color. The background will be Black.</maml:para>
+          </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">Black</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">Blue</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">Green</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">Cyan</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">Red</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">Magenta</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">Brown</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">Gray</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">DarkGray</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">BrightBlue</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">BrightGreen</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">BrightCyan</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">BrightRed</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">BrightMagenta</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">BrightYellow</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">White</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">Color</command:parameterValue>
+          <dev:type>
+            <maml:name>Color</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>BrightYellow</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="CN">
+        <maml:name>Computername</maml:name>
+        <maml:description>
+          <maml:para>The name of the computer to monitor. You must have admin rights.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>$env:Computername</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="RunAs">
+        <maml:name>Credential</maml:name>
+        <maml:description>
+          <maml:para>Alternate credentials for a remote computer.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+        <dev:type>
+          <maml:name>PSCredential</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="color">
+        <maml:name>WindowColor</maml:name>
+        <maml:description>
+          <maml:para>Specify the window foreground color. The background will be Black.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Color</command:parameterValue>
+        <dev:type>
+          <maml:name>Color</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>BrightYellow</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>This command has an alias of tuiStatus.</maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Invoke-SystemStatus</dev:code>
+        <dev:remarks>
+          <maml:para>Launch the system status monitor for the local computer.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Invoke-SystemStatus -Computername SRV1 -credential administrator -color Cyan</dev:code>
+        <dev:remarks>
+          <maml:para>Launch the system status monitor for the remote computer SRV1 using alternate credentials. Use Cyan as the TUI foreground color.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/cdf5f3</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Invoke-TuiColorDemo</command:name>
+      <command:verb>Invoke</command:verb>
+      <command:noun>TuiColorDemo</command:noun>
+      <maml:description>
+        <maml:para>Run the TUI color demo.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>This function will display a simple TUI that allows you to see the various color combinations for the main window. Select the foreground and background colors, then click the Try It button. You can use Reset to return to the default colors.</maml:para>
+      <maml:para>The TUI also includes a small code snippet that shows how to set the colors in your own TUI. You can't edit the code in the TUI, but you should be able to copy and paste it.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Invoke-TuiColorDemo</maml:name>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Invoke-TuiColorDemo</dev:code>
+        <dev:remarks>
+          <maml:para>This command has an alias of TuiColorDemo</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/6cc500</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Invoke-TuiGraphDemo</command:name>
+      <command:verb>Invoke</command:verb>
+      <command:noun>TuiGraphDemo</command:noun>
+      <maml:description>
+        <maml:para>Run a demo TUI graph.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>This command will launch a demonstration TUI that uses the graphing feature to display a hypothetical bar chart showing usage percentages from a variety of file extensions.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Invoke-TuiGraphDemo</maml:name>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Invoke-TuiGraphDemo</dev:code>
+        <dev:remarks>
+          <maml:para>You can also use the tuiGraph alias.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/75fb8e</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Invoke-TuiMp3</command:name>
+      <command:verb>Invoke</command:verb>
+      <command:noun>TuiMp3</command:noun>
+      <maml:description>
+        <maml:para>Launch a TUI MP3 player.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>This command will launch a TUI MP3 player. You can specify the path to a .mp3 or .m4a file. This will load the file into the player. Use the buttons to control playback. Selected metadata and lyrics will be displayed if found in the MP3 file.</maml:para>
+      <maml:para>You can also open a file from the menu. The file dialog will filter on .mp3 and .m4a files. You will need to select the extension from the dropdown.</maml:para>
+      <maml:para>When you start the command, you can set a default library folder to open to simplify navigation. If this is a value you want to use all the time, add an entry into $PSDefaultParameterValues.</maml:para>
+      <maml:para>You can control the volume by clicking the volume bar, the +/- buttons, or using Ctrl+Up or Ctrl+Down.</maml:para>
+      <maml:para>Beginning with v0.5.0, the player will keep a most recently played list. As new songs are played, they will be added to the list. The maximum number of entries is 10. After that, the oldest entry is removed. The list is persisted in a file called tuiMp3-most-recent.txt under $HOME. If you uninstall the module, you will need to manually remove the file.</maml:para>
+      <maml:para>Note that there is a limitation in the file dialog. You cannot load a file if it has a comma in the name because it gets processed as an array. This is a limitation in Terminal.Gui. However, you can specify a file with commas in the name with the FilePath parameter.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Invoke-TuiMp3</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="Path">
+          <maml:name>FilePath</maml:name>
+          <maml:description>
+            <maml:para>Specify the path to .mp3 or .m4a file.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="Library">
+          <maml:name>DefaultLibrary</maml:name>
+          <maml:description>
+            <maml:para>Specify the default folder to open for .mp3 and .m4a files. You will have to manually select the appropriate extension from the drop down. UNC paths are supported.</maml:para>
+            <maml:para>Note that there is a limitation in the file dialog. You cannot load a file if it has a comma in the name because it gets processed as an array. This is a limitation in Terminal.Gui. However, you can specify a file with commas in the name with the FilePath parameter.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Title</maml:name>
+          <maml:description>
+            <maml:para>Specify the window title.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>PSMusic Player</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="bg">
+          <maml:name>Background</maml:name>
+          <maml:description>
+            <maml:para>Specify the TUI background color. Use tab-completion to see all possible values.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Color</command:parameterValue>
+          <dev:type>
+            <maml:name>Color</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="fg">
+          <maml:name>Foreground</maml:name>
+          <maml:description>
+            <maml:para>Specify the TUI foreground color. Use tab-completion to see all possible values.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Color</command:parameterValue>
+          <dev:type>
+            <maml:name>Color</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="Library">
+        <maml:name>DefaultLibrary</maml:name>
+        <maml:description>
+          <maml:para>Specify the default folder to open for .mp3 and .m4a files. You will have to manually select the appropriate extension from the drop down. UNC paths are supported.</maml:para>
+          <maml:para>Note that there is a limitation in the file dialog. You cannot load a file if it has a comma in the name because it gets processed as an array. This is a limitation in Terminal.Gui. However, you can specify a file with commas in the name with the FilePath parameter.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="Path">
+        <maml:name>FilePath</maml:name>
+        <maml:description>
+          <maml:para>Specify the path to .mp3 or .m4a file.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Title</maml:name>
+        <maml:description>
+          <maml:para>Specify the window title.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>PSMusic Player</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="bg">
+        <maml:name>Background</maml:name>
+        <maml:description>
+          <maml:para>Specify the TUI background color. Use tab-completion to see all possible values.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Color</command:parameterValue>
+        <dev:type>
+          <maml:name>Color</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="fg">
+        <maml:name>Foreground</maml:name>
+        <maml:description>
+          <maml:para>Specify the TUI foreground color. Use tab-completion to see all possible values.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Color</command:parameterValue>
+        <dev:type>
+          <maml:name>Color</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>This command has an alias of tuimp3.</maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Invoke-TuiMp3 -FilePath "C:\Music\MySong.mp3"</dev:code>
+        <dev:remarks>
+          <maml:para>Launch the TUI MP3 player and load the specified MP3 file. You will need to click the Play button.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Invoke-TuiMp3 -DefaultLibrary "C:\Music" -Background Black -Foreground BrightGreen</dev:code>
+        <dev:remarks>
+          <maml:para>Launch the TUI MP3 player and set the default library to the specified folder. You can then navigate to your MP3 files more easily. This parameter has an alias of Library. The example will also create a TUI with a black background and green text.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/d411aa</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Invoke-TuiTemplate</command:name>
+      <command:verb>Invoke</command:verb>
+      <command:noun>TuiTemplate</command:noun>
+      <maml:description>
+        <maml:para>Run the TUI template script.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The PSTuiTools module includes a TUI template script that can be used as a starting point for creating your own TUI applications. The Invoke-TuiTemplate cmdlet runs the TUI template script. You can click the Copy Code to Clipboard button to copy the template script code to the Windows clipboard, and then paste it into a new PowerShell script file to customize it for your needs.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Invoke-TuiTemplate</maml:name>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Invoke-TuiTemplate</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/edd54a</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Invoke-TuiTreeDemo</command:name>
+      <command:verb>Invoke</command:verb>
+      <command:noun>TuiTreeDemo</command:noun>
+      <maml:description>
+        <maml:para>Run a TreeView demo TUI.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>This command will run a sample TUI that uses the TreeView control. It will display a specified path as a tree showing files and folders. You can control the depth. The default is 4. The more levels, the longer it will take to open the TUI, especially for large folders.</maml:para>
+      <maml:para>Default path is $HOME, but you can specify a folder.</maml:para>
+      <maml:para>You can manually click in the tree to expand and collapse nodes or use the toggle button. Details from the selected tree item will be displayed in another detail tree on the right. You might see different detail information depending on the file.</maml:para>
+      <maml:para>If you right click a file in the main tree, depending on the file extension, the contents will be displayed in a dialog box. Most text files should be displayed.</maml:para>
+      <maml:para>Enter a new path in the text field and click the Update button to show a new tree. This will use the existing depth value.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Invoke-TuiTreeDemo</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>Specify a filesystem path to display.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>$HOME</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Depth</maml:name>
+          <maml:description>
+            <maml:para>Specify the number of levels to display. The higher the value the longer it will take to display the tree. Specify a value between 1 and 7.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>4</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>Specify a filesystem path to display.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>$HOME</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Depth</maml:name>
+        <maml:description>
+          <maml:para>Specify the number of levels to display. The higher the value the longer it will take to display the tree. Specify a value between 1 and 7.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>4</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Invoke-TuiTreeDemo</dev:code>
+        <dev:remarks>
+          <maml:para>Launch the demo using default values.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; tuiTree c:\scripts -depth 2</dev:code>
+        <dev:remarks>
+          <maml:para>Open the demo using C:\Scripts and limit the display to 2 levels.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/fe54a9</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Save-TuiAssembly</command:name>
+      <command:verb>Save</command:verb>
+      <command:noun>TuiAssembly</command:noun>
+      <maml:description>
+        <maml:para>Download Terminal.GUI and NStack assemblies.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>To create a TUI application in PowerShell, you will need the Terminal.Gui and NStack assemblies. This function will download the latest versions of these assemblies from NuGet and save them to a specified location on your computer. You can specify which assemblies to download by using the -Package parameter, or you can download both assemblies by omitting the parameter.</maml:para>
+      <maml:para>The DestinationPath should be the top level folder where you want the assemblies to be saved. The function will create a subfolder for each assembly and save the corresponding DLL files in that subfolder.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Save-TuiAssembly</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>Package</maml:name>
+          <maml:description>
+            <maml:para>The name of the related assembly.</maml:para>
+          </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">Terminal.Gui</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">NStack</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>DestinationPath</maml:name>
+          <maml:description>
+            <maml:para>Specify the location to save the downloaded assemblies. It will be created for you.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>DestinationPath</maml:name>
+        <maml:description>
+          <maml:para>Specify the location to save the downloaded assemblies. It will be created for you.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Package</maml:name>
+        <maml:description>
+          <maml:para>The name of the related assembly.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.IO.FileInfo</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Save-TuiAssembly -DestinationPath "C:\Tools\"</dev:code>
+        <dev:remarks>
+          <maml:para>This will download and save the NStack and Terminal.Gui assemblies to the C:\Tools folder. There will be two sub-folders created: C:\Tools\Terminal.Gui and C:\Tools\NStack, each containing the respective DLL files.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/c2f989</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+</helpItems>
