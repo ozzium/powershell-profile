@@ -5,6 +5,7 @@
     "InstallIfMissing": false
   },
   {
+<<<<<<< HEAD
     "Name": "Admin",
     "Enabled": true,
     "InstallIfMissing": false
@@ -35,17 +36,23 @@
     "InstallIfMissing": false
   },
   {
+=======
+>>>>>>> d3df4cab2d7093ca1290f7c718f0141633e5c4d0
     "Name": "AsciiTreeScaffolder",
     "Enabled": true,
     "InstallIfMissing": false
   },
   {
+<<<<<<< HEAD
     "Name": "Dism",
     "Enabled": true,
     "InstallIfMissing": false
   },
   {
     "Name": "CredentialManager",
+=======
+    "Name": "PowerShellGet",
+>>>>>>> d3df4cab2d7093ca1290f7c718f0141633e5c4d0
     "Enabled": true,
     "InstallIfMissing": false
   },
@@ -55,6 +62,7 @@
     "InstallIfMissing": false
   },
   {
+<<<<<<< HEAD
     "Name": "ExtendedHistory",
     "Enabled": true,
     "InstallIfMissing": false
@@ -168,5 +176,10 @@
     "Name": "PSTuiTools",
     "Enabled": true,
     "InstallIfMissing": false
+=======
+    "Name": "PSReadLine",
+    "Enabled": true,
+    "InstallIfMissing": false
+>>>>>>> d3df4cab2d7093ca1290f7c718f0141633e5c4d0
   }
 ]

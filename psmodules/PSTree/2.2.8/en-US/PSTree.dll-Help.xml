@@ -1,0 +1,882 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<helpItems schema="maml" xmlns="http://msh">
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-PSTree</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>PSTree</command:noun>
+      <maml:description>
+        <maml:para>A PowerShell cmdlet that displays a hierarchical, tree-like view of folder contents, including folder size calculations, inspired by the classic `tree` command.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The `Get-PSTree` cmdlet offers a tree-style visualization of a folder's contents, drawing inspiration from the classic `tree` command. It displays the file system hierarchy, including directories and files, with enhanced functionality to calculate folder sizes—both individual and recursive—making it ideal for analyzing disk usage and organizing file structures. This cmdlet supports filtering by depth and enabling recursive traversal, enabling efficient exploration of file systems on any supported platform. Use it to identify large folders, manage directory layouts, or gain insights into file system organization.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-PSTree</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="p, dp">
+          <maml:name>Depth</maml:name>
+          <maml:description>
+            <maml:para>Specifies the maximum depth of the folder traversal. The default value is 3, limiting the hierarchy to three levels. Use this parameter to control the depth for performance or readability when exploring large directory structures.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>3</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="d, dir">
+          <maml:name>Directory</maml:name>
+          <maml:description>
+            <maml:para>Limits output to directories only, excluding files. When specified, the cmdlet displays only `TreeDirectory` objects, omitting `TreeFile` objects, for a focused view of folder hierarchies.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="False" position="named" aliases="exc">
+          <maml:name>Exclude</maml:name>
+          <maml:description>
+            <maml:para>Specifies an array of one or more string patterns to exclude items from the output as the cmdlet traverses the folder structure. Matching items are omitted from the results. Wildcard characters (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.5)are accepted.
+&gt; [!NOTE] &gt; &gt; - Patterns are evaluated against the `.Name` property of each item.
+&gt; - The `-Include` and `-Exclude` parameters can be used together, but exclusions are applied before inclusions.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="f">
+          <maml:name>Force</maml:name>
+          <maml:description>
+            <maml:para>Allows the cmdlet to access items that would otherwise be inaccessible, such as hidden or system files and folders. When specified, hidden and system items are included in the output and contribute to recursive folder sizes calculated by `-RecursiveSize` (#-recursivesize).</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="False" position="named" aliases="inc">
+          <maml:name>Include</maml:name>
+          <maml:description>
+            <maml:para>Specifies an array of one or more string patterns to include only matching items in the output as the cmdlet traverses the folder structure. Matching items are included, while others are omitted. Wildcard characters (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.5)are accepted.
+&gt; [!NOTE] &gt; &gt; - This parameter works only on files, not directories. &gt; - Patterns are evaluated against the `.Name` property of each item. &gt; - The `-Include` and `-Exclude` parameters can be used together, but exclusions are applied before inclusions.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="PSPath">
+          <maml:name>LiteralPath</maml:name>
+          <maml:description>
+            <maml:para>Specifies the literal path to the folder to traverse, without interpreting wildcard characters. This parameter accepts an array of paths and can receive input from the pipeline by property name (using the `PSPath` alias). Use this for exact path matching, bypassing wildcard expansion.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="r, rec">
+          <maml:name>Recurse</maml:name>
+          <maml:description>
+            <maml:para>Enables recursive traversal of all subfolders under the specified path. Use this switch to explore the complete folder hierarchy, but note that it may impact performance on large directories—consider ] `-Depth` (#-depth)for smaller subsets.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="rs">
+          <maml:name>RecursiveSize</maml:name>
+          <maml:description>
+            <maml:para>Enables the cmdlet to calculate the recursive size of folders across the entire hierarchy, summing the sizes of all files within each directory and its subdirectories. By default, the cmdlet calculates only the size of files directly within each directory. This is a more resource-intensive operation, as it requires traversing all items in the hierarchy.
+By default, hidden and system items are excluded from recursive size calculations unless `-Force` (#-force) is specified. Items excluded by the [`-Exclude`](#-exclude)parameter do not contribute to recursive sizes.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Get-PSTree</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="True (ByValue)" position="0" aliases="none">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>Specifies the path to one or more folders to traverse. Accepts an array of paths, which can include wildcard characters (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.5). The default location is the current directory (`$PWD`)if no path is provided.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>$PWD</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="p, dp">
+          <maml:name>Depth</maml:name>
+          <maml:description>
+            <maml:para>Specifies the maximum depth of the folder traversal. The default value is 3, limiting the hierarchy to three levels. Use this parameter to control the depth for performance or readability when exploring large directory structures.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>3</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="d, dir">
+          <maml:name>Directory</maml:name>
+          <maml:description>
+            <maml:para>Limits output to directories only, excluding files. When specified, the cmdlet displays only `TreeDirectory` objects, omitting `TreeFile` objects, for a focused view of folder hierarchies.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="False" position="named" aliases="exc">
+          <maml:name>Exclude</maml:name>
+          <maml:description>
+            <maml:para>Specifies an array of one or more string patterns to exclude items from the output as the cmdlet traverses the folder structure. Matching items are omitted from the results. Wildcard characters (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.5)are accepted.
+&gt; [!NOTE] &gt; &gt; - Patterns are evaluated against the `.Name` property of each item.
+&gt; - The `-Include` and `-Exclude` parameters can be used together, but exclusions are applied before inclusions.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="f">
+          <maml:name>Force</maml:name>
+          <maml:description>
+            <maml:para>Allows the cmdlet to access items that would otherwise be inaccessible, such as hidden or system files and folders. When specified, hidden and system items are included in the output and contribute to recursive folder sizes calculated by `-RecursiveSize` (#-recursivesize).</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="False" position="named" aliases="inc">
+          <maml:name>Include</maml:name>
+          <maml:description>
+            <maml:para>Specifies an array of one or more string patterns to include only matching items in the output as the cmdlet traverses the folder structure. Matching items are included, while others are omitted. Wildcard characters (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.5)are accepted.
+&gt; [!NOTE] &gt; &gt; - This parameter works only on files, not directories. &gt; - Patterns are evaluated against the `.Name` property of each item. &gt; - The `-Include` and `-Exclude` parameters can be used together, but exclusions are applied before inclusions.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="r, rec">
+          <maml:name>Recurse</maml:name>
+          <maml:description>
+            <maml:para>Enables recursive traversal of all subfolders under the specified path. Use this switch to explore the complete folder hierarchy, but note that it may impact performance on large directories—consider ] `-Depth` (#-depth)for smaller subsets.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="rs">
+          <maml:name>RecursiveSize</maml:name>
+          <maml:description>
+            <maml:para>Enables the cmdlet to calculate the recursive size of folders across the entire hierarchy, summing the sizes of all files within each directory and its subdirectories. By default, the cmdlet calculates only the size of files directly within each directory. This is a more resource-intensive operation, as it requires traversing all items in the hierarchy.
+By default, hidden and system items are excluded from recursive size calculations unless `-Force` (#-force) is specified. Items excluded by the [`-Exclude`](#-exclude)parameter do not contribute to recursive sizes.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="p, dp">
+        <maml:name>Depth</maml:name>
+        <maml:description>
+          <maml:para>Specifies the maximum depth of the folder traversal. The default value is 3, limiting the hierarchy to three levels. Use this parameter to control the depth for performance or readability when exploring large directory structures.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>3</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="d, dir">
+        <maml:name>Directory</maml:name>
+        <maml:description>
+          <maml:para>Limits output to directories only, excluding files. When specified, the cmdlet displays only `TreeDirectory` objects, omitting `TreeFile` objects, for a focused view of folder hierarchies.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="False" position="named" aliases="exc">
+        <maml:name>Exclude</maml:name>
+        <maml:description>
+          <maml:para>Specifies an array of one or more string patterns to exclude items from the output as the cmdlet traverses the folder structure. Matching items are omitted from the results. Wildcard characters (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.5)are accepted.
+&gt; [!NOTE] &gt; &gt; - Patterns are evaluated against the `.Name` property of each item.
+&gt; - The `-Include` and `-Exclude` parameters can be used together, but exclusions are applied before inclusions.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="f">
+        <maml:name>Force</maml:name>
+        <maml:description>
+          <maml:para>Allows the cmdlet to access items that would otherwise be inaccessible, such as hidden or system files and folders. When specified, hidden and system items are included in the output and contribute to recursive folder sizes calculated by `-RecursiveSize` (#-recursivesize).</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="False" position="named" aliases="inc">
+        <maml:name>Include</maml:name>
+        <maml:description>
+          <maml:para>Specifies an array of one or more string patterns to include only matching items in the output as the cmdlet traverses the folder structure. Matching items are included, while others are omitted. Wildcard characters (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.5)are accepted.
+&gt; [!NOTE] &gt; &gt; - This parameter works only on files, not directories. &gt; - Patterns are evaluated against the `.Name` property of each item. &gt; - The `-Include` and `-Exclude` parameters can be used together, but exclusions are applied before inclusions.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="PSPath">
+        <maml:name>LiteralPath</maml:name>
+        <maml:description>
+          <maml:para>Specifies the literal path to the folder to traverse, without interpreting wildcard characters. This parameter accepts an array of paths and can receive input from the pipeline by property name (using the `PSPath` alias). Use this for exact path matching, bypassing wildcard expansion.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="True (ByValue)" position="0" aliases="none">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>Specifies the path to one or more folders to traverse. Accepts an array of paths, which can include wildcard characters (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.5). The default location is the current directory (`$PWD`)if no path is provided.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>$PWD</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="r, rec">
+        <maml:name>Recurse</maml:name>
+        <maml:description>
+          <maml:para>Enables recursive traversal of all subfolders under the specified path. Use this switch to explore the complete folder hierarchy, but note that it may impact performance on large directories—consider ] `-Depth` (#-depth)for smaller subsets.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="rs">
+        <maml:name>RecursiveSize</maml:name>
+        <maml:description>
+          <maml:para>Enables the cmdlet to calculate the recursive size of folders across the entire hierarchy, summing the sizes of all files within each directory and its subdirectories. By default, the cmdlet calculates only the size of files directly within each directory. This is a more resource-intensive operation, as it requires traversing all items in the hierarchy.
+By default, hidden and system items are excluded from recursive size calculations unless `-Force` (#-force) is specified. Items excluded by the [`-Exclude`](#-exclude)parameter do not contribute to recursive sizes.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>You can pipe a strings containing file system paths to this cmdlet.
+Output from cmdlets that return `System.IO.FileSystemInfo` objects (e.g., `Get-Item`, `Get-ChildItem`) can be piped to this cmdlet, with pipeline input bound to `-LiteralPath` if the objects have a `PSPath` property.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PSTree.TreeDirectory</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Returns objects of type `TreeDirectory` representing directories in a hierarchical structure, with `TreeFile` objects included as children. Each `TreeDirectory` object includes properties such as `Name`, `FullName`, `Size`, and `Depth`, reflecting the file system organization and enabling size-based analysis. This prioritizes directories as the primary output type for tree navigation, with files nested within for comprehensive exploration.</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PSTree.TreeFile</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Returns objects of type `TreeFile` representing files within directories, included in the output unless the `-Directory` parameter is specified. Each object includes properties such as `Name`, `FullName`, `Size`, and `Depth`, allowing detailed file analysis within the hierarchical structure. These objects are nested under `TreeDirectory` objects, supporting disk usage tracking and file system navigation.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>This cmdlet requires PowerShell 5.1 or later and supports cross-platform file system exploration on Windows, Linux, and macOS. It may require elevated permissions for certain system folders. Use `-Recurse` or `-RecursiveSize` cautiously with large directories to avoid performance issues, and refer to the `about_TreeStyle` (./about_TreeStyle.md) help topic for customizing the output format. For Windows-specific registry navigation, see the [`Get-PSTreeRegistry`](./Get-PSTreeRegistry.md)cmdlet</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>Example 1: Get the current Directory Tree with Default Parameters</maml:title>
+        <dev:code>PS ..\PSTree&gt; Get-PSTree</dev:code>
+        <dev:remarks>
+          <maml:para>This example retrieves the directory and file structure of the current directory, using the default parameters: a depth of 3 levels and no recursive traversal beyond that limit. It displays both directories and files, including their sizes, but does not include hidden or system items unless explicitly requested through other means.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 2: Display the `$HOME` Directory Tree Recursively, Showing Only Directories</maml:title>
+        <dev:code>PS ..\PSTree&gt; Get-PSTree $HOME -Directory -Recurse</dev:code>
+        <dev:remarks>
+          <maml:para>This example retrieves the complete directory hierarchy under the `$HOME` path, traversing all subfolders recursively and displaying only directories (excluding files).</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 3: Display the `$HOME` Directory Tree, Limited to 2 Levels, Including Hidden Items</maml:title>
+        <dev:code>PS ..\PSTree&gt; Get-PSTree $HOME -Depth 2 -Force</dev:code>
+        <dev:remarks>
+          <maml:para>&gt; [!TIP] &gt; The `-Force` switch is required to include hidden files and folders in the output. Additionally, hidden items contribute to folder sizes (including recursive sizes with `-RecursiveSize` (#-recursivesize), if specified), ensuring a comprehensive view of disk usage.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 4: Display the `C:\` Drive Tree, Limited to 2 Levels, Showing Only Directories with Recursive Sizes</maml:title>
+        <dev:code>PS ..\PSTree&gt; Get-PSTree C:\ -Depth 2 -RecursiveSize -Directory</dev:code>
+        <dev:remarks>
+          <maml:para>This example retrieves the directory structure under the `C:` drive, limited to 2 levels of depth, displaying only directories (excluding files) and calculating their recursive sizes. It provides a controlled view for analyzing disk usage, summing the sizes of all files within each directory and its subdirectories.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 5: Display the `$HOME` Directory Tree Recursively, Excluding `.jpg` and `.png` Files</maml:title>
+        <dev:code>PS ..\PSTree&gt; Get-PSTree $HOME -Recurse -Exclude *.jpg, *.png</dev:code>
+        <dev:remarks>
+          <maml:para>&gt; [!NOTE] &gt; &gt; - The `-Exclude` parameter supports wildcard patterns (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.3), and patterns are evaluated using the items’ `.Name` property.
+&gt; - Excluded items, such as `.jpg` and `.png` files in this case, do not contribute to folder sizes, including recursive sizes calculated by `-RecursiveSize` (#-recursivesize).</maml:para>
+          <maml:para>This example retrieves the complete directory and file hierarchy under the `$HOME` path, traversing all subfolders recursively, while excluding files matching the patterns ` .jpg` and ` .png`. It displays remaining directories and files with their sizes, useful for focusing on specific file types or managing disk space.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 6: Display the Tree of All Directories in the Current Location</maml:title>
+        <dev:code>PS ..\PSTree&gt; Get-ChildItem -Directory | Get-PSTree</dev:code>
+        <dev:remarks>
+          <maml:para>&gt; [!TIP] &gt; Output from cmdlets that work with the file system and return `System.IO.FileSystemInfo` objects (e.g., `Get-ChildItem`, `Get-Item`) can be piped to `Get-PSTree`. Pipeline input is bound to the `-LiteralPath` parameter if the objects have a `PSPath` property, enabling seamless traversal of multiple directory structures with default settings (depth of 3, no recursion unless specified).</maml:para>
+          <maml:para>This example pipes the output of `Get-ChildItem` to `Get-PSTree`, retrieving the directory and file structure for each directory in the current location. It displays hierarchies with default depth (3 levels) and folder sizes, excluding hidden or system items unless `-Force` (#-force)is used.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 7: Display the Tree of All Directories in the Current Location, Including Only `.ps1` Files</maml:title>
+        <dev:code>PS ..\PSTree&gt; Get-ChildItem -Directory | Get-PSTree -Include *.ps1</dev:code>
+        <dev:remarks>
+          <maml:para>&gt; [!IMPORTANT] &gt; &gt; - Similar to `-Exclude`, the `-Include` parameter supports wildcard patterns (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.3), but it applies only to files, not directories .
+&gt; - Only files matching the pattern (e.g., `*.ps1`) are included in the output, while directories are always shown to maintain the hierarchy.</maml:para>
+          <maml:para>This example pipes the output of `Get-ChildItem` to `Get-PSTree`, retrieving the directory structure for each directory in the current location, but including only `.ps1` files within those directories. It displays the hierarchy with default depth (3 levels) and folder sizes, useful for focusing on PowerShell scripts while preserving directory context.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/santisq/PSTree/blob/main/docs/en-US/Get-PSTree.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>__tree Command__</maml:linkText>
+        <maml:uri>https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/tree</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>__`about_TreeStyle`__</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>__`Get-PSTree` Source__</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>__`Get-PSTree` Tests__</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-PSTreeRegistry</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>PSTreeRegistry</command:noun>
+      <maml:description>
+        <maml:para>Retrieves registry keys and values from the Windows Registry in a hierarchical, tree-like format, allowing exploration of registry structures.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The `Get-PSTreeRegistry` cmdlet provides a tree-style view of the Windows Registry, displaying registry keys and their associated values in a hierarchical format similar to the `tree` command for file systems. This Windows-only cmdlet is designed for navigating and analyzing registry configurations, making it easier to inspect, troubleshoot, or document registry structures.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-PSTreeRegistry</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="p, dp">
+          <maml:name>Depth</maml:name>
+          <maml:description>
+            <maml:para>Specifies the maximum depth of the registry traversal. Default value is 3. Use this parameter to control the depth for performance or readability when exploring large registry hives.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>3</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="k, key">
+          <maml:name>KeysOnly</maml:name>
+          <maml:description>
+            <maml:para>Limits output to `TreeRegistryKey` objects only, excluding `TreeRegistryValue` objects. When specified, the cmdlet displays only registry keys and their subkeys, omitting any values associated with those keys.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="PSPath">
+          <maml:name>LiteralPath</maml:name>
+          <maml:description>
+            <maml:para>Specifies the literal registry paths to traverse, without wildcard expansion. This parameter accepts input from the pipeline by property name (using the `PSPath` alias). Use this for exact path matching, bypassing wildcard interpretation.
+&gt; [!TIP] &gt; For registry base keys not mapped as PowerShell drives (e.g., `HKCU:` and `HKLM:`), you can use the provider path format by prefixing the path with `Registry::`. For example, to traverse all keys under `HKEY_USERS` exactly as specified, use: `Get-PSTreeRegistry -LiteralPath Registry::HKEY_USERS`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="r, rec">
+          <maml:name>Recurse</maml:name>
+          <maml:description>
+            <maml:para>Enables recursive traversal of all subkeys under the specified registry path. Use this switch to ensure complete hierarchy exploration without depth restrictions.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="False" position="named" aliases="exc">
+          <maml:name>Exclude</maml:name>
+          <maml:description>
+            <maml:para>Specifies an array of one or more string patterns to exclude registry keys or values from the output as the cmdlet traverses the registry. Matching items are omitted from the results. Wildcard characters (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.5)are accepted.
+&gt; [!NOTE] &gt; &gt; - For registry keys, patterns are evaluated against the leaf name of the registry path (e.g., `KeyName` in `HKLM:\Software\KeyName`). &gt; - For registry values, patterns are evaluated against the value name (e.g., `ValueName` in a key’s `ValueName=Data` pair). &gt; The `-Include` and `-Exclude` parameters can be used together, but exclusions are applied before inclusions.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="False" position="named" aliases="inc">
+          <maml:name>Include</maml:name>
+          <maml:description>
+            <maml:para>Specifies an array of one or more string patterns to include only matching registry values in the output as the cmdlet traverses the registry. Matching registry values are included, while others (including all keys) are omitted. Wildcard characters (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.5)are accepted.
+&gt; [!NOTE] &gt; &gt; - This parameter works only on registry values, not keys. &gt; - Patterns are evaluated against the value name (e.g., `ValueName` in a key’s `ValueName=Data` pair). &gt; - The `-Include` and `-Exclude` parameters can be used together, but exclusions are applied before inclusions.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Get-PSTreeRegistry</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="True (ByValue)" position="0" aliases="none">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>Specifies the registry paths to traverse. Accepts one or more registry paths (e.g., `HKLM:\Software`, `HKCU:\Software`), which can include wildcard characters (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.5). This parameter can accept input from the pipeline. Paths are resolved using [PowerShell's registry provider](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_registry_provider?view=powershell-7.5).
+&gt; [!TIP] &gt; For registry base keys not mapped as PowerShell drives (e.g., `HKCU:` and `HKLM:`), you can use the provider path format by prefixing the path with `Registry::`. For example, to traverse each key under `HKEY_USERS`, use: `Get-PSTreeRegistry -Path Registry::HKEY_USERS*`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>$PWD</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="p, dp">
+          <maml:name>Depth</maml:name>
+          <maml:description>
+            <maml:para>Specifies the maximum depth of the registry traversal. Default value is 3. Use this parameter to control the depth for performance or readability when exploring large registry hives.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>3</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="k, key">
+          <maml:name>KeysOnly</maml:name>
+          <maml:description>
+            <maml:para>Limits output to `TreeRegistryKey` objects only, excluding `TreeRegistryValue` objects. When specified, the cmdlet displays only registry keys and their subkeys, omitting any values associated with those keys.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="r, rec">
+          <maml:name>Recurse</maml:name>
+          <maml:description>
+            <maml:para>Enables recursive traversal of all subkeys under the specified registry path. Use this switch to ensure complete hierarchy exploration without depth restrictions.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="False" position="named" aliases="exc">
+          <maml:name>Exclude</maml:name>
+          <maml:description>
+            <maml:para>Specifies an array of one or more string patterns to exclude registry keys or values from the output as the cmdlet traverses the registry. Matching items are omitted from the results. Wildcard characters (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.5)are accepted.
+&gt; [!NOTE] &gt; &gt; - For registry keys, patterns are evaluated against the leaf name of the registry path (e.g., `KeyName` in `HKLM:\Software\KeyName`). &gt; - For registry values, patterns are evaluated against the value name (e.g., `ValueName` in a key’s `ValueName=Data` pair). &gt; The `-Include` and `-Exclude` parameters can be used together, but exclusions are applied before inclusions.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="False" position="named" aliases="inc">
+          <maml:name>Include</maml:name>
+          <maml:description>
+            <maml:para>Specifies an array of one or more string patterns to include only matching registry values in the output as the cmdlet traverses the registry. Matching registry values are included, while others (including all keys) are omitted. Wildcard characters (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.5)are accepted.
+&gt; [!NOTE] &gt; &gt; - This parameter works only on registry values, not keys. &gt; - Patterns are evaluated against the value name (e.g., `ValueName` in a key’s `ValueName=Data` pair). &gt; - The `-Include` and `-Exclude` parameters can be used together, but exclusions are applied before inclusions.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="p, dp">
+        <maml:name>Depth</maml:name>
+        <maml:description>
+          <maml:para>Specifies the maximum depth of the registry traversal. Default value is 3. Use this parameter to control the depth for performance or readability when exploring large registry hives.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>3</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="k, key">
+        <maml:name>KeysOnly</maml:name>
+        <maml:description>
+          <maml:para>Limits output to `TreeRegistryKey` objects only, excluding `TreeRegistryValue` objects. When specified, the cmdlet displays only registry keys and their subkeys, omitting any values associated with those keys.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="PSPath">
+        <maml:name>LiteralPath</maml:name>
+        <maml:description>
+          <maml:para>Specifies the literal registry paths to traverse, without wildcard expansion. This parameter accepts input from the pipeline by property name (using the `PSPath` alias). Use this for exact path matching, bypassing wildcard interpretation.
+&gt; [!TIP] &gt; For registry base keys not mapped as PowerShell drives (e.g., `HKCU:` and `HKLM:`), you can use the provider path format by prefixing the path with `Registry::`. For example, to traverse all keys under `HKEY_USERS` exactly as specified, use: `Get-PSTreeRegistry -LiteralPath Registry::HKEY_USERS`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="True (ByValue)" position="0" aliases="none">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>Specifies the registry paths to traverse. Accepts one or more registry paths (e.g., `HKLM:\Software`, `HKCU:\Software`), which can include wildcard characters (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.5). This parameter can accept input from the pipeline. Paths are resolved using [PowerShell's registry provider](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_registry_provider?view=powershell-7.5).
+&gt; [!TIP] &gt; For registry base keys not mapped as PowerShell drives (e.g., `HKCU:` and `HKLM:`), you can use the provider path format by prefixing the path with `Registry::`. For example, to traverse each key under `HKEY_USERS`, use: `Get-PSTreeRegistry -Path Registry::HKEY_USERS*`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>$PWD</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="r, rec">
+        <maml:name>Recurse</maml:name>
+        <maml:description>
+          <maml:para>Enables recursive traversal of all subkeys under the specified registry path. Use this switch to ensure complete hierarchy exploration without depth restrictions.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="False" position="named" aliases="exc">
+        <maml:name>Exclude</maml:name>
+        <maml:description>
+          <maml:para>Specifies an array of one or more string patterns to exclude registry keys or values from the output as the cmdlet traverses the registry. Matching items are omitted from the results. Wildcard characters (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.5)are accepted.
+&gt; [!NOTE] &gt; &gt; - For registry keys, patterns are evaluated against the leaf name of the registry path (e.g., `KeyName` in `HKLM:\Software\KeyName`). &gt; - For registry values, patterns are evaluated against the value name (e.g., `ValueName` in a key’s `ValueName=Data` pair). &gt; The `-Include` and `-Exclude` parameters can be used together, but exclusions are applied before inclusions.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="False" position="named" aliases="inc">
+        <maml:name>Include</maml:name>
+        <maml:description>
+          <maml:para>Specifies an array of one or more string patterns to include only matching registry values in the output as the cmdlet traverses the registry. Matching registry values are included, while others (including all keys) are omitted. Wildcard characters (https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards?view=powershell-7.5)are accepted.
+&gt; [!NOTE] &gt; &gt; - This parameter works only on registry values, not keys. &gt; - Patterns are evaluated against the value name (e.g., `ValueName` in a key’s `ValueName=Data` pair). &gt; - The `-Include` and `-Exclude` parameters can be used together, but exclusions are applied before inclusions.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>You can pipe strings containing registry paths to this cmdlet.
+Output from cmdlets that return `Microsoft.Win32.RegistryKey` objects (e.g., `Get-Item`, `Get-ChildItem`) can be piped to this cmdlet, with pipeline input bound to `-LiteralPath` if the objects have a `PSPath` property.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PSTree.TreeRegistryKey</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Returns objects of type `TreeRegistryKey` representing registry keys in a hierarchical structure. If `-KeysOnly` is specified, only `TreeRegistryKey` objects are returned; otherwise, `TreeRegistryValue` objects may also be included, but the primary output type remains `TreeRegistryKey` for consistency with the tree-like organization.</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PSTree.TreeRegistryValue</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Returns objects of type `TreeRegistryValue` representing registry values associated with keys, included in the output unless the `-KeysOnly` parameter is specified. Each object includes properties such as `Name`, `Kind`, and `Depth`, allowing access to value data (e.g., via the `.GetValue()` method). These objects are nested under `TreeRegistryKey` objects in the hierarchical output, providing detailed value information for registry exploration.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>This cmdlet is Windows-only and requires PowerShell 5.1 or later. It may require elevated permissions for certain registry hives. For file system navigation, see the `Get-PSTree` (./Get-PSTree.md)cmdlet.</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>Example 1: Display the `Software` registry hive with full recursion</maml:title>
+        <dev:code>PS ..\PSTree&gt; Get-PSTreeRegistry HKLM:\Software -Recurse</dev:code>
+        <dev:remarks>
+          <maml:para>This example retrieves all keys under `HKLM:\Software`, showing the complete hierarchy recursively.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 2: List only registry keys under `HKLM:\Software`, up to 2 levels deep, excluding values</maml:title>
+        <dev:code>PS ..\PSTree&gt; Get-PSTreeRegistry HKLM:\Software -Depth 2 -KeysOnly</dev:code>
+        <dev:remarks>
+          <maml:para>This example restricts output to keys only (no values) and limits the depth to 2 levels for better readability.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 3: Retrieve and Display a Value from a `TreeRegistryValue` Object</maml:title>
+        <dev:code>PS ..\PSTree&gt; $items = Get-PSTreeRegistry HKCU:\Environment\ -Depth 2
+PS ..\PSTree&gt; $values = $items | Where-Object { $_ -is [PSTree.TreeRegistryValue] }
+PS ..\PSTree&gt; $values
+
+   Hive: HKEY_CURRENT_USER\Environment
+
+Kind         Hierarchy
+----         ---------
+ExpandString ├── Path
+ExpandString ├── TEMP
+ExpandString └── TMP
+
+PS ..\PSTree&gt; $values[1].GetValue()
+C:\Users\User\AppData\Local\Temp</dev:code>
+        <dev:remarks>
+          <maml:para>This example demonstrates how to use `Get-PSTreeRegistry` to retrieve registry values, filter for `TreeRegistryValue` objects, and access a specific value using the `.GetValue()` method. It targets the `HKCU:\Environment` hive, limiting depth to 2 levels, and shows how to extract a value like `TEMP`.
+</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>--- Example 4: Traverse `HKEY_USERS` Using the Provider Path ---</maml:title>
+        <dev:code>PS ..\PSTree&gt; Get-PSTreeRegistry -Path Registry::HKEY_USERS -Depth 1 -EA 0
+
+   Hive: HKEY_USERS
+
+Kind         Hierarchy
+----         ---------
+RegistryKey  HKEY_USERS
+RegistryKey  ├── S-1-5-18
+RegistryKey  ├── S-1-5-21-3616279808-3400134814-4233402850-1002_Classes
+RegistryKey  ├── S-1-5-21-3616279808-3400134814-4233402850-1002
+RegistryKey  └── .DEFAULT</dev:code>
+        <dev:remarks>
+          <maml:para>This example uses the registry provider path to explore all keys under `HKEY_USERS`, limited to 1 level deep.
+</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 5: Filter Out Microsoft and Log-Related Items in `HKCU:\SOFTWARE` Tree</maml:title>
+        <dev:code>PS ..\PSTree&gt; Get-PSTreeRegistry HKCU:\SOFTWARE\ -Exclude Microsoft, *Log*</dev:code>
+        <dev:remarks>
+          <maml:para>Excludes registry keys named "Microsoft" (e.g., `HKCU:\SOFTWARE\Microsoft`) and any keys or values with "Log" in their name (e.g., `HKCU:\SOFTWARE\UpdateLog` or a value named `ErrorLog`).</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 6: Select Windows-Related Registry Values in `HKCU:\SOFTWARE` Tree</maml:title>
+        <dev:code>PS ..\PSTree&gt; Get-PSTreeRegistry HKCU:\SOFTWARE\ -Include Win*</dev:code>
+        <dev:remarks>
+          <maml:para>Includes only registry values whose names start with "Win" (e.g., `WindowsVersion=10.0`) from the `HKCU:\SOFTWARE` tree, omitting all keys and non-matching values.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/santisq/PSTree/blob/main/docs/en-US/Get-PSTreeRegistry.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>__Microsoft.Win32 Namespace__</maml:linkText>
+        <maml:uri>https://learn.microsoft.com/en-us/dotnet/api/microsoft.win32?view=net-9.0</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>__about_Registry_Provider__</maml:linkText>
+        <maml:uri>https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_registry_provider?view=powershell-7.5</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>__`Get-PSTreeRegistry` Source__</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>__`Get-PSTreeRegistry` Tests__</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-PSTreeStyle</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>PSTreeStyle</command:noun>
+      <maml:description>
+        <maml:para>Retrieves the `TreeStyle` instance used for output rendering.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The `Get-PSTreeStyle` cmdlet provides access to the `TreeStyle` instance that controls the rendering and customization of output for the `Get-PSTree` and `Get-PSTreeRegistry` cmdlets.</maml:para>
+      <maml:para>For details, see __about_TreeStyle__ (./about_TreeStyle.md).</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-PSTreeStyle</maml:name>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>TreeStyle</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert />
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS ..\PSTree&gt; $style = Get-PSTreeStyle</dev:code>
+        <dev:remarks>
+          <maml:para>Stores the `TreeStyle` instance in the `$style` variable.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/santisq/PSTree/blob/main/docs/en-US/Get-PSTreeStyle.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+</helpItems>
