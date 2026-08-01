@@ -21,7 +21,7 @@
   },
   {
     "Name": "TM-ValidationUtility",
-    "Enabled": true,
+    "Enabled": false,
     "InstallIfMissing": false
   },
   {
@@ -56,7 +56,7 @@
   },
   {
     "Name": "PwshSpectreConsole",
-    "Enabled": true,
+    "Enabled": false,
     "InstallIfMissing": false
   },
   {
@@ -151,7 +151,7 @@
   },
   {
     "Name": "ImagePlayground",
-    "Enabled": true,
+    "Enabled": false,
     "InstallIfMissing": false
   },
   {
@@ -166,7 +166,7 @@
   },
   {
     "Name": "GitAliases",
-    "Enabled": true,
+    "Enabled": false,
     "InstallIfMissing": false
   },
   {
@@ -216,6 +216,41 @@
   },
   {
     "Name": "fscps.ascii",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "vim",
+    "Enabled": false,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PackageManagement",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "git-aliases-extra",
+    "Enabled": true,
+    "InstallIfMissing": true
+  },
+  {
+    "Name": "CommonAliases",
+    "Enabled": true,
+    "InstallIfMissing": true
+  },
+  {
+    "Name": "ProductivityTools.NewAliasSafe",
+    "Enabled": true,
+    "InstallIfMissing": true
+  },
+  {
+    "Name": "pwsh_shortcut_alias",
+    "Enabled": true,
+    "InstallIfMissing": true
+  },
+  {
+    "Name": "powershell-yaml",
     "Enabled": true,
     "InstallIfMissing": false
   }
