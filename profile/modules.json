@@ -1,16 +1,5 @@
 [
   {
-    "Name": "Terminal-Icons",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-<<<<<<< HEAD
-    "Name": "Admin",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
     "Name": "z",
     "Enabled": true,
     "InstallIfMissing": false
@@ -21,7 +10,172 @@
     "InstallIfMissing": false
   },
   {
+    "Name": "Tree",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "Terminal-Icons",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "TM-ValidationUtility",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "TM-RandomUtility",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "TM-PSGitHubGistManagement",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "syntax-highlighting",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
     "Name": "Symlink",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "ScrewCitySoftware.PwshProfile",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "RoughDraft",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PwshSpectreConsole",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSWriteOffice",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSWriteHTML",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSTuiTools",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSTree",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSTalk",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSReadLine",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSTui",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSProfileSwitcher",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSHangMan",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSFzf",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "psAsciiArt",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PowerShellRun",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PowerShellGet",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "Poshify",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "posh-git",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "OnePowerShellProfile",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "NerdFonts",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "Markdown",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "ImagePlayground",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "helium",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "gsudoModule",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "GitAliases",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "7Zip4Powershell",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "Admin",
     "Enabled": true,
     "InstallIfMissing": false
   },
@@ -36,33 +190,16 @@
     "InstallIfMissing": false
   },
   {
-=======
->>>>>>> d3df4cab2d7093ca1290f7c718f0141633e5c4d0
     "Name": "AsciiTreeScaffolder",
     "Enabled": true,
     "InstallIfMissing": false
   },
   {
-<<<<<<< HEAD
-    "Name": "Dism",
+    "Name": "ColoredText",
     "Enabled": true,
     "InstallIfMissing": false
   },
   {
-    "Name": "CredentialManager",
-=======
-    "Name": "PowerShellGet",
->>>>>>> d3df4cab2d7093ca1290f7c718f0141633e5c4d0
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "posh-git",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-<<<<<<< HEAD
     "Name": "ExtendedHistory",
     "Enabled": true,
     "InstallIfMissing": false
@@ -81,105 +218,5 @@
     "Name": "fscps.ascii",
     "Enabled": true,
     "InstallIfMissing": false
-  },
-  {
-    "Name": "GitAliases",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "gsudoModule",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "ImagePlayground",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "Markdown",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "NerdFonts",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "OnePowerShellProfile",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "Poshify",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "PowerShellGet",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "psAsciiArt",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "PSReadLine",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "PSTalk",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "PSTree",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "PSTui",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "PSWriteHTML",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "syntax-highlighting",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "Tree",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "PSFzf",
-    "Enabled": true,
-    "InstallIfMissing": true
-  },
-  {
-    "Name": "RoughDraft",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "PSTuiTools",
-    "Enabled": true,
-    "InstallIfMissing": false
-=======
-    "Name": "PSReadLine",
-    "Enabled": true,
-    "InstallIfMissing": false
->>>>>>> d3df4cab2d7093ca1290f7c718f0141633e5c4d0
   }
 ]
