@@ -5,11 +5,6 @@
     "InstallIfMissing": false
   },
   {
-    "Name": "WriteAscii",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
     "Name": "Tree",
     "Enabled": true,
     "InstallIfMissing": false
@@ -61,21 +56,6 @@
   },
   {
     "Name": "PSWriteOffice",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "PSWriteHTML",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "PSTuiTools",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "PSTree",
     "Enabled": true,
     "InstallIfMissing": false
   },
@@ -145,11 +125,6 @@
     "InstallIfMissing": false
   },
   {
-    "Name": "Markdown",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
     "Name": "ImagePlayground",
     "Enabled": false,
     "InstallIfMissing": false
@@ -157,16 +132,6 @@
   {
     "Name": "helium",
     "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "gsudoModule",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "GitAliases",
-    "Enabled": false,
     "InstallIfMissing": false
   },
   {
@@ -185,17 +150,7 @@
     "InstallIfMissing": false
   },
   {
-    "Name": "AsciiText",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
     "Name": "AsciiTreeScaffolder",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "ColoredText",
     "Enabled": true,
     "InstallIfMissing": false
   },
@@ -205,23 +160,8 @@
     "InstallIfMissing": false
   },
   {
-    "Name": "Fonts",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "FontUtilities",
-    "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
     "Name": "fscps.ascii",
     "Enabled": true,
-    "InstallIfMissing": false
-  },
-  {
-    "Name": "vim",
-    "Enabled": false,
     "InstallIfMissing": false
   },
   {
@@ -230,27 +170,17 @@
     "InstallIfMissing": false
   },
   {
-    "Name": "git-aliases-extra",
-    "Enabled": true,
-    "InstallIfMissing": true
-  },
-  {
-    "Name": "CommonAliases",
-    "Enabled": true,
-    "InstallIfMissing": true
-  },
-  {
     "Name": "ProductivityTools.NewAliasSafe",
     "Enabled": true,
     "InstallIfMissing": true
   },
   {
-    "Name": "pwsh_shortcut_alias",
+    "Name": "powershell-yaml",
     "Enabled": true,
-    "InstallIfMissing": true
+    "InstallIfMissing": false
   },
   {
-    "Name": "powershell-yaml",
+    "Name": "PowerShellProfileBackupper",
     "Enabled": true,
     "InstallIfMissing": false
   }

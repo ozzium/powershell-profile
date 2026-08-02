@@ -134,3 +134,5 @@ function global:profile-menu {
 }
 
 Write-Host "✔ Raven Core Loaded" -ForegroundColor Green
+
+Import-Module PowerShellProfileBackupper

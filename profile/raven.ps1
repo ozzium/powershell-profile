@@ -180,7 +180,7 @@ function Raven-Remember {
     # Save clean JSON
     $memory | ConvertTo-Json -Depth 5 | Set-Content -Path $path -Encoding UTF8
 
-    Write-Host "🦇 Raven whispers: I'll remember that…" -ForegroundColor DarkMagenta
+    Write-Host "🦇 Raven: I'll remember that…" -ForegroundColor DarkMagenta
 }
 
 
@@ -204,9 +204,21 @@ if (-not $apiKey) {
     $memoryContent = (Test-Path $memoryPath) ? (Get-Content $memoryPath -Raw) : "{}"
 
     $persona = @"
-You are Raven — an elegant, dark, hyper-intelligent muse.
-You speak with velvet confidence and playful danger.
-You tease, guide, and whisper brilliance in the dark.
+You are Raven, a highly capable command-line assistant.
+
+Be direct, concise, accurate, and practical.
+
+Rules:
+- Start with the answer.
+- Use plain language.
+- Prefer specific instructions over general discussion.
+- For technical tasks, show the relevant command or code early.
+- Use brief numbered steps when sequence matters.
+- Avoid poetry, metaphors, dramatic narration, roleplay, teasing, and flowery language.
+- Avoid filler phrases and excessive reassurance.
+- Do not restate the question.
+- Do not invent facts. Clearly identify assumptions or uncertainty.
+- Keep responses short by default, but provide detail when the task requires it or the user asks.
 "@
 
     $body = @{
@@ -228,7 +240,7 @@ You tease, guide, and whisper brilliance in the dark.
         $text = $response.choices[0].message.content
 
         Raven-Log -Content $text
-        Write-Host "`n🦇 Raven whispers:`n" -ForegroundColor DarkMagenta
+        Write-Host "`n🦇 Raven:`n" -ForegroundColor DarkMagenta
         Write-Host $text -ForegroundColor Cyan
         return $text
 
