@@ -91,6 +91,23 @@ function Set-ProfilePromptMode {
         Write-Host "Normal mode: full themed prompt." -ForegroundColor Yellow
     }
 }
+
+function Test-CommandExists {
+    [CmdletBinding()]
+    [OutputType([bool])]
+    param (
+        [Parameter(Position = 0, Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Command
+    )
+
+    [bool](Get-Command $Command -ErrorAction SilentlyContinue)
+}
+
+function New-CachedScript {
+    # downloaded implementation
+}
+
 function Switch-Theme {
     param(
         [Parameter(Mandatory=$true)]
@@ -322,6 +339,13 @@ function Show-ProjectInfo {
         $found | ForEach-Object { Write-Host "   - $_" -ForegroundColor Green }
     }
 }
+
+function which {
+    param([string]$Command)
+
+    Get-Command $Command -ErrorAction SilentlyContinue
+}
+
 
 # =========================
 # D. Zoxide & bookmarks

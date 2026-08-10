@@ -183,5 +183,15 @@
     "Name": "PowerShellProfileBackupper",
     "Enabled": true,
     "InstallIfMissing": false
+  },
+  {
+    "Name": "Microsoft.PowerToys.Configure",
+    "Enabled": true,
+    "InstallIfMissing": false
+  },
+  {
+    "Name": "PSScriptAnalyzer",
+    "Enabled": true,
+    "InstallIfMissing": true
   }
 ]

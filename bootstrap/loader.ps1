@@ -29,9 +29,9 @@ if (-not (Test-Path $profileRoot)) {
 # Heavier menu/tool files are lazy-loaded by profile-menu.
 $coreFiles = @(
     "config.ps1"
-    "appearance.ps1"
     "features.ps1"
-    "dashboard.ps1"
+    "appearance.ps1"
+	"dashboard.ps1"
     "raven.ps1"
     "init.ps1"
 )
@@ -93,7 +93,6 @@ function global:Load-RavenFullMenu {
         "editors.ps1"
         "git-tools.ps1"
         "module-manager.ps1"
-        "help.ps1"
         "menu.ps1"
     )
 
