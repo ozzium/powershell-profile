@@ -62,10 +62,10 @@ function global:Get-RavenEditorCandidates {
         $editors += @(
             [pscustomobject]@{ Name = "VS Code";          Command = "code";          LaunchMode = "command" }
             [pscustomobject]@{ Name = "VS Code Insiders"; Command = "code-insiders"; LaunchMode = "command" }
-            [pscustomobject]@{ Name = "Sublime Text";     Command = "subl";          LaunchMode = "command" }
-            [pscustomobject]@{ Name = "Phoenix Code";     Command = "phoenix-code";  LaunchMode = "command" }
+#            [pscustomobject]@{ Name = "Sublime Text";     Command = "subl";          LaunchMode = "command" }
+#            [pscustomobject]@{ Name = "Phoenix Code";     Command = "phoenix-code";  LaunchMode = "command" }
             [pscustomobject]@{ Name = "Notepad++";        Command = "notepad++";     LaunchMode = "command" }
-            [pscustomobject]@{ Name = "Notepad3";         Command = "notepad3";      LaunchMode = "command" }
+#            [pscustomobject]@{ Name = "Notepad3";         Command = "notepad3";      LaunchMode = "command" }
             [pscustomobject]@{ Name = "TedNPad";          Command = "TedNPad";       LaunchMode = "command" }
             [pscustomobject]@{ Name = "Notepad";          Command = "notepad.exe";   LaunchMode = "command" }
         )
@@ -73,8 +73,8 @@ function global:Get-RavenEditorCandidates {
         $windowsPaths = @(
             [pscustomobject]@{ Name = "Notepad++";    Command = "$env:ProgramFiles\Notepad++\notepad++.exe"; LaunchMode = "path" }
             [pscustomobject]@{ Name = "Notepad++";    Command = "${env:ProgramFiles(x86)}\Notepad++\notepad++.exe"; LaunchMode = "path" }
-            [pscustomobject]@{ Name = "Notepad3";     Command = "$env:ProgramFiles\Notepad3\Notepad3.exe"; LaunchMode = "path" }
-            [pscustomobject]@{ Name = "Sublime Text"; Command = "$env:ProgramFiles\Sublime Text\sublime_text.exe"; LaunchMode = "path" }
+#            [pscustomobject]@{ Name = "Notepad3";     Command = "$env:ProgramFiles\Notepad3\Notepad3.exe"; LaunchMode = "path" }
+#            [pscustomobject]@{ Name = "Sublime Text"; Command = "$env:ProgramFiles\Sublime Text\sublime_text.exe"; LaunchMode = "path" }
         )
 
         foreach ($item in $windowsPaths) {

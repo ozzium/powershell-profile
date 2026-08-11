@@ -14,7 +14,7 @@
 },
 {
   "Get-FolderTree"
-      "Alias": "gft",
+      "Alias": "gftr",
       "Command": "Replace-With-Actual-Command"
     }
   ]
