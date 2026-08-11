@@ -29,10 +29,11 @@ if (-not (Test-Path $profileRoot)) {
 # Heavier menu/tool files are lazy-loaded by profile-menu.
 $coreFiles = @(
     "config.ps1"
-    "features.ps1"
     "appearance.ps1"
-	"dashboard.ps1"
+    "features.ps1"
+    "dashboard.ps1"
     "raven.ps1"
+    "local.ps1"
     "init.ps1"
 )
 
