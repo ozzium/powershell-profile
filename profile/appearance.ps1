@@ -250,54 +250,47 @@ if (Get-Command prompt -ErrorAction SilentlyContinue) {
     return $true
 }
 
-function global:Get-RavenThemeRoots {
-    $repoRoot = $null
+function Get-RavenThemeRoots {
+    $roots = New-Object System.Collections.Generic.List[string]
 
-    if (Get-Command Get-RavenRepoRoot -ErrorAction SilentlyContinue) {
-        $repoRoot = Get-RavenRepoRoot
+    $repoRoot = $global:RavenRepoRoot
+
+    if (-not $repoRoot) {
+        $repoRoot = $env:RAVEN_REPO_ROOT
     }
 
     if (-not $repoRoot) {
-        $possibleRepoRoots = @(
-            "$HOME/Documents/GitHub/powershell-profile",
-            "$HOME\Documents\GitHub\powershell-profile"
-        )
-
-        foreach ($possibleRepoRoot in $possibleRepoRoots) {
-            if (Test-Path $possibleRepoRoot) {
-                $repoRoot = $possibleRepoRoot
-                break
-            }
-        }
+        $repoRoot = $env:RAVEN_PROFILE_ROOT
     }
 
-    $roots = @()
+    if (-not $repoRoot -and (Get-Command Get-RavenRepoRoot -ErrorAction SilentlyContinue)) {
+        $repoRoot = Get-RavenRepoRoot
+    }
 
     if ($repoRoot) {
-        $roots += @(
-            Join-Path $repoRoot "modules/Themes"
-            Join-Path $repoRoot "themes"
-            Join-Path $repoRoot "profile/themes"
-            Join-Path $repoRoot "profile/oh-my-posh"
-            Join-Path $repoRoot "oh-my-posh"
-        )
+        $roots.Add((Join-Path $repoRoot "themes")) | Out-Null
+        $roots.Add((Join-Path $repoRoot "modules\Themes")) | Out-Null
+        $roots.Add((Join-Path $repoRoot "profile\themes")) | Out-Null
     }
 
     if ($env:POSH_THEMES_PATH) {
-        $roots += $env:POSH_THEMES_PATH
+        $roots.Add($env:POSH_THEMES_PATH) | Out-Null
     }
 
-    $roots += @(
-        "$env:LOCALAPPDATA/Programs/oh-my-posh/themes",
-        "$env:LOCALAPPDATA\Programs\oh-my-posh\themes",
-        "/opt/homebrew/opt/oh-my-posh/themes",
-        "/usr/local/opt/oh-my-posh/themes",
-        "/usr/local/share/oh-my-posh/themes",
-        "/opt/homebrew/share/oh-my-posh/themes",
-        "$HOME/.cache/oh-my-posh/themes"
-    )
+    if ($IsWindows) {
+        $roots.Add("$env:LOCALAPPDATA\Programs\oh-my-posh\themes") | Out-Null
+        $roots.Add("$env:LOCALAPPDATA\omp-manager\themes") | Out-Null
+    }
+    elseif ($IsMacOS) {
+        $roots.Add("/opt/homebrew/opt/oh-my-posh/themes") | Out-Null
+        $roots.Add("/usr/local/opt/oh-my-posh/themes") | Out-Null
+    }
+    else {
+        $roots.Add("/usr/share/oh-my-posh/themes") | Out-Null
+        $roots.Add("$HOME/.cache/oh-my-posh/themes") | Out-Null
+    }
 
-    return $roots |
+    $roots |
         Where-Object { $_ -and (Test-Path $_) } |
         Select-Object -Unique
 }
