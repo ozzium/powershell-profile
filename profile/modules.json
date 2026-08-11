@@ -41,7 +41,7 @@
   },
   {
     "Name": "ScrewCitySoftware.PwshProfile",
-    "Enabled": true,
+    "Enabled": false,
     "InstallIfMissing": false
   },
   {
@@ -106,22 +106,22 @@
   },
   {
     "Name": "Poshify",
-    "Enabled": true,
+    "Enabled": false,
     "InstallIfMissing": false
   },
   {
     "Name": "posh-git",
-    "Enabled": true,
+    "Enabled": false,
     "InstallIfMissing": false
   },
   {
     "Name": "OnePowerShellProfile",
-    "Enabled": true,
+    "Enabled": false,
     "InstallIfMissing": false
   },
   {
     "Name": "NerdFonts",
-    "Enabled": true,
+    "Enabled": false,
     "InstallIfMissing": false
   },
   {
@@ -193,5 +193,10 @@
     "Name": "PSScriptAnalyzer",
     "Enabled": true,
     "InstallIfMissing": true
+  },
+  {
+    "Name": "TerminalStyles",
+    "Enabled": true,
+    "InstallIfMissing": false
   }
 ]
