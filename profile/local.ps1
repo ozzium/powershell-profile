@@ -231,7 +231,7 @@ Set-Alias snap "C:\mytools\MWSnap.exe"
 Set-Alias run "C:\mytools\Run-Command_x64_p.exe"
 Set-Alias ted "C:\mytools\TedNPad.exe"
 Set-Alias fontview "C:\PortableApps\AMPFontViewer\App\AMPFontViewer\FontViewer.exe"
-Set-Alias code "C:\Program Files\Microsoft VS Code\Code.exe"
+Set-Alias -Name 'code' -Value "$home/AppData\Local\Programs\Microsoft VS Code\Code.exe"
 Set-Alias nft "New-FolderTree"
 Set-Alias bcu "C:\Program Files\BCUninstaller\BCUninstaller.exe"
 Set-Alias -Name pshelp -Value Invoke-PowerShellDiscovery
