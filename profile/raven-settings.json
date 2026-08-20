@@ -1,9 +1,4 @@
 {
-<<<<<<< HEAD
-  "theme": "velvet",
+  "theme": "stelbent-compact.minimal",
   "fastMode": false
-=======
-  "theme": "cert",
-  "fastMode": true
->>>>>>> aa4d50f50e025b6574e83f5bfda83565721f372f
 }

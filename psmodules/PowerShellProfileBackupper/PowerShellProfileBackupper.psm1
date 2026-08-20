@@ -1,36 +1,49 @@
 function Compress-Profile {
+    [CmdletBinding()]
     param (
-        [string]$BackupLocation = "%USERPROFILE%\Documents\PowerShellProfileBackup"
+        [string]$BackupLocation = (Join-Path -Path $HOME -ChildPath "Documents\PowerShellProfileBackup")
     )
 
-    # Define paths
-    $profilePath = $PROFILE.Path
-    $repoPath = "%USERPROFILE%\Documents\Github\powershell-profile"  # Change this to your actual repo path
-    $customizationsPath = "%USERPROFILE%\Documents\PowerShell"
+    $profilePath        = $PROFILE
+    $repoPath           = Join-Path -Path $HOME -ChildPath "Documents\Github\powershell-profile"
+    $customizationsPath = Join-Path -Path $HOME -ChildPath "Documents\PowerShell"
 
-    # Create a list of paths to compress
-    $pathsToCompress = @($profilePath, $repoPath, $customizationsPath)
+    $itemsToCompress = @($profilePath, $repoPath, $customizationsPath)
 
-    # Create backup directory if it doesn't exist
     if (-not (Test-Path -Path $BackupLocation)) {
-        New-Item -ItemType Directory -Path $BackupLocation
+        New-Item -ItemType Directory -Path $BackupLocation -Force | Out-Null
     }
 
-    # Create the zip file name with timestamp
-    $zipFileName = "PowerShellProfileBackup_$(Get-Date -Format 'yyyyMMddHHmmss').zip"
+    $timestamp   = Get-Date -Format 'yyyyMMddHHmmss'
+    $zipFileName = "PowerShellProfileBackup_$timestamp.zip"
     $zipFilePath = Join-Path -Path $BackupLocation -ChildPath $zipFileName
 
-    # Compress files
-    [System.IO.Compression.ZipFile]::CreateFromDirectory($pathsToCompress[1], $zipFilePath, [System.IO.Compression.CompressionLevel]::Optimal, $false)
+    $tempStagingPath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "PSProfileBackup_$timestamp"
+    New-Item -ItemType Directory -Path $tempStagingPath -Force | Out-Null
 
-    foreach ($item in $pathsToCompress) {
-        if (Test-Path -Path $item) {
-            Add-Type -AssemblyName System.IO.Compression.FileSystem
-            [System.IO.Compression.ZipFile]::CreateFromDirectory($item, $zipFilePath, [System.IO.Compression.CompressionLevel]::Optimal, $false)
+    try {
+        foreach ($item in $itemsToCompress) {
+            if (-not [string]::IsNullOrWhiteSpace($item) -and (Test-Path -Path $item)) {
+                $destination = Join-Path -Path $tempStagingPath -ChildPath (Split-Path -Path $item -Leaf)
+                Copy-Item -Path $item -Destination $destination -Recurse -Force
+            }
+        }
+
+        Add-Type -AssemblyName System.IO.Compression.FileSystem
+        [System.IO.Compression.ZipFile]::CreateFromDirectory(
+            $tempStagingPath,
+            $zipFilePath,
+            [System.IO.Compression.CompressionLevel]::Optimal,
+            $false
+        )
+
+        Write-Host "Backup successfully created at: $zipFilePath" -ForegroundColor Green
+    }
+    finally {
+        if (Test-Path -Path $tempStagingPath) {
+            Remove-Item -Path $tempStagingPath -Recurse -Force
         }
     }
-
-    Write-Host "Backup created at: $zipFilePath"
 }
 
 Export-ModuleMember -Function Compress-Profile

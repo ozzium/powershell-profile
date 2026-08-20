@@ -198,5 +198,10 @@
     "Name": "TerminalStyles",
     "Enabled": true,
     "InstallIfMissing": false
+  },
+  {
+    "Name": "Microsoft.PowerShell.PSResourceGet",
+    "Enabled": true,
+    "InstallIfMissing": true
   }
 ]
